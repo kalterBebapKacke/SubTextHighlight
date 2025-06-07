@@ -1,2 +1,4 @@
 pysubs2
 Cython
+whisper
+#stable-ts==2.19.0
