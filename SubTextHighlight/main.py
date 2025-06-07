@@ -11,6 +11,8 @@ off_time = datetime.timedelta(seconds=0.025)
 class sub_args(utils.args_styles):
 
     def __init__(self,
+        input: str,
+        output: str,
         subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
         word_max: int = 11,
         add_time:float = 0,
@@ -53,14 +55,14 @@ class sub_args(utils.args_styles):
         self.subtitle_type: str = subtitle_type # one_word_only, join, separate_on_period
         self.word_max: float = word_max
         self.add_time = add_time
+        self.input = input
+        self.output = output
 
 
 
 class Subtitle_Edit:
 
     def __init__(self,
-                 path_to_srt:str,
-                 path_to_ass:str,
                  args_sub_edit_:sub_args,
                  args_highlight:highlight_args | None = None,
                  args_effects: effects_args | None =None,
@@ -79,8 +81,8 @@ class Subtitle_Edit:
         self.word_max = self.args.word_max
         self.subtitle_type = self.args.subtitle_type
         self.add_time = self.args.add_time
-        self.path_to_srt = path_to_srt
-        self.path_to_ass = path_to_ass
+        self.path_to_srt = self.args.input
+        self.path_to_ass = self.args.output
 
         # Highlighters
         self.args_highlight = args_highlight
