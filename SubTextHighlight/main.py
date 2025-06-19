@@ -82,7 +82,7 @@ class Subtitle_Edit:
         self.subtitle_type = self.args.subtitle_type
         self.add_time = self.args.add_time
         self.path_to_srt = self.args.input
-        self.path_to_ass = self.args.output
+        self.output = self.args.output
 
         # Highlighters
         self.args_highlight = args_highlight
@@ -138,7 +138,21 @@ class Subtitle_Edit:
         # build and save
         subs = self.build_finished_subs(subs)
         sub_file.events = subs
-        sub_file.save(self.path_to_ass)
+        self.interpret_output(self.output, sub_file)
+
+    def interpret_input(self, input):
+        if type(input) is dict[str, any] or type(input) is list[dict[str, any]]:
+            return pysubs2.load_from_whisper(input)
+        elif type(input) is str:
+            pass
+            # implement check for sub file and audio
+
+    def interpret_output(self, output, output_file:pysubs2.SSAFile):
+        if type(output) is str:
+            sub_file.save(output)
+        elif output is None:
+            return output_file
+
         
     def add_subtitle(self, cur_word:str, index:int, start, end, all_subs:list, highlight_words:bool=False, sub_list:list=()):
         if highlight_words is True:
