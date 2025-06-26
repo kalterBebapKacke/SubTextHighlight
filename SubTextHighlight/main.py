@@ -5,19 +5,22 @@ from Cython.Build.Dependencies import join_path
 from .Highlight import Highlighter, highlight_args
 from .Effects import Effects, effects_args
 from . import utils
+import fleep
 
 off_time = datetime.timedelta(seconds=0.025)
 
 class sub_args(utils.args_styles):
 
     def __init__(self,
-        input: str,
+        input: str | dict[str, any] | list[dict[str, any]],
         output: str,
         subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
         word_max: int = 11,
         add_time:float = 0,
         fontname: str = 'Arial',
         fontsize: float | int = 24,
+        whisper_model:str = 'base.en',
+        whisper_device: str = 'cpu',
         primarycolor: pysubs2.Color | str = pysubs2.Color(255, 255, 255),
         backcolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0),
         secondarycolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0, ),  # Black for border/shadow
@@ -33,6 +36,23 @@ class sub_args(utils.args_styles):
         italic: bool = False,
         underline: bool = False
         ):
+        """
+            Configuration for subtitle generation.
+
+            Attributes:
+                input (str): Path to the input to process.
+                output (str): Path where the generated subtitles will be saved.
+                subtitle_type (str): Subtitle formatting style. One of:
+                    - 'one_word_only': One word per subtitle.
+                    - 'join': Joins all words into subtitles segments with respect to the word_max parameter.
+                    - 'separate_on_period': Splits subtitles at sentence boundaries.
+                    - 'appear': Words accumulate as they appear.
+                word_max (int): Maximum words per subtitle segment (used only when subtitle_type is not 'one_word_only').
+                add_time (float): Extra seconds to add to each subtitle's duration.
+                whisper_model (str) = Controls which whisper model is used if necessary.
+                whisper_device (str) = Controls which device is used for whisper if necessary.
+                The rest of the attributes inherit from the utils.args_styles.
+            """
         super().__init__(
             fontname,
             fontsize,
@@ -57,6 +77,8 @@ class sub_args(utils.args_styles):
         self.add_time = add_time
         self.input = input
         self.output = output
+        self.whisper_model: str = whisper_model
+        self.whisper_device: str = whisper_device
 
 
 
@@ -69,10 +91,7 @@ class Subtitle_Edit:
                 ):
 
         # args
-        if args_sub_edit_ is not None:
-            self.args = args_sub_edit_
-        else:
-            self.args = sub_args()
+        self.args = args_sub_edit_
 
         # Style
         self.main_style = self.args.return_style()
@@ -81,8 +100,10 @@ class Subtitle_Edit:
         self.word_max = self.args.word_max
         self.subtitle_type = self.args.subtitle_type
         self.add_time = self.args.add_time
-        self.path_to_srt = self.args.input
+        self.input = self.args.input
         self.output = self.args.output
+        self.whisper_model= self.args.whisper_model
+        self.whisper_device= self.args.whisper_device
 
         # Highlighters
         self.args_highlight = args_highlight
@@ -104,7 +125,7 @@ class Subtitle_Edit:
 
 
     def __call__(self):
-        sub_file = pysubs2.load(self.path_to_srt)
+        sub_file = self.interpret_input(self.input)
         sub_file.styles["MainStyle"] = self.main_style
 
         if self.if_highlight:
@@ -144,16 +165,34 @@ class Subtitle_Edit:
         if type(input) is dict[str, any] or type(input) is list[dict[str, any]]:
             return pysubs2.load_from_whisper(input)
         elif type(input) is str:
-            pass
-            # implement check for sub file and audio
+            file_extension = input.split('.')[-1]
+            if file_extension == 'srt' or file_extension == 'ass':
+                return pysubs2.load(input)
+            else:
+                with open(input, "rb") as file:
+                    info = fleep.get(file.read(128))
+                if info.type == ['audio'] or info.type == ['video']:
+                    subs_str = utils.use_whisper(input, self.whisper_model, self.whisper_device)
+                    return pysubs2.SSAFile.from_string(subs_str)
+                else:
+                    return pysubs2.SSAFile.from_string(input)
 
     def interpret_output(self, output, output_file:pysubs2.SSAFile):
         if type(output) is str:
-            sub_file.save(output)
+            file_extension = output.split('.')[-1]
+            if file_extension == 'ass':
+                sub_file.save(output)
+            else:
+                with open(self.input, "rb") as file:
+                    info = fleep.get(file.read(128))
+                if info.type == ['video']:
+                    # maybe check for video file extension
+                    utils.add_subtitles_with_ffmpeg()
+                else:
+                    raise utils.Unsupported_Format
         elif output is None:
             return output_file
 
-        
     def add_subtitle(self, cur_word:str, index:int, start, end, all_subs:list, highlight_words:bool=False, sub_list:list=()):
         if highlight_words is True:
             return self.highlighter(cur_word, start, end, all_subs, sub_list)

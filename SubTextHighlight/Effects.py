@@ -8,6 +8,12 @@ class effects_args:
     def __init__(self,
         fade:tuple[float, float] = (0.0, 0.0) # first is fadeIn and second is fadeOut
                  ):
+        """
+        fade: Controls the fade-in and fade-out durations.
+        - fade[0]: Duration of fade-in (in seconds).
+        - fade[1]: Duration of fade-out (in seconds).
+        Defaults to (0.0, 0.0) — no fading.
+        """
         self.fade_in_duration = fade[0]
         self.fade_out_duration = fade[1]
 
@@ -32,4 +38,3 @@ class Effects:
             else:
                 sub.text = fr'{{\fad({self.args.fade_in_duration},{self.args.fade_out_duration})}}{sub.text}'
         return subs
-

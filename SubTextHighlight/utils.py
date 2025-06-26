@@ -1,4 +1,38 @@
 import pysubs2
+import stable_whisper
+import subprocess
+import tempfile
+import os
+
+def use_whisper(path:str, model='base.en', device='cpu'):
+    model = stable_whisper.load_model(model, device=device)
+    result = model.transcribe(audio=path, verbose=None)
+    r = result.to_srt_vtt(None, segment_level=False, word_level=True)
+    return r
+
+def exec_command(command:list):
+    try:
+        result = subprocess.run(command, text=True, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+        #print(result)
+    except Exception as e:
+        print(e)
+
+def add_subtitles_with_ffmpeg(input_path, output_path, sub_file:pysubs2.SSAFile):
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.ass', delete=False) as temp_file:
+        temp_file.write(sub_file.to_string(format_='ass'))
+        temp_filename = temp_file.name
+    command = [
+        "ffmpeg",
+        "-y",
+        "-i", input_path,
+        "-vf",
+        f"ass={temp_filename}",
+        "-c:a", "copy",
+        "-loglevel", "error",
+        output_path
+    ]
+    exec_command(command)
+    os.unlink(temp_filename)
 
 def hex_to_pysub2_color(hex_color, alpha=0):
     """
@@ -37,6 +71,11 @@ def replace_all(str_:str, replace_from, replace_with):
         str_ = str_.replace(replace_from, replace_with)
     return str_
 
+class Unsupported_Format(Exception):
+
+    def __init__(self):
+        pass
+
 class args_styles:
 
     def __init__(self,
@@ -57,6 +96,77 @@ class args_styles:
         italic: bool = False,
         underline: bool = False
     ):
+        """
+        Subtitle style configuration class for customizing text appearance and formatting.
+
+        This class provides comprehensive control over subtitle rendering including font properties,
+        colors, visual effects, and layout positioning using SubStation Alpha (SSA/ASS) format standards.
+
+        Parameters:
+            fontname (str): Font family name. Any system-installed font can be specified.
+                Default: 'Arial'
+
+            fontsize (float | int): Font size in points. Larger values create bigger text.
+                Default: 24
+
+            primarycolor (pysubs2.Color | str): Main text fill color in RGBA format (0-255).
+                Default: pysubs2.Color(255, 255, 255) (white)
+
+            backcolor (pysubs2.Color | str): Background color behind text when using box border style.
+                Default: pysubs2.Color(0, 0, 0) (black)
+
+            secondarycolor (pysubs2.Color | str): Secondary color for karaoke effects and transitions.
+                Default: pysubs2.Color(0, 0, 0) (black)
+
+            outlinecolor (pysubs2.Color | str): Color of text outline/border for readability.
+                Default: pysubs2.Color(0, 0, 0) (black)
+
+            tertiarycolor (pysubs2.Color | str): Additional outline color for complex border effects.
+                Default: pysubs2.Color(0, 0, 0) (black)
+
+            outline (float | int): Thickness of text outline in pixels. Higher values create thicker borders.
+                Default: 1
+
+            spacing (float | int): Line spacing multiplier. Values <1.0 create tighter spacing, >1.0 looser.
+                Default: 0.75
+
+            shadow (float | int): Drop shadow offset in pixels. 0 disables shadow effect.
+                Default: 0
+
+            alignment (int): Text positioning using numpad layout:
+                1-3: Bottom (left/center/right), 4-6: Middle (left/center/right), 7-9: Top (left/center/right)
+                Default: 5 (middle-center)
+
+            bold (bool): Enable bold text formatting for improved readability.
+                Default: True
+
+            angle (float): Text rotation angle in degrees. Positive values rotate clockwise.
+                Default: 0.0
+
+            borderstyle (int): Border rendering style. 1=outline border, 3=opaque box background.
+                Default: 1
+
+            italic (bool): Enable italic text formatting.
+                Default: False
+
+            underline (bool): Enable underline text formatting.
+                Default: False
+
+        Example:
+            >>> # Create style with yellow text and blue outline
+            >>> style = args_styles(
+            ...     fontsize=28,
+            ...     primarycolor=pysubs2.Color(255, 255, 0),
+            ...     outlinecolor=pysubs2.Color(0, 100, 255),
+            ...     outline=2,
+            ...     alignment=2
+            ... )
+
+        Note:
+            All color parameters accept either pysubs2.Color objects or compatible color strings.
+            The default configuration creates bold white text with black outline, optimized for
+            readability across various video backgrounds.
+        """
         self.fontname = fontname
         self.fontsize = fontsize
         self.primarycolor = import_color(primarycolor)
