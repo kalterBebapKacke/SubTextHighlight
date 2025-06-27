@@ -1,6 +1,7 @@
 import os
 import pysubs2
 from . import utils
+from .utils import dprint
 
 class highlight_args(utils.args_styles):
 
@@ -83,19 +84,22 @@ class Highlighter:
         progress_in_words = ''
 
         for i, sub in enumerate(sub_list):
+            last_iteration = len(sub_list) - 1 == i
+
             if (self.highlight_word_min < len(highlighted_words) + len(sub.text)) or len(sub_list) - 1 == i:
                 highlighted_words += f' {sub.text}'
                 highlighted_words = highlighted_words.strip()
 
-                progress_in_words += f' {sub.text}'
                 progress_in_words = progress_in_words.strip()
 
                 if len(return_subs) == 0:
                     new_cur_word = self._replace(cur_word, f'{highlighted_words} ', progress_in_words)
+                elif last_iteration:
+                    new_cur_word = self._replace(cur_word, f' {highlighted_words}', progress_in_words)
                 else:
                     new_cur_word = self._replace(cur_word, f' {highlighted_words} ', progress_in_words)
 
-                if i != len(sub_list) - 1:
+                if not last_iteration:
                     end_time = sub_list[i + 1].start
                 else:
                     end_time = end
@@ -106,6 +110,7 @@ class Highlighter:
                 return_subs.append(pysubs2.SSAEvent(start=start, end=end_time, text=new_cur_word.strip(), style="MainStyle"))
                 highlighted_words = ''
                 start = None
+                progress_in_words += f' {sub.text}'
             else:
                 highlighted_words += f' {sub.text}'
                 progress_in_words += f' {sub.text}'
@@ -124,7 +129,12 @@ class Highlighter:
 
     def _replace(self, to_replace:str, new_word:str, progress_in_word:str):
         to_replace = to_replace.replace(progress_in_word, '', 1)
-        highlighted_part = to_replace.replace(new_word, fr'{self.highlight_style[0]}{new_word.strip()}{self.highlight_style[1]} ', 1)
+        if new_word[0] == ' ':
+            _new = fr' {self.highlight_style[0]}{new_word.strip()}{self.highlight_style[1]} '
+        else:
+            _new = fr'{self.highlight_style[0]}{new_word.strip()}{self.highlight_style[1]} '
+
+        highlighted_part = to_replace.replace(new_word, _new, 1)
         return progress_in_word + highlighted_part
 
     def highlight_background(self, subs):

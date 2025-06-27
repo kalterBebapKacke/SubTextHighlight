@@ -3,6 +3,7 @@ import stable_whisper
 import subprocess
 import tempfile
 import os
+import json
 
 def use_whisper(path:str, model='base.en', device='cpu'):
     model = stable_whisper.load_model(model, device=device)
@@ -13,6 +14,15 @@ def use_whisper(path:str, model='base.en', device='cpu'):
 def dprint(txt):
     if os.environ['debug'] == 'True':
         print(txt)
+
+def get_duration(file_path):
+    cmd = [
+        'ffprobe', '-v', 'quiet', '-print_format', 'json',
+        '-show_format', file_path
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    data = json.loads(result.stdout)
+    return float(data['format']['duration'])
 
 def exec_command(command:list):
     try:
