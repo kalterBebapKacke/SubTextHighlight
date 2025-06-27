@@ -10,6 +10,10 @@ def use_whisper(path:str, model='base.en', device='cpu'):
     r = result.to_srt_vtt(None, segment_level=False, word_level=True)
     return r
 
+def dprint(txt):
+    if os.environ['debug'] == 'True':
+        print(txt)
+
 def exec_command(command:list):
     try:
         result = subprocess.run(command, text=True, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
@@ -17,14 +21,14 @@ def exec_command(command:list):
     except Exception as e:
         print(e)
 
-def add_subtitles_with_ffmpeg(input_path, output_path, sub_file:pysubs2.SSAFile):
+def add_subtitles_with_ffmpeg(video_path, output_path, sub_file:pysubs2.SSAFile):
     with tempfile.NamedTemporaryFile(mode='w', suffix='.ass', delete=False) as temp_file:
         temp_file.write(sub_file.to_string(format_='ass'))
         temp_filename = temp_file.name
     command = [
         "ffmpeg",
         "-y",
-        "-i", input_path,
+        "-i", video_path,
         "-vf",
         f"ass={temp_filename}",
         "-c:a", "copy",

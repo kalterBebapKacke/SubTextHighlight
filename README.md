@@ -1,3 +1,7 @@
+# SubTextHighlight
+
+
+
 # Installation
 
 Not yet supported
@@ -93,7 +97,10 @@ The following are the configurable parameters for subtitle generation:
   Path to the input file (e.g., video or transcript) or whisper transcript to be processed. Valid inputs are srt, ass, video, audio or plain text srt in srt string. If input is a video or audio, whisper will automatically transcribe the audio. If input is in srt or ass format (whether in plain str or as an input file) has to only contain one word per subtitle segment, otherwise the formatting might not work.
 
 - **`output`** (`str`, *required*):  
-  Path to the output file should be stored. The file has to be either stored as an ass-file or a video path could be inputted to make ffmpeg automatically burn in the subs into the input file (the input has to be a video for that to work).
+  Path to where the output file should be stored. The file has to be either stored as an ass-file, or a video path (via **`input_video`**) could be inputted to make ffmpeg automatically burn in the subs into the output video. Be careful to use the right file extension.
+
+- **`input_video`** (`str` or `None`, *optional*): 
+  Path to the video where the subtitles could be burned in if wanted, if not leave this argument `None`. 
 
 - **`subtitle_type`** (`str`, *optional*, default=`'one_word_only'`):  
   Determines the subtitle formatting style. Available options:  
@@ -114,7 +121,7 @@ The following are the configurable parameters for subtitle generation:
 ## highlight_args
 Here the class again inherits all the parameters from `utils.args_styles`, but now for all attributes is the default attribute `None`. When this is the case the styling of the `sub_args` will be copied. Only non `None` values will decide how the highlighted segment will look like.
 
-The only really new parameter is **`highlight_word_max`** (`int | None`, *required*, default=`0`), which controls how many words should be highlighted.
+The only really new parameter is **`highlight_word_max`** (`int | None`, *required*, default=`0`), which controls how many words should be highlighted. If this argument is 0, then only one word will be highlighted.
 
 ## effects_args
 Controls the effects that should be applied to the subtitles. Currently only fadeIN/fadeOUT is supported

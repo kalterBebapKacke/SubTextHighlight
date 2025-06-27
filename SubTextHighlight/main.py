@@ -2,6 +2,7 @@ import os
 import datetime
 import pysubs2
 from Cython.Build.Dependencies import join_path
+from .utils import dprint
 from .Highlight import Highlighter, highlight_args
 from .Effects import Effects, effects_args
 from . import utils
@@ -14,13 +15,14 @@ class sub_args(utils.args_styles):
     def __init__(self,
         input: str | dict[str, any] | list[dict[str, any]],
         output: str,
+        input_video: str | None = None,
         subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
         word_max: int = 11,
         add_time:float = 0,
+        whisper_model: str = 'base.en',
+        whisper_device: str = 'cpu',
         fontname: str = 'Arial',
         fontsize: float | int = 24,
-        whisper_model:str = 'base.en',
-        whisper_device: str = 'cpu',
         primarycolor: pysubs2.Color | str = pysubs2.Color(255, 255, 255),
         backcolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0),
         secondarycolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0, ),  # Black for border/shadow
@@ -77,6 +79,7 @@ class sub_args(utils.args_styles):
         self.add_time = add_time
         self.input = input
         self.output = output
+        self.input_video = input_video
         self.whisper_model: str = whisper_model
         self.whisper_device: str = whisper_device
 
@@ -87,7 +90,7 @@ class Subtitle_Edit:
     def __init__(self,
                  args_sub_edit_:sub_args,
                  args_highlight:highlight_args | None = None,
-                 args_effects: effects_args | None =None,
+                 args_effects: effects_args | None = None,
                 ):
 
         # args
@@ -101,6 +104,7 @@ class Subtitle_Edit:
         self.subtitle_type = self.args.subtitle_type
         self.add_time = self.args.add_time
         self.input = self.args.input
+        self.input_video = self.args.input_video
         self.output = self.args.output
         self.whisper_model= self.args.whisper_model
         self.whisper_device= self.args.whisper_device
@@ -159,7 +163,7 @@ class Subtitle_Edit:
         # build and save
         subs = self.build_finished_subs(subs)
         sub_file.events = subs
-        self.interpret_output(self.output, sub_file)
+        return self.interpret_output(self.output, sub_file)
 
     def interpret_input(self, input):
         if type(input) is dict[str, any] or type(input) is list[dict[str, any]]:
@@ -181,15 +185,14 @@ class Subtitle_Edit:
         if type(output) is str:
             file_extension = output.split('.')[-1]
             if file_extension == 'ass':
-                sub_file.save(output)
-            else:
-                with open(self.input, "rb") as file:
+                output_file.save(output)
+            elif self.input_video is not None:
+                with open(self.input_video, "rb") as file:
                     info = fleep.get(file.read(128))
                 if info.type == ['video']:
-                    # maybe check for video file extension
-                    utils.add_subtitles_with_ffmpeg()
-                else:
-                    raise utils.Unsupported_Format
+                    utils.add_subtitles_with_ffmpeg(self.input_video, output, output_file)
+            else:
+                raise utils.Unsupported_Format
         elif output is None:
             return output_file
 
@@ -201,37 +204,34 @@ class Subtitle_Edit:
             return all_subs
 
     def short_subtitles(self, subs:list):
+        word_highlight = self.if_highlight
         new_subs = list()
         cur_word = ''
         index = 1
         start_time = 0
-        last_end = subs[0].end
+        cur_sub_list = []
 
         for sub in subs:
-            if len(cur_word) + len(sub.text) + 1 < self.word_max:
-                cur_word = cur_word + sub.text + ' '
-            else:
-                end_time = sub.start
-                #duration = end_time - start_time
-                new_subs = self.add_subtitle(cur_word, index, start_time, sub.end, new_subs)
-                cur_word = sub.text + ' '
-                index += 1
-                start_time = end_time
+            dprint(new_subs)
 
-            if cur_word.__contains__('.') or cur_word.__contains__('?') or cur_word.__contains__('!'):
-                #end_time = sub.end+datetime.timedelta(seconds=0.45)
-                new_subs = self.add_subtitle(cur_word, index, start_time, sub.end, new_subs)
+            if cur_word.__contains__('.') or cur_word.__contains__('?') or cur_word.__contains__('!') or cur_word.__contains__(','):
+                cur_sub_list.append(sub)
+                new_subs = self.add_subtitle(cur_word, index, start_time, sub.end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
                 cur_word = ''
                 index += 1
                 start_time = sub.end
-            #last_end = sub.end
+                cur_sub_list = []
+            else:
+                cur_word = cur_word + sub.text + ' '
+                cur_sub_list.append(sub)
 
         if cur_word != '':
-            new_subs = self.add_subtitle(cur_word, index, start_time, subs[-1].end, new_subs)
+            new_subs = self.add_subtitle(cur_word, index, start_time, subs[-1].end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
 
         return new_subs
 
     def one_word_only(self, subs:list):
+        word_highlight = self.if_highlight
         new_subs = list()
         index = 1
         sub_start = 0
@@ -241,7 +241,7 @@ class Subtitle_Edit:
                 end_time = subs[i+1].start
             else:
                 end_time = sub.end
-            new_subs = self.add_subtitle(sub.text, index, sub_start, end_time, new_subs)
+            new_subs = self.add_subtitle(sub.text, index, sub_start, end_time, new_subs, highlight_words=word_highlight,)
             sub_start = end_time
         return new_subs
 
@@ -277,7 +277,6 @@ class Subtitle_Edit:
                 num_split = (sub.text.find(r'{\r}') + len(r'{\r}'))
                 sub.text = sub.text[:num_split] + r'{\alpha&HFF}' +sub.text[num_split:] + r'{\r}'
         return subs
-
 
 
     def subs_cleanup(self, subs:list): #not working

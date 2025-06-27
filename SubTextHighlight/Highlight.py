@@ -80,18 +80,20 @@ class Highlighter:
     def __call__(self, cur_word: str, start, end, all_subs:list, sub_list: list = ()):
         return_subs = list()
         highlighted_words = ''
-        # cur_start = sub_list[0].start
+        progress_in_words = ''
+
         for i, sub in enumerate(sub_list):
             if (self.highlight_word_min < len(highlighted_words) + len(sub.text)) or len(sub_list) - 1 == i:
                 highlighted_words += f' {sub.text}'
                 highlighted_words = highlighted_words.strip()
 
+                progress_in_words += f' {sub.text}'
+                progress_in_words = progress_in_words.strip()
+
                 if len(return_subs) == 0:
-                    new_cur_word = cur_word.replace(f'{highlighted_words} ',
-                                                    fr'{self.highlight_style[0]}{highlighted_words}{self.highlight_style[1]} ')
+                    new_cur_word = self._replace(cur_word, f'{highlighted_words} ', progress_in_words)
                 else:
-                    new_cur_word = cur_word.replace(f' {highlighted_words} ',
-                                                    fr' {self.highlight_style[0]}{highlighted_words}{self.highlight_style[1]} ')
+                    new_cur_word = self._replace(cur_word, f' {highlighted_words} ', progress_in_words)
 
                 if i != len(sub_list) - 1:
                     end_time = sub_list[i + 1].start
@@ -106,6 +108,7 @@ class Highlighter:
                 start = None
             else:
                 highlighted_words += f' {sub.text}'
+                progress_in_words += f' {sub.text}'
                 if start is None:
                     start = sub.start
 
@@ -119,6 +122,10 @@ class Highlighter:
         # return [r'{\3c&H000000&\4c&H0000FF&\4a&H40&\bord5\shad0\be1}', r'{\r}']
         return [r'{\c&H000000&\3c&HFFFF00&\bord5}', r'{\r}']  # {\c&H000000&\3c&HFFFF00&\bord8}
 
+    def _replace(self, to_replace:str, new_word:str, progress_in_word:str):
+        to_replace = to_replace.replace(progress_in_word, '', 1)
+        highlighted_part = to_replace.replace(new_word, fr'{self.highlight_style[0]}{new_word.strip()}{self.highlight_style[1]} ', 1)
+        return progress_in_word + highlighted_part
 
     def highlight_background(self, subs):
         return_subs = list()
