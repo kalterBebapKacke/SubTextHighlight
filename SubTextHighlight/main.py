@@ -19,6 +19,7 @@ class sub_args(utils.args_styles):
         subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
         word_max: int = 11,
         add_time:float = 0,
+        refill_sub_times:bool = True,
         whisper_model: str = 'base.en',
         whisper_device: str = 'cpu',
         fontname: str = 'Arial',
@@ -44,6 +45,7 @@ class sub_args(utils.args_styles):
             Attributes:
                 input (str): Path to the input to process.
                 output (str): Path where the generated subtitles will be saved.
+                input_video (str): Path to the input video, in which generated subtitles could be burned in.
                 subtitle_type (str): Subtitle formatting style. One of:
                     - 'one_word_only': One word per subtitle.
                     - 'join': Joins all words into subtitles segments with respect to the word_max parameter.
@@ -82,6 +84,7 @@ class sub_args(utils.args_styles):
         self.input_video = input_video
         self.whisper_model: str = whisper_model
         self.whisper_device: str = whisper_device
+        self.refill_sub_times: bool = refill_sub_times
 
 
 
@@ -108,6 +111,7 @@ class Subtitle_Edit:
         self.output = self.args.output
         self.whisper_model= self.args.whisper_model
         self.whisper_device= self.args.whisper_device
+        self.refill_sub_times = self.args.refill_sub_times
 
         # Highlighters
         self.args_highlight = args_highlight
@@ -204,29 +208,40 @@ class Subtitle_Edit:
             return all_subs
 
     def short_subtitles(self, subs:list):
+        dprint(subs)
         word_highlight = self.if_highlight
         new_subs = list()
         cur_word = ''
         index = 1
-        start_time = 0
+        start_time, end_time = self.start_end_time(subs)
         cur_sub_list = []
 
-        for sub in subs:
-            dprint(new_subs)
+        for i, sub in enumerate(subs):
+            #dprint(new_subs)
+            last_iteration = len(subs) - 1 == i
 
-            if cur_word.__contains__('.') or cur_word.__contains__('?') or cur_word.__contains__('!') or cur_word.__contains__(','):
+            if sub.text.__contains__('.') or sub.text.__contains__('?') or sub.text.__contains__('!') or sub.text.__contains__(',') or last_iteration:
+                cur_word = cur_word + sub.text
                 cur_sub_list.append(sub)
-                new_subs = self.add_subtitle(cur_word, index, start_time, sub.end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
+
+                if last_iteration:
+                    cur_end = end_time
+                else:
+                    if self.refill_sub_times:
+                        cur_end = subs[i+1].start
+                    else:
+                        cur_end = sub.end
+
+                new_subs = self.add_subtitle(cur_word, index, start_time, cur_end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
+
+                if not last_iteration:
+                    start_time = subs[i+1].start
+
                 cur_word = ''
-                index += 1
-                start_time = sub.end
                 cur_sub_list = []
             else:
                 cur_word = cur_word + sub.text + ' '
                 cur_sub_list.append(sub)
-
-        if cur_word != '':
-            new_subs = self.add_subtitle(cur_word, index, start_time, subs[-1].end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
 
         return new_subs
 
@@ -277,6 +292,14 @@ class Subtitle_Edit:
                 num_split = (sub.text.find(r'{\r}') + len(r'{\r}'))
                 sub.text = sub.text[:num_split] + r'{\alpha&HFF}' +sub.text[num_split:] + r'{\r}'
         return subs
+
+    def start_end_time(self, subs:list):
+        if not self.refill_sub_times:
+            dprint(subs[0].start)
+            return subs[0].start, subs[-1].end
+        else:
+            end_time = utils.get_duration(self.input)
+            return pysubs2.make_time(s=0), pysubs2.make_time(s=end_time)
 
 
     def subs_cleanup(self, subs:list): #not working

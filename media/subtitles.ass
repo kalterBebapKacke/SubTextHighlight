@@ -10,77 +10,119 @@ ScriptType: v4.00+
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
 Style: MainStyle,Arial,24,&H00FFFFFF,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0.75,0,1,1,0,2,10,10,10,1
-Style: Highlight,Arial,28,&H00FFAA00,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0.75,0,1,1,0,2,10,10,10,1
+Style: Highlight,Arial,24,&H00FFAA00,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0.75,0,1,1,0,2,10,10,10,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.00,0:00:05.98,MainStyle,,0,0,0,,{\fad(50,50)}Yes,
-Dialogue: 0,0:00:05.58,0:00:05.98,MainStyle,,0,0,0,,{\fad(50,50)}indeed.
-Dialogue: 0,0:00:05.98,0:00:10.10,MainStyle,,0,0,0,,{\fad(50,50)}It is
-Dialogue: 0,0:00:09.72,0:00:11.00,MainStyle,,0,0,0,,{\fad(50,50)}called
-Dialogue: 0,0:00:10.10,0:00:13.92,MainStyle,,0,0,0,,{\fad(50,50)}Lothric,
-Dialogue: 0,0:00:12.67,0:00:14.88,MainStyle,,0,0,0,,{\fad(50,50)}where the
-Dialogue: 0,0:00:14.06,0:00:15.18,MainStyle,,0,0,0,,{\fad(50,50)}transitory
-Dialogue: 0,0:00:14.88,0:00:16.00,MainStyle,,0,0,0,,{\fad(50,50)}lands of
-Dialogue: 0,0:00:15.90,0:00:16.54,MainStyle,,0,0,0,,{\fad(50,50)}the Lords
-Dialogue: 0,0:00:16.24,0:00:17.82,MainStyle,,0,0,0,,{\fad(50,50)}of Cinder
-Dialogue: 0,0:00:17.04,0:00:17.82,MainStyle,,0,0,0,,{\fad(50,50)}converge.
-Dialogue: 0,0:00:17.82,0:00:25.66,MainStyle,,0,0,0,,{\fad(50,50)}Venturing
-Dialogue: 0,0:00:25.22,0:00:29.44,MainStyle,,0,0,0,,{\fad(50,50)}north,
-Dialogue: 0,0:00:29.38,0:00:29.78,MainStyle,,0,0,0,,{\fad(50,50)}the
-Dialogue: 0,0:00:29.44,0:00:30.76,MainStyle,,0,0,0,,{\fad(50,50)}pilgrims
-Dialogue: 0,0:00:29.78,0:00:31.12,MainStyle,,0,0,0,,{\fad(50,50)}discover
-Dialogue: 0,0:00:30.76,0:00:32.04,MainStyle,,0,0,0,,{\fad(50,50)}the truth
-Dialogue: 0,0:00:31.42,0:00:32.54,MainStyle,,0,0,0,,{\fad(50,50)}of the
-Dialogue: 0,0:00:32.24,0:00:33.24,MainStyle,,0,0,0,,{\fad(50,50)}Old
-Dialogue: 0,0:00:32.54,0:00:38.20,MainStyle,,0,0,0,,{\fad(50,50)}Words,
-Dialogue: 0,0:00:36.40,0:00:39.40,MainStyle,,0,0,0,,{\fad(50,50)}the fire
-Dialogue: 0,0:00:38.68,0:00:42.08,MainStyle,,0,0,0,,{\fad(50,50)}fades,
-Dialogue: 0,0:00:41.66,0:00:42.68,MainStyle,,0,0,0,,{\fad(50,50)}and the
-Dialogue: 0,0:00:42.28,0:00:43.70,MainStyle,,0,0,0,,{\fad(50,50)}Lords go
-Dialogue: 0,0:00:43.22,0:00:44.42,MainStyle,,0,0,0,,{\fad(50,50)}without
-Dialogue: 0,0:00:43.70,0:00:44.42,MainStyle,,0,0,0,,{\fad(50,50)}rooms.
-Dialogue: 0,0:00:44.42,0:01:02.72,MainStyle,,0,0,0,,{\fad(50,50)}When the
-Dialogue: 0,0:01:02.52,0:01:03.46,MainStyle,,0,0,0,,{\fad(50,50)}Link of
-Dialogue: 0,0:01:03.04,0:01:04.22,MainStyle,,0,0,0,,{\fad(50,50)}Fire is
-Dialogue: 0,0:01:03.76,0:01:05.74,MainStyle,,0,0,0,,{\fad(50,50)}threatened,
-Dialogue: 0,0:01:05.72,0:01:06.79,MainStyle,,0,0,0,,{\fad(50,50)}the bell
-Dialogue: 0,0:01:06.04,0:01:10.52,MainStyle,,0,0,0,,{\fad(50,50)}tolls,
-Dialogue: 0,0:01:09.80,0:01:10.88,MainStyle,,0,0,0,,{\fad(50,50)}unearthing
-Dialogue: 0,0:01:10.52,0:01:11.60,MainStyle,,0,0,0,,{\fad(50,50)}the Old
-Dialogue: 0,0:01:11.08,0:01:12.50,MainStyle,,0,0,0,,{\fad(50,50)}Lords of
-Dialogue: 0,0:01:11.84,0:01:13.02,MainStyle,,0,0,0,,{\fad(50,50)}Cinder
-Dialogue: 0,0:01:12.50,0:01:13.46,MainStyle,,0,0,0,,{\fad(50,50)}from
-Dialogue: 0,0:01:13.02,0:01:13.86,MainStyle,,0,0,0,,{\fad(50,50)}their
-Dialogue: 0,0:01:13.46,0:01:13.86,MainStyle,,0,0,0,,{\fad(50,50)}graves.
-Dialogue: 0,0:01:13.86,0:01:22.94,MainStyle,,0,0,0,,{\fad(50,50)}The Old
-Dialogue: 0,0:01:22.66,0:01:24.50,MainStyle,,0,0,0,,{\fad(50,50)}Lords say
-Dialogue: 0,0:01:24.30,0:01:24.90,MainStyle,,0,0,0,,{\fad(50,50)}in top
-Dialogue: 0,0:01:24.66,0:01:25.14,MainStyle,,0,0,0,,{\fad(50,50)}the deep.
-Dialogue: 0,0:01:25.14,0:01:39.26,MainStyle,,0,0,0,,{\fad(50,50)}Farron's
-Dialogue: 0,0:01:39.00,0:01:40.04,MainStyle,,0,0,0,,{\fad(50,50)}undead
-Dialogue: 0,0:01:39.26,0:01:41.16,MainStyle,,0,0,0,,{\fad(50,50)}Legion,
-Dialogue: 0,0:01:41.12,0:01:41.58,MainStyle,,0,0,0,,{\fad(50,50)}who are
-Dialogue: 0,0:01:41.30,0:01:42.22,MainStyle,,0,0,0,,{\fad(50,50)}based
-Dialogue: 0,0:01:41.58,0:01:42.22,MainStyle,,0,0,0,,{\fad(50,50)}swatches.
-Dialogue: 0,0:01:42.22,0:02:30.64,MainStyle,,0,0,0,,{\fad(50,50)}The Lord
-Dialogue: 0,0:02:26.08,0:02:31.28,MainStyle,,0,0,0,,{\fad(50,50)}will
-Dialogue: 0,0:02:30.64,0:02:31.78,MainStyle,,0,0,0,,{\fad(50,50)}abandon
-Dialogue: 0,0:02:31.28,0:02:32.64,MainStyle,,0,0,0,,{\fad(50,50)}their
-Dialogue: 0,0:02:31.78,0:02:32.64,MainStyle,,0,0,0,,{\fad(50,50)}thrills.
-Dialogue: 0,0:02:32.64,0:02:43.42,MainStyle,,0,0,0,,{\fad(50,50)}And the
-Dialogue: 0,0:02:41.98,0:02:43.90,MainStyle,,0,0,0,,{\fad(50,50)}unkindled
-Dialogue: 0,0:02:43.42,0:02:44.88,MainStyle,,0,0,0,,{\fad(50,50)}will
-Dialogue: 0,0:02:43.90,0:02:44.88,MainStyle,,0,0,0,,{\fad(50,50)}rise.
-Dialogue: 0,0:02:44.88,0:02:54.70,MainStyle,,0,0,0,,{\fad(50,50)}Nameless,
-Dialogue: 0,0:02:54.24,0:02:55.60,MainStyle,,0,0,0,,{\fad(50,50)}accursed
-Dialogue: 0,0:02:54.70,0:02:56.94,MainStyle,,0,0,0,,{\fad(50,50)}undead,
-Dialogue: 0,0:02:56.76,0:02:57.94,MainStyle,,0,0,0,,{\fad(50,50)}unfit,
-Dialogue: 0,0:02:57.60,0:02:58.36,MainStyle,,0,0,0,,{\fad(50,50)}even to
-Dialogue: 0,0:02:58.20,0:02:58.90,MainStyle,,0,0,0,,{\fad(50,50)}be
-Dialogue: 0,0:02:58.36,0:02:58.90,MainStyle,,0,0,0,,{\fad(50,50)}Cinder.
-Dialogue: 0,0:02:58.90,0:03:05.31,MainStyle,,0,0,0,,{\fad(50,50)}And so it
-Dialogue: 0,0:03:02.06,0:03:05.31,MainStyle,,0,0,0,,{\fad(50,50)}is...
-Dialogue: 0,0:03:05.31,0:03:07.32,MainStyle,,0,0,0,,{\fad(50,50)}the trash
-Dialogue: 0,0:03:06.20,0:03:08.22,MainStyle,,0,0,0,,{\fad(50,50)}-seek of
-Dialogue: 0,0:03:07.48,0:03:08.22,MainStyle,,0,0,0,,{\fad(50,50)}embers.
+Dialogue: 0,0:00:00.00,0:00:05.98,MainStyle,,0,0,0,,{\fad(0,50)}{\fad(50,0)}{\rHighlight}Yes,{\r}
+Dialogue: 0,0:00:05.98,0:00:09.58,MainStyle,,0,0,0,,{\fad(0,50)}{\fad(50,0)}{\rHighlight}indeed.{\r}
+Dialogue: 0,0:00:09.58,0:00:09.58,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}It{\r} is called Lothric,
+Dialogue: 0,0:00:09.58,0:00:09.72,MainStyle,,0,0,0,,It {\rHighlight}is{\r} called Lothric,
+Dialogue: 0,0:00:09.72,0:00:10.10,MainStyle,,0,0,0,,It is {\rHighlight}called{\r} Lothric,
+Dialogue: 0,0:00:10.10,0:00:13.92,MainStyle,,0,0,0,,{\fad(0,50)}It is called {\rHighlight}Lothric,{\r}
+Dialogue: 0,0:00:13.92,0:00:13.92,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}where{\r} the transitory lands of the Lords of Cinder converge.
+Dialogue: 0,0:00:13.92,0:00:14.06,MainStyle,,0,0,0,,where {\rHighlight}the{\r} transitory lands of the Lords of Cinder converge.
+Dialogue: 0,0:00:14.06,0:00:14.88,MainStyle,,0,0,0,,where the {\rHighlight}transitory{\r} lands of the Lords of Cinder converge.
+Dialogue: 0,0:00:14.88,0:00:15.18,MainStyle,,0,0,0,,where the transitory {\rHighlight}lands{\r} of the Lords of Cinder converge.
+Dialogue: 0,0:00:15.18,0:00:15.90,MainStyle,,0,0,0,,where the transitory lands {\rHighlight}of{\r} the Lords of Cinder converge.
+Dialogue: 0,0:00:15.90,0:00:16.00,MainStyle,,0,0,0,,where the transitory lands of {\rHighlight}the{\r} Lords of Cinder converge.
+Dialogue: 0,0:00:16.00,0:00:16.24,MainStyle,,0,0,0,,where the transitory lands of the {\rHighlight}Lords{\r} of Cinder converge.
+Dialogue: 0,0:00:16.24,0:00:16.54,MainStyle,,0,0,0,,where the transitory lands of the Lords {\rHighlight}of{\r} Cinder converge.
+Dialogue: 0,0:00:16.54,0:00:17.04,MainStyle,,0,0,0,,where the transitory lands of the Lords of {\rHighlight}Cinder{\r} converge.
+Dialogue: 0,0:00:17.04,0:00:25.22,MainStyle,,0,0,0,,{\fad(0,50)}where the transitory lands of the Lords of Cinder {\rHighlight}converge.{\r}
+Dialogue: 0,0:00:25.22,0:00:25.22,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Venturing{\r} north,
+Dialogue: 0,0:00:25.22,0:00:29.44,MainStyle,,0,0,0,,{\fad(0,50)}Venturing {\rHighlight}north,{\r}
+Dialogue: 0,0:00:29.44,0:00:29.44,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}the{\r} pilgrims discover the truth of the Old Words,
+Dialogue: 0,0:00:29.44,0:00:29.78,MainStyle,,0,0,0,,the {\rHighlight}pilgrims{\r} discover the truth of the Old Words,
+Dialogue: 0,0:00:29.78,0:00:30.76,MainStyle,,0,0,0,,the pilgrims {\rHighlight}discover{\r} the truth of the Old Words,
+Dialogue: 0,0:00:30.76,0:00:31.12,MainStyle,,0,0,0,,the pilgrims discover {\rHighlight}the{\r} truth of the Old Words,
+Dialogue: 0,0:00:31.12,0:00:31.42,MainStyle,,0,0,0,,the pilgrims discover the {\rHighlight}truth{\r} of the Old Words,
+Dialogue: 0,0:00:31.42,0:00:32.04,MainStyle,,0,0,0,,the pilgrims discover the truth {\rHighlight}of{\r} the Old Words,
+Dialogue: 0,0:00:32.04,0:00:32.24,MainStyle,,0,0,0,,the pilgrims discover the truth of {\rHighlight}the{\r} Old Words,
+Dialogue: 0,0:00:32.24,0:00:32.54,MainStyle,,0,0,0,,the pilgrims discover the truth of the {\rHighlight}Old{\r} Words,
+Dialogue: 0,0:00:32.54,0:00:38.20,MainStyle,,0,0,0,,{\fad(0,50)}the pilgrims discover the truth of the Old {\rHighlight}Words,{\r}
+Dialogue: 0,0:00:38.20,0:00:38.20,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}the{\r} fire fades,
+Dialogue: 0,0:00:38.20,0:00:38.68,MainStyle,,0,0,0,,the {\rHighlight}fire{\r} fades,
+Dialogue: 0,0:00:38.68,0:00:42.08,MainStyle,,0,0,0,,{\fad(0,50)}the fire {\rHighlight}fades,{\r}
+Dialogue: 0,0:00:42.08,0:00:42.08,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}and{\r} the Lords go without rooms.
+Dialogue: 0,0:00:42.08,0:00:42.28,MainStyle,,0,0,0,,and {\rHighlight}the{\r} Lords go without rooms.
+Dialogue: 0,0:00:42.28,0:00:42.68,MainStyle,,0,0,0,,and the {\rHighlight}Lords{\r} go without rooms.
+Dialogue: 0,0:00:42.68,0:00:43.22,MainStyle,,0,0,0,,and the Lords {\rHighlight}go{\r} without rooms.
+Dialogue: 0,0:00:43.22,0:00:43.70,MainStyle,,0,0,0,,and the Lords go {\rHighlight}without{\r} rooms.
+Dialogue: 0,0:00:43.70,0:01:02.34,MainStyle,,0,0,0,,{\fad(0,50)}and the Lords go without {\rHighlight}rooms.{\r}
+Dialogue: 0,0:01:02.34,0:01:02.34,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}When{\r} the Link of Fire is threatened,
+Dialogue: 0,0:01:02.34,0:01:02.52,MainStyle,,0,0,0,,When {\rHighlight}the{\r} Link of Fire is threatened,
+Dialogue: 0,0:01:02.52,0:01:02.72,MainStyle,,0,0,0,,When the {\rHighlight}Link{\r} of Fire is threatened,
+Dialogue: 0,0:01:02.72,0:01:03.04,MainStyle,,0,0,0,,When the Link {\rHighlight}of{\r} Fire is threatened,
+Dialogue: 0,0:01:03.04,0:01:03.46,MainStyle,,0,0,0,,When the Link of {\rHighlight}Fire{\r} is threatened,
+Dialogue: 0,0:01:03.46,0:01:03.76,MainStyle,,0,0,0,,When the Link of Fire {\rHighlight}is{\r} threatened,
+Dialogue: 0,0:01:03.76,0:01:05.74,MainStyle,,0,0,0,,{\fad(0,50)}When the Link of Fire is {\rHighlight}threatened,{\r}
+Dialogue: 0,0:01:05.74,0:01:05.74,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}the{\r} bell tolls,
+Dialogue: 0,0:01:05.74,0:01:06.04,MainStyle,,0,0,0,,the {\rHighlight}bell{\r} tolls,
+Dialogue: 0,0:01:06.04,0:01:10.52,MainStyle,,0,0,0,,{\fad(0,50)}the bell {\rHighlight}tolls,{\r}
+Dialogue: 0,0:01:10.52,0:01:10.52,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}unearthing{\r} the Old Lords of Cinder from their graves.
+Dialogue: 0,0:01:10.52,0:01:10.88,MainStyle,,0,0,0,,unearthing {\rHighlight}the{\r} Old Lords of Cinder from their graves.
+Dialogue: 0,0:01:10.88,0:01:11.08,MainStyle,,0,0,0,,unearthing the {\rHighlight}Old{\r} Lords of Cinder from their graves.
+Dialogue: 0,0:01:11.08,0:01:11.60,MainStyle,,0,0,0,,unearthing the Old {\rHighlight}Lords{\r} of Cinder from their graves.
+Dialogue: 0,0:01:11.60,0:01:11.84,MainStyle,,0,0,0,,unearthing the Old Lords {\rHighlight}of{\r} Cinder from their graves.
+Dialogue: 0,0:01:11.84,0:01:12.50,MainStyle,,0,0,0,,unearthing the Old Lords of {\rHighlight}Cinder{\r} from their graves.
+Dialogue: 0,0:01:12.50,0:01:13.02,MainStyle,,0,0,0,,unearthing the Old Lords of Cinder {\rHighlight}from{\r} their graves.
+Dialogue: 0,0:01:13.02,0:01:13.46,MainStyle,,0,0,0,,unearthing the Old Lords of Cinder from {\rHighlight}their{\r} graves.
+Dialogue: 0,0:01:13.46,0:01:22.56,MainStyle,,0,0,0,,{\fad(0,50)}unearthing the Old Lords of Cinder from their {\rHighlight}graves.{\r}
+Dialogue: 0,0:01:22.56,0:01:22.56,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}The{\r} Old Lords say in top the deep.
+Dialogue: 0,0:01:22.56,0:01:22.66,MainStyle,,0,0,0,,The {\rHighlight}Old{\r} Lords say in top the deep.
+Dialogue: 0,0:01:22.66,0:01:22.94,MainStyle,,0,0,0,,The Old {\rHighlight}Lords{\r} say in top the deep.
+Dialogue: 0,0:01:22.94,0:01:24.30,MainStyle,,0,0,0,,The Old Lords {\rHighlight}say{\r} in top the deep.
+Dialogue: 0,0:01:24.30,0:01:24.50,MainStyle,,0,0,0,,The Old Lords say {\rHighlight}in{\r} top the deep.
+Dialogue: 0,0:01:24.50,0:01:24.66,MainStyle,,0,0,0,,The Old Lords say in {\rHighlight}top{\r} the deep.
+Dialogue: 0,0:01:24.66,0:01:24.90,MainStyle,,0,0,0,,The Old Lords say in top {\rHighlight}the{\r} deep.
+Dialogue: 0,0:01:24.90,0:01:39.00,MainStyle,,0,0,0,,{\fad(0,50)}The Old Lords say in top the {\rHighlight}deep.{\r}
+Dialogue: 0,0:01:39.00,0:01:39.00,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Farron's{\r} undead Legion,
+Dialogue: 0,0:01:39.00,0:01:39.26,MainStyle,,0,0,0,,Farron's {\rHighlight}undead{\r} Legion,
+Dialogue: 0,0:01:39.26,0:01:41.16,MainStyle,,0,0,0,,{\fad(0,50)}Farron's undead {\rHighlight}Legion,{\r}
+Dialogue: 0,0:01:41.16,0:01:41.16,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}who{\r} are based swatches.
+Dialogue: 0,0:01:41.16,0:01:41.30,MainStyle,,0,0,0,,who {\rHighlight}are{\r} based swatches.
+Dialogue: 0,0:01:41.30,0:01:41.58,MainStyle,,0,0,0,,who are {\rHighlight}based{\r} swatches.
+Dialogue: 0,0:01:41.58,0:01:55.50,MainStyle,,0,0,0,,{\fad(0,50)}who are based {\rHighlight}swatches.{\r}
+Dialogue: 0,0:01:55.50,0:01:55.50,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}When{\r} the recruited Lord of the Codeved preparations...
+Dialogue: 0,0:01:55.50,0:01:55.66,MainStyle,,0,0,0,,When {\rHighlight}the{\r} recruited Lord of the Codeved preparations...
+Dialogue: 0,0:01:55.66,0:01:56.10,MainStyle,,0,0,0,,When the {\rHighlight}recruited{\r} Lord of the Codeved preparations...
+Dialogue: 0,0:01:56.10,0:01:56.80,MainStyle,,0,0,0,,When the recruited {\rHighlight}Lord{\r} of the Codeved preparations...
+Dialogue: 0,0:01:56.80,0:01:57.14,MainStyle,,0,0,0,,When the recruited Lord {\rHighlight}of{\r} the Codeved preparations...
+Dialogue: 0,0:01:57.14,0:01:57.32,MainStyle,,0,0,0,,When the recruited Lord of {\rHighlight}the{\r} Codeved preparations...
+Dialogue: 0,0:01:57.32,0:01:57.78,MainStyle,,0,0,0,,When the recruited Lord of the {\rHighlight}Codeved{\r} preparations...
+Dialogue: 0,0:01:57.78,0:02:05.64,MainStyle,,0,0,0,,{\fad(0,50)}When the recruited Lord of the Codeved {\rHighlight}preparations...{\r}
+Dialogue: 0,0:02:05.64,0:02:05.64,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}You{\r} are the giant!
+Dialogue: 0,0:02:05.64,0:02:05.80,MainStyle,,0,0,0,,You {\rHighlight}are{\r} the giant!
+Dialogue: 0,0:02:05.80,0:02:06.14,MainStyle,,0,0,0,,You are {\rHighlight}the{\r} giant!
+Dialogue: 0,0:02:06.14,0:02:26.08,MainStyle,,0,0,0,,{\fad(0,50)}You are the {\rHighlight}giant!{\r}
+Dialogue: 0,0:02:26.08,0:02:26.08,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Only{\r} in truth,
+Dialogue: 0,0:02:26.08,0:02:26.54,MainStyle,,0,0,0,,Only {\rHighlight}in{\r} truth,
+Dialogue: 0,0:02:26.54,0:02:29.78,MainStyle,,0,0,0,,{\fad(0,50)}Only in {\rHighlight}truth,{\r}
+Dialogue: 0,0:02:29.78,0:02:29.78,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}the{\r} Lords will abandon their thrills.
+Dialogue: 0,0:02:29.78,0:02:30.20,MainStyle,,0,0,0,,the {\rHighlight}Lords{\r} will abandon their thrills.
+Dialogue: 0,0:02:30.20,0:02:30.66,MainStyle,,0,0,0,,the Lords {\rHighlight}will{\r} abandon their thrills.
+Dialogue: 0,0:02:30.66,0:02:31.28,MainStyle,,0,0,0,,the Lords will {\rHighlight}abandon{\r} their thrills.
+Dialogue: 0,0:02:31.28,0:02:31.78,MainStyle,,0,0,0,,the Lords will abandon {\rHighlight}their{\r} thrills.
+Dialogue: 0,0:02:31.78,0:02:41.40,MainStyle,,0,0,0,,{\fad(0,50)}the Lords will abandon their {\rHighlight}thrills.{\r}
+Dialogue: 0,0:02:41.40,0:02:41.40,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}And{\r} the Unkindled Will rise.
+Dialogue: 0,0:02:41.40,0:02:41.98,MainStyle,,0,0,0,,And {\rHighlight}the{\r} Unkindled Will rise.
+Dialogue: 0,0:02:41.98,0:02:43.08,MainStyle,,0,0,0,,And the {\rHighlight}Unkindled{\r} Will rise.
+Dialogue: 0,0:02:43.08,0:02:43.88,MainStyle,,0,0,0,,And the Unkindled {\rHighlight}Will{\r} rise.
+Dialogue: 0,0:02:43.88,0:02:53.86,MainStyle,,0,0,0,,{\fad(0,50)}And the Unkindled Will {\rHighlight}rise.{\r}
+Dialogue: 0,0:02:53.86,0:02:54.70,MainStyle,,0,0,0,,{\fad(0,50)}{\fad(50,0)}{\rHighlight}Aimless,{\r}
+Dialogue: 0,0:02:54.70,0:02:55.30,MainStyle,,0,0,0,,{\fad(0,50)}{\fad(50,0)}{\rHighlight}accursed,{\r}
+Dialogue: 0,0:02:55.30,0:02:57.94,MainStyle,,0,0,0,,{\fad(0,50)}{\fad(50,0)}{\rHighlight}undead,{\r}
+Dialogue: 0,0:02:57.94,0:02:58.20,MainStyle,,0,0,0,,{\fad(0,50)}{\fad(50,0)}{\rHighlight}unfit, even{\r}
+Dialogue: 0,0:02:58.20,0:02:58.20,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}to{\r} be cinder.
+Dialogue: 0,0:02:58.20,0:02:58.38,MainStyle,,0,0,0,,to {\rHighlight}be{\r} cinder.
+Dialogue: 0,0:02:58.38,0:03:01.50,MainStyle,,0,0,0,,{\fad(0,50)}to be {\rHighlight}cinder.{\r}
+Dialogue: 0,0:03:01.50,0:03:01.50,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}And{\r} so it is...
+Dialogue: 0,0:03:01.50,0:03:01.82,MainStyle,,0,0,0,,And {\rHighlight}so{\r} it is...
+Dialogue: 0,0:03:01.82,0:03:02.08,MainStyle,,0,0,0,,And so {\rHighlight}it{\r} is...
+Dialogue: 0,0:03:02.08,0:03:05.88,MainStyle,,0,0,0,,{\fad(0,50)}And so it {\rHighlight}is...{\r}
+Dialogue: 0,0:03:05.88,0:03:05.88,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}The{\r} Dash,
+Dialogue: 0,0:03:05.88,0:03:07.20,MainStyle,,0,0,0,,{\fad(0,50)}The {\rHighlight}Dash,{\r}
+Dialogue: 0,0:03:07.20,0:03:07.20,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}seek{\r} of embers.
+Dialogue: 0,0:03:07.20,0:03:07.46,MainStyle,,0,0,0,,seek {\rHighlight}of{\r} embers.
+Dialogue: 0,0:03:07.46,0:03:08.20,MainStyle,,0,0,0,,{\fad(0,50)}seek of {\rHighlight}embers.{\r}
