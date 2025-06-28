@@ -19,7 +19,7 @@ class sub_args(utils.args_styles):
         subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
         word_max: int = 11,
         add_time:float = 0,
-        refill_sub_times:bool = True,
+        fill_sub_times:bool = True,
         whisper_model: str = 'base.en',
         whisper_device: str = 'cpu',
         fontname: str = 'Arial',
@@ -84,7 +84,7 @@ class sub_args(utils.args_styles):
         self.input_video = input_video
         self.whisper_model: str = whisper_model
         self.whisper_device: str = whisper_device
-        self.refill_sub_times: bool = refill_sub_times
+        self.fill_sub_times: bool = fill_sub_times
 
 
 
@@ -111,7 +111,7 @@ class Subtitle_Edit:
         self.output = self.args.output
         self.whisper_model= self.args.whisper_model
         self.whisper_device= self.args.whisper_device
-        self.refill_sub_times = self.args.refill_sub_times
+        self.fill_sub_times = self.args.fill_sub_times
 
         # Highlighters
         self.args_highlight = args_highlight
@@ -208,7 +208,6 @@ class Subtitle_Edit:
             return all_subs
 
     def short_subtitles(self, subs:list):
-        dprint(subs)
         word_highlight = self.if_highlight
         new_subs = list()
         cur_word = ''
@@ -224,13 +223,7 @@ class Subtitle_Edit:
                 cur_word = cur_word + sub.text
                 cur_sub_list.append(sub)
 
-                if last_iteration:
-                    cur_end = end_time
-                else:
-                    if self.refill_sub_times:
-                        cur_end = subs[i+1].start
-                    else:
-                        cur_end = sub.end
+                cur_end = self.return_end_time_logic(last_iteration, end_time, subs, sub, i)
 
                 new_subs = self.add_subtitle(cur_word, index, start_time, cur_end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
 
@@ -249,15 +242,24 @@ class Subtitle_Edit:
         word_highlight = self.if_highlight
         new_subs = list()
         index = 1
-        sub_start = 0
+        start_time, end_time = self.start_end_time(subs)
 
         for i, sub in enumerate(subs):
-            if i != len(subs)-1:
-                end_time = subs[i+1].start
+            last_iteration = len(subs) - 1 == i
+
+            if not last_iteration:
+                if self.fill_sub_times:
+                    cur_end = subs[i+1].start
+                else:
+                    cur_end = sub.end
             else:
-                end_time = sub.end
-            new_subs = self.add_subtitle(sub.text, index, sub_start, end_time, new_subs, highlight_words=word_highlight,)
-            sub_start = end_time
+                cur_end = end_time
+
+            new_subs = self.add_subtitle(sub.text, index, start_time, cur_end, new_subs, highlight_words=word_highlight,)
+
+            if not last_iteration:
+                start_time = subs[i + 1].start
+
         return new_subs
 
     def short_subtitles_no_separation(self, subs:list):
@@ -294,12 +296,21 @@ class Subtitle_Edit:
         return subs
 
     def start_end_time(self, subs:list):
-        if not self.refill_sub_times:
+        if not self.fill_sub_times:
             dprint(subs[0].start)
             return subs[0].start, subs[-1].end
         else:
             end_time = utils.get_duration(self.input)
             return pysubs2.make_time(s=0), pysubs2.make_time(s=end_time)
+
+    def return_end_time_logic(self, last_iteration:bool, end_time:int, subs:list, sub:pysubs2.SSAEvent, i:int):
+        if last_iteration:
+            return end_time
+        else:
+            if self.fill_sub_times:
+                return subs[i + 1].start
+            else:
+                return sub.end
 
 
     def subs_cleanup(self, subs:list): #not working
@@ -343,13 +354,3 @@ class Subtitle_Edit:
                 new_subs.append(sub)
         return new_subs
 
-
-
-if __name__ == "__main__":
-    path = join_path('..', 'content', '930', 'srt_file.srt')
-    subs = [x for x in pysubs2.load(path)]
-    sub_file = pysubs2.load(path)
-    highlight_color = '0000000000'
-    print(sub_file.events)
-    for sub in subs:
-        pass
