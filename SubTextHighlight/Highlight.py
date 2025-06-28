@@ -78,15 +78,19 @@ class Highlighter:
 
         self.subtitle_type = subtitle_type
 
-    def __call__(self, cur_word: str, start, end, all_subs:list, sub_list: list = ()):
+    def __call__(self, cur_word: str, start, end, all_subs:list, sub_list: list):
         return_subs = list()
         highlighted_words = ''
         progress_in_words = ''
+        cur_word += ' '
+
+        dprint(sub_list)
 
         for i, sub in enumerate(sub_list):
             last_iteration = len(sub_list) - 1 == i
+            dprint(last_iteration)
 
-            if (self.highlight_word_min < len(highlighted_words) + len(sub.text)) or len(sub_list) - 1 == i:
+            if (self.highlight_word_min < len(highlighted_words) + len(sub.text)) or last_iteration:
                 highlighted_words += f' {sub.text}'
                 highlighted_words = highlighted_words.strip()
 
@@ -94,8 +98,6 @@ class Highlighter:
 
                 if len(return_subs) == 0:
                     new_cur_word = self._replace(cur_word, f'{highlighted_words} ', progress_in_words)
-                elif last_iteration:
-                    new_cur_word = self._replace(cur_word, f' {highlighted_words}', progress_in_words)
                 else:
                     new_cur_word = self._replace(cur_word, f' {highlighted_words} ', progress_in_words)
 
