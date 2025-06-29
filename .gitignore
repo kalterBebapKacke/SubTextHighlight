@@ -33,6 +33,7 @@ sample_video.mp4
 output_video.mp4
 docker/
 test.py
+test_output/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

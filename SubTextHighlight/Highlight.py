@@ -84,11 +84,10 @@ class Highlighter:
         progress_in_words = ''
         cur_word += ' '
 
-        dprint(sub_list)
+        #dprint(sub_list)
 
         for i, sub in enumerate(sub_list):
             last_iteration = len(sub_list) - 1 == i
-            dprint(last_iteration)
 
             if (self.highlight_word_min < len(highlighted_words) + len(sub.text)) or last_iteration:
                 highlighted_words += f' {sub.text}'

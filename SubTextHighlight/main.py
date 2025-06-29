@@ -14,7 +14,7 @@ class sub_args(utils.args_styles):
 
     def __init__(self,
         input: str | dict[str, any] | list[dict[str, any]],
-        output: str,
+        output: str | None,
         input_video: str | None = None,
         subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
         word_max: int = 11,
@@ -268,20 +268,22 @@ class Subtitle_Edit:
         cur_word = ''
         cur_sub_list = []
         index = 1
-        start_time = 0
-        #last_end = subs[0].end
+        start_time, end_time = self.start_end_time(subs)
 
         for i, sub in enumerate(subs):
-            #print(cur_word)
-            if len(cur_word) + len(sub.text) + 1 < self.word_max:
+            last_iteration = len(subs) - 1 == i
+
+
+            if len(cur_word) + len(sub.text) + 1 < self.word_max or last_iteration:
                 cur_word = cur_word + sub.text + ' '
                 cur_sub_list.append(sub)
             else:
-                end_time = sub.start
-                new_subs = self.add_subtitle(cur_word, index, start_time, end_time, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
+                cur_end = self.return_end_time_logic(last_iteration, end_time, subs, sub, i)
+                new_subs = self.add_subtitle(cur_word, index, start_time, cur_end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
                 cur_word = sub.text + ' '
-                start_time = end_time
                 cur_sub_list = [sub]
+                if not last_iteration:
+                    start_time = subs[i + 1].start
 
         if cur_word != '':
             new_subs = self.add_subtitle(cur_word, index, start_time, subs[-1].end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
@@ -297,7 +299,6 @@ class Subtitle_Edit:
 
     def start_end_time(self, subs:list):
         if not self.fill_sub_times:
-            dprint(subs[0].start)
             return subs[0].start, subs[-1].end
         else:
             end_time = utils.get_duration(self.input)

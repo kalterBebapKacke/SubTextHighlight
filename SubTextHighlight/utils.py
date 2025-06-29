@@ -48,6 +48,19 @@ def add_subtitles_with_ffmpeg(video_path, output_path, sub_file:pysubs2.SSAFile)
     exec_command(command)
     os.unlink(temp_filename)
 
+def add_subtitles_with_ffmpeg_with_given_ass(video_path, output_path, ass_file):
+    command = [
+        "ffmpeg",
+        "-y",
+        "-i", video_path,
+        "-vf",
+        f"ass={ass_file}",
+        "-c:a", "copy",
+        "-loglevel", "error",
+        output_path
+    ]
+    exec_command(command)
+
 def hex_to_pysub2_color(hex_color, alpha=0):
     """
     Convert hex color string to pysub2.Color format.
