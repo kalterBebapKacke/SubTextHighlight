@@ -97,7 +97,7 @@ The following are the configurable parameters for subtitle generation:
   Path to the input file (e.g., video or transcript) or whisper transcript to be processed. Valid inputs are srt, ass, video, audio or plain text srt in srt string. If input is a video or audio, whisper will automatically transcribe the audio. If input is in srt or ass format (whether in plain str or as an input file) has to only contain one word per subtitle segment, otherwise the formatting might not work.
 
 - **`output`** (`str`, *required*):  
-  Path to where the output file should be stored. The file has to be either stored as an ass-file, or a video path (via **`input_video`**) could be inputted to make ffmpeg automatically burn in the subs into the output video. Be careful to use the right file extension.
+  Path to where the output file should be stored. The file has to be either stored as an ass-file, or a video path (via **`input_video`**) could be inputted to make ffmpeg automatically burn in the subs into the output video. Be careful to use the right file extension. If output is `None`, then calling the edit class will return the `pysubs2.SSAFile` class of the formated subtitle.
 
 - **`input_video`** (`str` or `None`, *optional*): 
   Path to the video where the subtitles could be burned in if wanted, if not leave this argument `None`. 
@@ -107,7 +107,6 @@ The following are the configurable parameters for subtitle generation:
   - `'one_word_only'`: Shows one word at a time.
   - `'join'`: Joins all words into subtitles segments with respect to the **`word_max`** parameter.
   - `'separate_on_period'`: Splits subtitles at sentence boundaries (periods).
-  - `'appear'`: Words appear cumulatively (i.e., new words are added while retaining previous ones).
 
 - **`word_max`** (`int`, *optional*, default=`11`):  
   Maximum number of words per subtitle segment. Ignored in `'one_word_only'` mode.
@@ -131,6 +130,7 @@ Controls the effects that should be applied to the subtitles. Currently only fad
   - fade[0]: Duration of fade-in (in ms).
   - fade[1]: Duration of fade-out (in ms).
   Defaults to (0.0, 0.0) — no fading.
+  - `'appear'`: Words appear cumulatively (i.e., new words are added while retaining previous ones).
 
 ## Example Usage
 
