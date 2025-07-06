@@ -16,7 +16,7 @@ You have tree Args classes to input, that control, what should be done. These ar
 
 ## General styling of subs and highlighted words - utils.args_styles
 
-Both sub_args and highlight_args inherit from the utils.args_styles, which controls the styling of your text
+Both sub_args and highlight_args inherit from the utils.args_styles, which controls the styling of your text.
 
 Here is an overview of the attributes:
 
@@ -109,13 +109,15 @@ The following are the configurable parameters for subtitle generation:
   - `'separate_on_period'`: Splits subtitles at sentence boundaries (periods).
 
 - **`word_max`** (`int`, *optional*, default=`11`):  
-  Maximum number of words per subtitle segment. Ignored in `'one_word_only'` mode.
+  Maximum number of characters per subtitle segment, without breaking words in half. Ignored in `'one_word_only'` mode.
 
 - **`add_time`** (`float`, *optional*, default=`0`):  
   Extra time in seconds to add to each subtitle's display duration. Useful for adjusting readability speed or if something like an intro is played at the start.
 
+- **`fill_sub_times`** (`float`, *optional*, default=`0`):
+
 - **`whisper_model`** (`str`, *optional*, default=`base.en`):  
-  Controls which whisper model is used.
+  Controls which whisper model should be used.
 
 ## highlight_args
 Here the class again inherits all the parameters from `utils.args_styles`, but now for all attributes is the default attribute `None`. When this is the case the styling of the `sub_args` will be copied. Only non `None` values will decide how the highlighted segment will look like.
@@ -123,7 +125,7 @@ Here the class again inherits all the parameters from `utils.args_styles`, but n
 The only really new parameter is **`highlight_word_max`** (`int | None`, *required*, default=`0`), which controls how many words should be highlighted. If this argument is 0, then only one word will be highlighted.
 
 ## effects_args
-Controls the effects that should be applied to the subtitles. Currently only fadeIN/fadeOUT is supported
+Controls the effects that should be applied to the subtitles.
 
 - **`fade`** (`tuple[float, float]`, *optional*, default=`(0.0, 0.0)`):  
   - Controls the fade-in and fade-out durations.

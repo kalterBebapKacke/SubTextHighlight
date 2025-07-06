@@ -44,7 +44,8 @@ class Test_Class():
         ]
 
     def __call__(self):
-        self.blank_srt()
+        if not os.path.exists(self.blank_srt_path):
+            self.blank_srt()
 
         for test_func in self.test_functions:
             try:
@@ -74,7 +75,7 @@ class Test_Class():
 
     def one_word_only_and_fade(self):
         output_mp4, output_ass = self.return_output_name(self.one_word_only_and_fade)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='one_word_only', fill_sub_times=False)
+        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='one_word_only', fill_sub_times=True)
         effect_args = SubTextHighlight.effects_args(fade=(50, 50))
         self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
 
@@ -91,12 +92,16 @@ class Test_Class():
 
     def appear(self):
         output_mp4, output_ass = self.return_output_name(self.appear)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='appear', fill_sub_times=False)
-        self.exec_test(output_mp4, output_ass, sub_args)
+        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20)
+        effect_args = SubTextHighlight.effects_args(fade=(50, 50), appear=True)
+        self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
 
 
 
 if __name__ == '__main__':
     debug()
     t = Test_Class()
-    t()
+    #t()
+    #t.blank_srt()
+    t.appear()
+

@@ -52,6 +52,7 @@ class sub_args(utils.args_styles):
                     - 'separate_on_period': Splits subtitles at sentence boundaries.
                 word_max (int): Maximum words per subtitle segment (used only when subtitle_type is not 'one_word_only').
                 add_time (float): Extra seconds to add to each subtitle's duration.
+                fill_sub_times (bool):
                 whisper_model (str) = Controls which whisper model is used if necessary.
                 whisper_device (str) = Controls which device is used for whisper if necessary.
                 The rest of the attributes inherit from the utils.args_styles.
@@ -129,7 +130,6 @@ class Subtitle_Edit:
             self.highlighter = self.effects.logic_highlighter(self.highlighter, sample_highlighter)
 
 
-
     def __call__(self):
         sub_file = self.interpret_input(self.input)
         sub_file.styles["MainStyle"] = self.main_style
@@ -146,21 +146,14 @@ class Subtitle_Edit:
             subs = self.short_subtitles(subs)
         elif self.subtitle_type == 'join':
             subs = self.short_subtitles_no_separation(subs)
-        elif self.subtitle_type == 'appear':
-            if not self.if_highlight:
-                self.highlighter = Highlighter(highlight_args(), self.main_style, self.subtitle_type)
-                sub_file.styles["Highlight"] = self.highlighter.return_highlighted_style(self.main_style)
-            subs = self.short_subtitles_no_separation(subs)
-            subs = self.appear(subs)
-
 
         # shift time
-        subs = self.shift_subs_time(subs)
+        if self.add_time != 0:
+            subs = self.shift_subs_time(subs)
 
         # edit
         if self.effects is not None:
             subs  = self.effects(subs)
-
 
         # build and save
         subs = self.build_finished_subs(subs)
@@ -270,30 +263,22 @@ class Subtitle_Edit:
 
         for i, sub in enumerate(subs):
             last_iteration = len(subs) - 1 == i
+            cur_word = f'{cur_word} {sub.text}'.strip()
+            cur_sub_list.append(sub)
 
+            next_word_len = len(cur_word) if last_iteration else len(cur_word) + 1 + len(subs[i+1].text)
+            if self.word_max < next_word_len or last_iteration:
 
-            if len(cur_word) + len(sub.text) + 1 < self.word_max or last_iteration:
-                cur_word = cur_word + sub.text + ' '
-                cur_sub_list.append(sub)
-            else:
                 cur_end = self.return_end_time_logic(last_iteration, end_time, subs, sub, i)
+
                 new_subs = self.add_subtitle(cur_word, index, start_time, cur_end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
-                cur_word = sub.text + ' '
-                cur_sub_list = [sub]
+                cur_word = ''
+                cur_sub_list = []
                 if not last_iteration:
                     start_time = subs[i + 1].start
 
-        if cur_word != '':
-            new_subs = self.add_subtitle(cur_word, index, start_time, subs[-1].end, new_subs, highlight_words=word_highlight, sub_list=cur_sub_list)
-
         return new_subs
 
-    def appear(self, subs:list):
-        for sub_list in subs:
-            for sub in sub_list:
-                num_split = (sub.text.find(r'{\r}') + len(r'{\r}'))
-                sub.text = sub.text[:num_split] + r'{\alpha&HFF}' +sub.text[num_split:] + r'{\r}'
-        return subs
 
     def return_if_highlight(self):
         if self.highlighter is None:

@@ -39,11 +39,11 @@ class Effects:
         else:
             return highlighter
 
-    def __call__(self, subs):
+    def __call__(self, subs:list):
         if self.args.fade_out_duration != 0 and self.args.fade_in_duration != 0:
             subs = self.fade(subs)
-        else:
-            subs = subs
+        if self.args.appear:
+            subs = self.appear(subs)
         return subs
 
     def fade(self, subs):
@@ -53,4 +53,13 @@ class Effects:
                 sub[-1].text = fr'{{\fad(0,{self.args.fade_out_duration})}}{sub[-1].text}'
             else:
                 sub.text = fr'{{\fad({self.args.fade_in_duration},{self.args.fade_out_duration})}}{sub.text}'
+        return subs
+
+    def appear(self, subs:list):
+        for sub_list in subs:
+            for i, sub in enumerate(sub_list):
+                # split text and put them back so that the second half is transparent
+                num_split = (sub.text.find(r'{\r}') + len(r'{\r}'))
+                if sub.text[num_split:].strip() != '':
+                    sub.text = sub.text[:num_split] + r'{\alpha&HFF}' + sub.text[num_split:] + r'{\r}'
         return subs
