@@ -1,27 +1,43 @@
 import os
 from os import fdatasync
+from . import Highlight
 
 import pysubs2
 
 class effects_args:
 
     def __init__(self,
-        fade:tuple[float, float] = (0.0, 0.0) # first is fadeIn and second is fadeOut
+        fade:tuple[float, float] = (0.0, 0.0), # first is fadeIn and second is fadeOut
+        appear:bool = False,
                  ):
         """
         fade: Controls the fade-in and fade-out durations.
         - fade[0]: Duration of fade-in (in seconds).
         - fade[1]: Duration of fade-out (in seconds).
         Defaults to (0.0, 0.0) — no fading.
+        - 'appear': Words accumulate as they appear.
         """
         self.fade_in_duration = fade[0]
         self.fade_out_duration = fade[1]
+        self.appear = appear
 
 
 class Effects:
 
     def __init__(self, args:effects_args):
         self.args = args
+
+    def logic_highlighter(self, highlighter:Highlight.Highlighter, sample_highlighter:Highlight.Highlighter):
+        # sees whether the highlighter already exists as it is needed for some effects
+        if self.args.appear:
+            # sets highlighter if it doesnt already exists
+            if highlighter is not None:
+                new_highlighter = highlighter
+            else:
+                new_highlighter = sample_highlighter
+            return new_highlighter
+        else:
+            return highlighter
 
     def __call__(self, subs):
         if self.args.fade_out_duration != 0 and self.args.fade_in_duration != 0:
