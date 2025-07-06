@@ -130,7 +130,7 @@ Controls the effects that should be applied to the subtitles. Currently only fad
   - fade[0]: Duration of fade-in (in ms).
   - fade[1]: Duration of fade-out (in ms).
   Defaults to (0.0, 0.0) — no fading.
-  - `'appear'`: Words appear cumulatively (i.e., new words are added while retaining previous ones).
+  - **`'appear'`** (`bool`, *optional*, default=`False`): Words appear cumulatively (i.e., new words are added while retaining previous ones).
 
 ## Example Usage
 

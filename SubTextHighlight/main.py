@@ -50,7 +50,6 @@ class sub_args(utils.args_styles):
                     - 'one_word_only': One word per subtitle.
                     - 'join': Joins all words into subtitles segments with respect to the word_max parameter.
                     - 'separate_on_period': Splits subtitles at sentence boundaries.
-                    - 'appear': Words accumulate as they appear.
                 word_max (int): Maximum words per subtitle segment (used only when subtitle_type is not 'one_word_only').
                 add_time (float): Extra seconds to add to each subtitle's duration.
                 whisper_model (str) = Controls which whisper model is used if necessary.
@@ -114,21 +113,20 @@ class Subtitle_Edit:
         self.fill_sub_times = self.args.fill_sub_times
 
         # Highlighters
-        self.args_highlight = args_highlight
+        #self.args_highlight = args_highlight
 
         if args_highlight is None:
-            self.if_highlight = False
+            self.highlighter = None
         else:
-            self.if_highlight = True
             self.highlighter = Highlighter(args_highlight, self.main_style, self.subtitle_type)
 
         # Effects
-
         if args_effects is None:
-            self.if_effects = False
+            self.effects = None
         else:
-            self.if_effects = True
+            sample_highlighter = Highlighter(highlight_args(), self.main_style, self.subtitle_type)
             self.effects = Effects(args_effects)
+            self.highlighter = self.effects.logic_highlighter(self.highlighter, sample_highlighter)
 
 
 
@@ -136,7 +134,7 @@ class Subtitle_Edit:
         sub_file = self.interpret_input(self.input)
         sub_file.styles["MainStyle"] = self.main_style
 
-        if self.if_highlight:
+        if self.highlighter is not None:
             sub_file.styles["Highlight"] = self.highlighter.return_highlighted_style(self.main_style)
 
         subs = sub_file.events
@@ -160,7 +158,7 @@ class Subtitle_Edit:
         subs = self.shift_subs_time(subs)
 
         # edit
-        if self.if_effects is True:
+        if self.effects is not None:
             subs  = self.effects(subs)
 
 
@@ -208,7 +206,7 @@ class Subtitle_Edit:
             return all_subs
 
     def short_subtitles(self, subs:list):
-        word_highlight = self.if_highlight
+        word_highlight = self.return_if_highlight()
         new_subs = list()
         cur_word = ''
         index = 1
@@ -239,7 +237,7 @@ class Subtitle_Edit:
         return new_subs
 
     def one_word_only(self, subs:list):
-        word_highlight = self.if_highlight
+        word_highlight = self.return_if_highlight()
         new_subs = list()
         index = 1
         start_time, end_time = self.start_end_time(subs)
@@ -263,7 +261,7 @@ class Subtitle_Edit:
         return new_subs
 
     def short_subtitles_no_separation(self, subs:list):
-        word_highlight = self.if_highlight
+        word_highlight = self.return_if_highlight()
         new_subs = list()
         cur_word = ''
         cur_sub_list = []
@@ -296,6 +294,12 @@ class Subtitle_Edit:
                 num_split = (sub.text.find(r'{\r}') + len(r'{\r}'))
                 sub.text = sub.text[:num_split] + r'{\alpha&HFF}' +sub.text[num_split:] + r'{\r}'
         return subs
+
+    def return_if_highlight(self):
+        if self.highlighter is None:
+            return False
+        else:
+            return True
 
     def start_end_time(self, subs:list):
         if not self.fill_sub_times:
