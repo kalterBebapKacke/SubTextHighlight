@@ -1,6 +1,11 @@
 # SubTextHighlight
+This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features.
 
+This is an example video generated with this package (The official [Dark Souls 3 Trailer](https://www.youtube.com/watch?v=_zDZYrIUgKE) is used as an example video):
 
+# Requirements
+
+For this package to work ffmpeg has to be installed on your machine. See the [ffmpeg website](https://ffmpeg.org/) for more details. 
 
 # Installation
 
@@ -94,7 +99,7 @@ Inherits all styles options from `utils.args_styles`
 The following are the configurable parameters for subtitle generation:
 
 - **`input`** (`str` or whisper transcript output form, *required*):  
-  Path to the input file (e.g., video or transcript) or whisper transcript to be processed. Valid inputs are srt, ass, video, audio or plain text srt in srt string. If input is a video or audio, whisper will automatically transcribe the audio. If input is in srt or ass format (whether in plain str or as an input file) has to only contain one word per subtitle segment, otherwise the formatting might not work.
+  Path to the input file (e.g., video or transcript) or whisper transcript to be processed. Valid inputs are srt, ass, video, audio or plain text srt in srt string. If input is a video or audio, whisper will automatically transcribe the audio. If input is in srt or ass format (whether in plain str or as an input file) has to only contain one word per subtitle segment, otherwise the formatting might not work. Also a plain `stable_whisper.result.WhisperResult` can be inputted, when for example generating your own subtitles with stable whisper.
 
 - **`output`** (`str`, *required*):  
   Path to where the output file should be stored. The file has to be either stored as an ass-file, or a video path (via **`input_video`**) could be inputted to make ffmpeg automatically burn in the subs into the output video. Be careful to use the right file extension. If output is `None`, then calling the edit class will return the `pysubs2.SSAFile` class of the formated subtitle.
@@ -115,9 +120,13 @@ The following are the configurable parameters for subtitle generation:
   Extra time in seconds to add to each subtitle's display duration. Useful for adjusting readability speed or if something like an intro is played at the start.
 
 - **`fill_sub_times`** (`float`, *optional*, default=`0`):
+  Decides whether to fill the time between the end of one segment and the next one. 
 
-- **`whisper_model`** (`str`, *optional*, default=`base.en`):  
-  Controls which whisper model should be used.
+- **`whisper_model`** (`str`, *optional*, default=`medium.en`):  
+  Controls which whisper model should be used. To see the list of available models please refer to the [Whisper GitHub Repository](https://github.com/openai/whisper).
+
+- **`whisper_refine`** (`bool`, *optional*, default=`False`):  
+  Whether the results are refined for better timestamps. This can make computing the subtitles more complex, but also yields a better result. This option is here to give a little bit of refinement right out of the box, but for even better results making own whisper predictions is recommended. See the [Stable TTS GitHub Repository](https://github.com/jianfch/stable-ts/tree/main).
 
 ## highlight_args
 Here the class again inherits all the parameters from `utils.args_styles`, but now for all attributes is the default attribute `None`. When this is the case the styling of the `sub_args` will be copied. Only non `None` values will decide how the highlighted segment will look like.
@@ -132,9 +141,35 @@ Controls the effects that should be applied to the subtitles.
   - fade[0]: Duration of fade-in (in ms).
   - fade[1]: Duration of fade-out (in ms).
   Defaults to (0.0, 0.0) — no fading.
-  - **`'appear'`** (`bool`, *optional*, default=`False`): Words appear cumulatively (i.e., new words are added while retaining previous ones).
+  - **`'appear'`** (`bool`, *optional*, default=`False`): Words appear cumulatively (i.e., new words are added while retaining previous ones). How many words should reappear during each segment can be controlled via the highlight_args and its attribute `highlight_word_max`. For this effect to work the highlight_args dont have to be set. If the highlight_args are `None` then the program will automatically use a Highlighter with the default arguments.
 
 ## Example Usage
+This code for example creates the example video from above, that can also be found in `media`. 
+```python
+import SubTextHighlight
 
+input = './media/plain_video.webm'
+output = './media/edited_video.mp4'
+sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2)
+highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
+effect_args = SubTextHighlight.effects_args((50, 50))
+sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
+sub_edit()
+```
 
+This code for example creates the ass-transcript to the example video from above.
+```python
+import SubTextHighlight
 
+input = './media/plain_video.webm'
+output = './media/subtitles.ass'
+sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2)
+highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
+effect_args = SubTextHighlight.effects_args((50, 50))
+sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
+sub_edit()
+```
+If you want even more examples see the test code in `example_code.py`.
+
+# Feedback and Suggestions
+Feel free 

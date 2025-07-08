@@ -1,4 +1,4 @@
-pysubs2
-Cython
-openai-whisper
-stable-ts-whisperless
+pysubs2>=1.8.0
+Cython>=3.1.1
+openai-whisper>=20240930
+stable-ts-whisperless>=2.19.0
