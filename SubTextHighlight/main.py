@@ -7,21 +7,23 @@ from .Highlight import Highlighter, highlight_args
 from .Effects import Effects, effects_args
 from . import utils
 import fleep
+import stable_whisper
 
 off_time = datetime.timedelta(seconds=0.025)
 
 class sub_args(utils.args_styles):
 
     def __init__(self,
-        input: str | dict[str, any] | list[dict[str, any]],
+        input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult,
         output: str | None,
         input_video: str | None = None,
         subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
         word_max: int = 11,
         add_time:float = 0,
         fill_sub_times:bool = True,
-        whisper_model: str = 'base.en',
+        whisper_model: str = 'medium.en',
         whisper_device: str = 'cpu',
+        whisper_refine:bool = False,
         fontname: str = 'Arial',
         fontsize: float | int = 24,
         primarycolor: pysubs2.Color | str = pysubs2.Color(255, 255, 255),
@@ -55,6 +57,7 @@ class sub_args(utils.args_styles):
                 fill_sub_times (bool):
                 whisper_model (str) = Controls which whisper model is used if necessary.
                 whisper_device (str) = Controls which device is used for whisper if necessary.
+                whisper_refine (bool) = Whether the results are refined for better timestamps.
                 The rest of the attributes inherit from the utils.args_styles.
             """
         super().__init__(
@@ -85,6 +88,7 @@ class sub_args(utils.args_styles):
         self.whisper_model: str = whisper_model
         self.whisper_device: str = whisper_device
         self.fill_sub_times: bool = fill_sub_times
+        self.whisper_refine: bool = whisper_refine
 
 
 
@@ -112,6 +116,7 @@ class Subtitle_Edit:
         self.whisper_model= self.args.whisper_model
         self.whisper_device= self.args.whisper_device
         self.fill_sub_times = self.args.fill_sub_times
+        self.whisper_refine = self.args.whisper_refine
 
         # Highlighters
         #self.args_highlight = args_highlight
@@ -161,7 +166,10 @@ class Subtitle_Edit:
         return self.interpret_output(self.output, sub_file)
 
     def interpret_input(self, input):
-        if type(input) is dict[str, any] or type(input) is list[dict[str, any]]:
+        if type(input) == stable_whisper.result.WhisperResult:
+            subs_str = utils.return_whisper_result(input)
+            return pysubs2.SSAFile.from_string(subs_str)
+        elif type(input) is dict[str, any] or type(input) is list[dict[str, any]]:
             return pysubs2.load_from_whisper(input)
         elif type(input) is str:
             file_extension = input.split('.')[-1]
@@ -171,7 +179,7 @@ class Subtitle_Edit:
                 with open(input, "rb") as file:
                     info = fleep.get(file.read(128))
                 if info.type == ['audio'] or info.type == ['video']:
-                    subs_str = utils.use_whisper(input, self.whisper_model, self.whisper_device)
+                    subs_str = utils.use_whisper(input, self.whisper_model, self.whisper_device, self.whisper_refine)
                     return pysubs2.SSAFile.from_string(subs_str)
                 else:
                     return pysubs2.SSAFile.from_string(input)

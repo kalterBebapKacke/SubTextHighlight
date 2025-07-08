@@ -2,6 +2,7 @@ import SubTextHighlight
 import os
 import pysubs2
 import traceback
+import whisper
 
 def debug():
     os.environ['debug'] = 'True'
@@ -75,33 +76,34 @@ class Test_Class():
 
     def one_word_only_and_fade(self):
         output_mp4, output_ass = self.return_output_name(self.one_word_only_and_fade)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='one_word_only', fill_sub_times=True)
+        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='one_word_only', fill_sub_times=True, alignment=2)
         effect_args = SubTextHighlight.effects_args(fade=(50, 50))
         self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
 
     def separate_on_period_and_highlighting(self):
         output_mp4, output_ass = self.return_output_name(self.separate_on_period_and_highlighting)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='separate_on_period', fill_sub_times=False)
+        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='separate_on_period', fill_sub_times=False, alignment=2)
         highlighter_args = SubTextHighlight.highlight_args(highlight_word_max=0, primarycolor='00AAFF')
         self.exec_test(output_mp4, output_ass, sub_args, highlight_args=highlighter_args)
 
     def join_and_word_max(self):
         output_mp4, output_ass = self.return_output_name(self.join_and_word_max)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20)
+        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20, alignment=2)
         self.exec_test(output_mp4, output_ass, sub_args)
 
     def appear(self):
         output_mp4, output_ass = self.return_output_name(self.appear)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20)
+        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20, alignment=2)
         effect_args = SubTextHighlight.effects_args(fade=(50, 50), appear=True)
         self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
 
 
 
 if __name__ == '__main__':
+    print(whisper.model)
     debug()
     t = Test_Class()
     #t()
-    #t.blank_srt()
-    t.appear()
+    t.blank_srt()
+    #t.separate_on_period_and_highlighting()
 

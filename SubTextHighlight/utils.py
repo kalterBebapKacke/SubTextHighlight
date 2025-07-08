@@ -5,11 +5,19 @@ import tempfile
 import os
 import json
 
-def use_whisper(path:str, model='base.en', device='cpu'):
+def use_whisper(path:str, model='base.en', device='cpu', refine:bool=False):
     model = stable_whisper.load_model(model, device=device)
     result = model.transcribe(audio=path, verbose=None)
+    print(stable_whisper.result.WhisperResult)
+    print(type(result))
+    print(type(result) == stable_whisper.result.WhisperResult)
+    if refine:
+        model.refine(path, result, word_level=False, only_voice_freq=True, precision=0.05)
     r = result.to_srt_vtt(None, segment_level=False, word_level=True)
     return r
+
+def return_whisper_result(result:stable_whisper.result.WhisperResult):
+    return result.to_srt_vtt(None, segment_level=False, word_level=True)
 
 def dprint(txt):
     if os.environ['debug'] == 'True':
