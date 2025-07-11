@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="SubTextHighlight",
-    version="0.1.0",
+    version="0.1.1",
     author="N01d3a",
     description="This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features.",
     long_description=open("README.md").read(),
