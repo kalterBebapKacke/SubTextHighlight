@@ -127,7 +127,7 @@ Fills the gap between subtitle segments.
 Whisper model name. See [Whisper GitHub](https://github.com/openai/whisper).
 
 - `whisper_refine: bool` (default: `False`)  
-Enables timestamp refinement for improved results. For even better results generating your own subtitles via [Stable TTS](https://github.com/jianfch/stable-ts/tree/main) is recommended.
+Enables timestamp refinement for improved results. For even better results generating your own subtitles via [Stable TTS](https://github.com/jianfch/stable-ts/tree/main) is recommended. Only english Subtitles are supported with this parameter.
 
 ---
 
@@ -165,7 +165,7 @@ import SubTextHighlight
 
 input = './media/plain_video.webm'
 output = './media/edited_video.mp4'
-sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2)
+sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, whisper_refine=True)
 highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
 effect_args = SubTextHighlight.effects_args((50, 50))
 sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
@@ -178,7 +178,7 @@ import SubTextHighlight
 
 input = './media/plain_video.webm'
 output = './media/subtitles.ass'
-sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2)
+sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, whisper_refine=True)
 highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
 effect_args = SubTextHighlight.effects_args((50, 50))
 sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
@@ -187,4 +187,4 @@ sub_edit()
 If you want even more examples see the test code in `example_code.py`.
 
 # We welcome feedback and feature suggestions!
-Please feel free to share feedback and to bring up solutions. The aim of this project is to also be very feature rich, so any suggested features are welcomed here. This project is still actively maintained so more features are planned but require some extra planning, so new major updates might take some time. Hope you can enjoy and use this package in your own projects.
+This project aims to be feature-rich and highly customizable. While it's actively maintained, major updates may take time as they require careful planning. Your ideas and contributions are greatly appreciated. We hope you find this package useful and enjoyable in your own projects.

@@ -328,28 +328,6 @@ class Subtitle_Edit:
                 return sub.end
 
 
-    def subs_cleanup(self, subs:list): #not working
-        #last_end = subs[0].start
-        for i, sub in enumerate(subs):
-            cur_word = sub.text
-            if (cur_word.__contains__('.') or cur_word.__contains__('?') or cur_word.__contains__('!')) and i + 1 != len(subs):
-                check_sub = subs[i + 1]
-                duration = sub.end.total_seconds() - sub.start.total_seconds()
-                duration_check = check_sub.end.total_seconds() - check_sub.start.total_seconds()
-                if duration < 0.35:
-                    new_duration =  datetime.timedelta(seconds=duration_check) - datetime.timedelta(seconds=0.35)
-                    if not new_duration.total_seconds() < 0:
-                        subs[i + 1].start = subs[i + 1].end - new_duration
-                        sub.end = sub.end + new_duration
-        for i, sub in enumerate(subs):
-            if i + 1 != len(subs):
-                check_sub = subs[i + 1]
-                if (check_sub.start.total_seconds() - sub.end.total_seconds()) < 0:
-                    new_time = (check_sub.start + sub.end).total_seconds() / 2
-                    sub.end = datetime.timedelta(seconds=new_time) - off_time
-                    subs[i + 1].start = datetime.timedelta(seconds=new_time)
-        return subs
-
     def shift_subs_time(self, subs:list):
         add_time = self.add_time
         for i, sub in enumerate(subs):
