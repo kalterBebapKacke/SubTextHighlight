@@ -2,7 +2,7 @@
 This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features.
 
 This is an example video generated with this package (The official [Dark Souls 3 Trailer](https://www.youtube.com/watch?v=_zDZYrIUgKE) is used as an example video):
-![Video](https://github.com/kalterBebapKacke/SubTextHighlight/blob/1dfeb1778ce9bbde8798183a3c0607fc4d5bb7cf/media/plain_video.mp4)
+![[Video]](https://github.com/kalterBebapKacke/SubTextHighlight/blob/1dfeb1778ce9bbde8798183a3c0607fc4d5bb7cf/media/plain_video.mp4)
 
 # Requirements
 
