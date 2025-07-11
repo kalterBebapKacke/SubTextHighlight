@@ -8,7 +8,7 @@ def debug():
     os.environ['debug'] = 'True'
 
 def main1():
-    input = './media/plain_video.webm'
+    input = './media/plain_video.mp4'
     output = './media/edited_video.mp4'
     sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, whisper_refine=True)
     highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
@@ -17,7 +17,7 @@ def main1():
     sub_edit()
 
 def main2():
-    input = './media/plain_video.webm'
+    input = './media/plain_video.mp4'
     output = './media/subtitles.ass'
     sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, whisper_refine=True)
     highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
@@ -36,7 +36,7 @@ class Test_Class():
         # for every test case
         self.blank_srt_path = './test_output/blank.srt'
 
-        self.input_video = './media/plain_video.webm'
+        self.input_video = './media/plain_video.mp4'
 
         self.test_functions = [self.one_word_only_and_fade,
             self.separate_on_period_and_highlighting,
@@ -101,10 +101,10 @@ class Test_Class():
 
 
 if __name__ == '__main__':
-    print(whisper.model)
     debug()
-    t = Test_Class()
-    t(force_generate=True)
+    #t = Test_Class()
+    #t(force_generate=True)
     #t.blank_srt()
     #t.separate_on_period_and_highlighting()
-
+    main1()
+    main2()
