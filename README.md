@@ -2,8 +2,9 @@
 This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features.
 
 This is an example video generated with this package (A clip from [1984](https://www.youtube.com/watch?v=q2JEfGIALH0&list=PLQ6ZU-TDLlnwlfYLxfktJbVv56WaBuCmd&index=3) is used as an example video):
-[
-https://raw.githubusercontent.com/kalterBebapKacke/SubTextHighlight/main/media/edited_video.mp4
+
+
+https://github.com/user-attachments/assets/32ec9800-1891-476a-ba16-2fa35951cb2c
 
 
 
