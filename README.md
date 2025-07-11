@@ -13,8 +13,8 @@ https://github.com/user-attachments/assets/32ec9800-1891-476a-ba16-2fa35951cb2c
 For this package to work ffmpeg has to be installed on your machine. See the [ffmpeg website](https://ffmpeg.org/) for more details. 
 
 # Installation
-
-Not yet supported
+You can install this package via PyPi:
+`pip install SubTextHighlight`
 
 # How to use
 
