@@ -13,6 +13,7 @@ setup(
         "Cython>=3.1.1",
         "openai-whisper>=20240930",
         "stable-ts-whisperless>=2.19.0",
+        "fleep>=1.0.1"
     ],
     python_requires='>=3.10',
 )

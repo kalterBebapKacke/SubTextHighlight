@@ -151,6 +151,8 @@ class Subtitle_Edit:
             subs = self.short_subtitles(subs)
         elif self.subtitle_type == 'join':
             subs = self.short_subtitles_no_separation(subs)
+        else:
+            raise ValueError('Unsupported subtitle_type, please use a supported option.')
 
         # shift time
         if self.add_time != 0:
@@ -195,7 +197,7 @@ class Subtitle_Edit:
                 if info.type == ['video']:
                     utils.add_subtitles_with_ffmpeg(self.input_video, output, output_file)
             else:
-                raise utils.Unsupported_Format
+                raise ValueError('Output format has to be a either ".ass" or a video type')
         elif output is None:
             return output_file
 
@@ -298,8 +300,23 @@ class Subtitle_Edit:
         if not self.fill_sub_times:
             return subs[0].start, subs[-1].end
         else:
-            end_time = utils.get_duration(self.input)
-            return pysubs2.make_time(s=0), pysubs2.make_time(s=end_time)
+            # check whether the input is an audio or video
+            with open(self.input, "rb") as file:
+                info = fleep.get(file.read(128))
+            if info.type == ['video'] or info.type == ['audio']:
+                # main part
+                end_time = utils.get_duration(self.input)
+                return pysubs2.make_time(s=0), pysubs2.make_time(s=end_time)
+            # if not check if input video exists
+            elif self.input_video is not None:
+                # check if input video is audio or video
+                with open(self.input_video, "rb") as file:
+                    info = fleep.get(file.read(128))
+                if info.type == ['video']:
+                    # main part
+                    end_time = utils.get_duration(self.input_video)
+                    return pysubs2.make_time(s=0), pysubs2.make_time(s=end_time)
+            raise ValueError('For the argument "fill_sub_times" an video has to be inputted via input_video or the subtitles have to generated from a audio/video.')
 
     def return_end_time_logic(self, last_iteration:bool, end_time:int, subs:list, sub:pysubs2.SSAEvent, i:int):
         if last_iteration:
