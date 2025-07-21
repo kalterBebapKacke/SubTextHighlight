@@ -4,7 +4,8 @@ This is a Package for generating and formatting subtitles while focusing on user
 This is an example video generated with this package (A clip from [1984](https://www.youtube.com/watch?v=q2JEfGIALH0&list=PLQ6ZU-TDLlnwlfYLxfktJbVv56WaBuCmd&index=3) is used as an example video):
 
 
-https://github.com/user-attachments/assets/32ec9800-1891-476a-ba16-2fa35951cb2c
+https://github.com/user-attachments/assets/8e74f775-3661-4421-a75b-01f688e04c86
+
 
 #### Note
 
