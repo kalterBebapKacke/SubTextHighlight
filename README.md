@@ -6,15 +6,18 @@ This is an example video generated with this package (A clip from [1984](https:/
 
 https://github.com/user-attachments/assets/32ec9800-1891-476a-ba16-2fa35951cb2c
 
+#### Note
 
+You can see that some subtitle timestamps are not perfect, but they can be adjusted further with [Stable TTS](https://github.com/jianfch/stable-ts/tree/main). The focus of this project is to style the subtitles and to give basic subtitle generation.
 
 # Requirements
 
 For this package to work ffmpeg has to be installed on your machine. See the [ffmpeg website](https://ffmpeg.org/) for more details. 
 
 # Installation
-You can install this package via PyPi:
-`pip install SubTextHighlight`
+You can install this package via `pip` or via GitHub:
+- pip: `pip install SubTextHighlight`
+- GitHub: `pip install git+https://github.com/kalterBebapKacke/SubTextHighlight@main`
 
 # How to use
 
