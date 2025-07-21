@@ -10,7 +10,7 @@ def debug():
 def main1():
     input = './media/plain_video.mp4'
     output = './media/edited_video.mp4'
-    sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, whisper_refine=True)
+    sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, fontname='Arial Rounded MT Bold', whisper_refine=True)
     highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
     effect_args = SubTextHighlight.effects_args((50, 50))
     sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
@@ -19,7 +19,7 @@ def main1():
 def main2():
     input = './media/plain_video.mp4'
     output = './media/subtitles.ass'
-    sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, whisper_refine=True)
+    sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, fontname='Arial Rounded MT Bold', whisper_refine=True)
     highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
     effect_args = SubTextHighlight.effects_args((50, 50))
     sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
