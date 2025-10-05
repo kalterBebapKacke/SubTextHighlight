@@ -11,9 +11,22 @@ class ContainerWrapper(base.BaseWrapper):
         # Only continue if package is installed
         if self.installed:
             self.client = self.get_client()
+            self.container = container
 
-    def __call__(self):
-        pass
+    def __call__(self, command: list | str):
+        self.container_running()
+        exit_code, output = self.container.exec_run(command, workdir='/home')
+        print(output)
+        print(exit_code)
+
+    def container_running(self):
+        # loop for waiting container to start?
+        self.container.reload()
+
+        # Check if it's running
+        print(self.container.status)
+        if self.container.status != 'running':
+            raise RuntimeError('Container is not running. It needs to be started first.')
 
     def install_fonts(self, fonts_path:list | str,):
         if type(fonts_path) is str:
@@ -30,7 +43,12 @@ class ContainerWrapper(base.BaseWrapper):
                     else:
                         tar.add(font)
 
-            print(f"Temporary tar created at: {tmp.name}")
+            # Flush and seek back to the beginning
+            tmp.flush()
+            tmp.seek(0)
+
+            self.container.put_archive('/home', tmp)
+            self(['ls -a'])
 
 
 

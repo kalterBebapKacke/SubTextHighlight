@@ -1,6 +1,7 @@
 import os
 from .container import ContainerWrapper
 from . import base
+import traceback
 
 
 class DockerWrapper(base.BaseWrapper):
@@ -17,18 +18,35 @@ class DockerWrapper(base.BaseWrapper):
 
     def __call__(self,
                  fonts_path: list | str | None = None,
+                 container_run_func = None,
+                 _traceback:bool = False,
+                 cleanup:bool = False,
                  *args,
                  **kwargs):
+        # container_run_func needs to take client and name as a input
         if not self.installed:
             raise ImportError('Docker needs to be installed for this section')
 
+        # Init variables
+        container = None
+        container_wrapper = None
+
         try:
-            container = self.client.containers.create(self.image_name)
+            if container_run_func is not None:
+                container = container_run_func(self.client, self.image_name)
+            else:
+                container = self.client.containers.run(
+                    self.image_name,
+                    command='tail -f /dev/null',
+                    detach=True,
+                    network_mode='host' #network_mode='host' to prevent an docker error
+                )
+
             container_wrapper = ContainerWrapper(container)
             print(container)
             # Pre exec
 
-            # Install fonts
+            # Install fonts if they exist
             if fonts_path is not None:
                 container_wrapper.install_fonts(fonts_path=fonts_path)
 
@@ -44,8 +62,18 @@ class DockerWrapper(base.BaseWrapper):
 
         except Exception as e:
             print(e)
+            if _traceback:
+                traceback.print_exc()
         finally:
-            self.cleanup()
+            # Stop and remove the container
+            if container is not None:
+                if container.status == 'running':
+                    container.stop()
+                container.remove()
+
+            # top and remove all other containers from the image if needed
+            if cleanup:
+                self.cleanup()
 
     def check_image(self):
         # Check for image installed by matching the tag
@@ -83,4 +111,6 @@ class DockerWrapper(base.BaseWrapper):
         containers = self.client.containers.list(all=True)
         for container in containers:
             if container.image == self.image:
+                if container.status == 'running':
+                    container.stop()
                 container.remove()
