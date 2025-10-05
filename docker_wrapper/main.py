@@ -1,55 +1,51 @@
 import os
+from .container import ContainerWrapper
+from . import base
 
 
-class DockerWrapper:
+class DockerWrapper(base.BaseWrapper):
 
     def __init__(self):
         # Check for the install
-        installed, self.docker = self.check_docker_installation()
+        super().__init__()
 
-        if not installed:
-            self.ask_install_docker_package()
+        # Only continue if package is installed
+        if self.installed:
+            self.image_name = 'n01d3a/aegisub-cli:Shapery'
+            self.client = self.get_client()
+            self.image = self.check_image_v2()
 
-        self.client = self.get_client()
+    def __call__(self,
+                 fonts_path: list | str | None = None,
+                 *args,
+                 **kwargs):
+        if not self.installed:
+            raise ImportError('Docker needs to be installed for this section')
 
-        #self.pull_docker_image()
-
-        self.image = self.check_image()
-        print(self.image)
-
-    def __call__(self, *args, **kwargs):
-        pass
-
-    def check_docker_installation(self):
         try:
-            import docker
-            return True, docker
-        except ImportError:
-            return False, None
+            container = self.client.containers.create(self.image_name)
+            container_wrapper = ContainerWrapper(container)
+            print(container)
+            # Pre exec
 
-    def ask_install_docker_package(self):
+            # Install fonts
+            if fonts_path is not None:
+                container_wrapper.install_fonts(fonts_path=fonts_path)
 
-        # Ask for confirmation to download the package
-        print('For this Part of the script the Docker package must be installed')
-        answer = ''
-        while answer not in ['y', 'n']:
-            answer = input('y/n:').lower()
+                # Copy input ass
+                # Install packages (optional)
 
-        # Review answer
-        if answer == 'y':
-            os.system('pip install -r docker')
+            # Exec
+                # Execute the shapery command
+                # (Show Logs when error occurred)
 
-            # verify docker install
-            installed, self.docker = self.check_docker_installation()
-            if not installed:
-                raise ImportError('Docker could not be imported')
+            # Post exec
+                # Get output from the aegisub-cli
 
-        elif answer == 'n':
-            pass
-
-    def get_client(self):
-        client = self.docker.from_env()
-        return client
+        except Exception as e:
+            print(e)
+        finally:
+            self.cleanup()
 
     def check_image(self):
         # Check for image installed by matching the tag
@@ -62,7 +58,6 @@ class DockerWrapper:
         else:
             return found_image
 
-
     def return_docker_image(self):
         images = self.client.images.list()
         found_image = False
@@ -72,5 +67,20 @@ class DockerWrapper:
                 found_image = image
         return found_image
 
+    def check_image_v2(self):
+        try:
+            image = self.client.images.get(self.image_name)
+        except self.docker.errors.ImageNotFound:
+            self.pull_docker_image()
+            image = self.client.images.get(self.image_name)
+        return image
+
     def pull_docker_image(self):
-        self.client.images.pull('n01d3a/aegisub-cli', tag='Shapery')
+        name, tag = self.image_name.split(':')
+        self.client.images.pull(name, tag=tag)
+
+    def cleanup(self):
+        containers = self.client.containers.list(all=True)
+        for container in containers:
+            if container.image == self.image:
+                container.remove()
