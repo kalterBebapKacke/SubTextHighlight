@@ -4,20 +4,23 @@ import tempfile
 
 class ContainerWrapper(base.BaseWrapper):
 
-    def __init__(self, container):
+    def __init__(self, container, verbose:bool=False):
         # Check for the install
         super().__init__()
 
         # Only continue if package is installed
         if self.installed:
             self.client = self.get_client()
+            self.verbose = verbose
             self.container = container
 
     def __call__(self, command: list | str):
         self.container_running()
         exit_code, output = self.container.exec_run(command, workdir='/home')
-        print(output)
-        print(exit_code)
+        if exit_code != 0:
+            raise RuntimeError(f'Container run into the following error with exit code {exit_code}: {output}')
+        if self.verbose:
+            print(output)
 
     def container_running(self):
         # loop for waiting container to start?
@@ -48,7 +51,7 @@ class ContainerWrapper(base.BaseWrapper):
             tmp.seek(0)
 
             self.container.put_archive('/home', tmp)
-            self(['ls -a'])
+            self(['dir'])
 
 
 
