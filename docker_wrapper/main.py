@@ -20,6 +20,7 @@ class DockerWrapper(base.BaseWrapper):
                  fonts_path: list | str | None = None,
                  container_run_func = None,
                  _traceback:bool = False,
+                 verbose:bool = False,
                  cleanup:bool = False,
                  *args,
                  **kwargs):
@@ -42,7 +43,7 @@ class DockerWrapper(base.BaseWrapper):
                     network_mode='host' #network_mode='host' to prevent an docker error
                 )
 
-            container_wrapper = ContainerWrapper(container)
+            container_wrapper = ContainerWrapper(container, verbose)
             print(container)
             # Pre exec
 

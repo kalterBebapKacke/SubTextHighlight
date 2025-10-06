@@ -15,7 +15,14 @@ class ContainerWrapper(base.BaseWrapper):
             self.container = container
 
     def __call__(self, command: list | str):
+        # Check if container is running
         self.container_running()
+        # Check if the command is in the right format
+        if type(command) is not str:
+            command = self.build_command(command)
+        # add exec to command
+        command = ['bash', '-c', command]
+        print(command)
         exit_code, output = self.container.exec_run(command, workdir='/home')
         if exit_code != 0:
             raise RuntimeError(f'Container run into the following error with exit code {exit_code}: {output}')
@@ -31,6 +38,9 @@ class ContainerWrapper(base.BaseWrapper):
         if self.container.status != 'running':
             raise RuntimeError('Container is not running. It needs to be started first.')
 
+    def build_command(self, commands: list[str]):
+        return ' && '.join(commands)
+
     def install_fonts(self, fonts_path:list | str,):
         if type(fonts_path) is str:
             fonts_path = [fonts_path]
@@ -44,14 +54,25 @@ class ContainerWrapper(base.BaseWrapper):
                     if not font.endswith(".ttf"):
                         print(f'Font "{font}" is not a ttf file')
                     else:
-                        tar.add(font)
+                        tar.add(font, recursive=False)
 
             # Flush and seek back to the beginning
             tmp.flush()
             tmp.seek(0)
 
             self.container.put_archive('/home', tmp)
-            self(['dir'])
+
+            print(tmp)
+            print(tmp.name)
+
+            command = [
+                'mkdir -p /fonts',
+                f'tar -xf archive.tar.gz -C /home/fonts',
+                'mv /home/fonts/* /root/.local/share/fonts/',
+                ''
+            ]
+            print(self.build_command(command))
+            self(['ls'])
 
 
 
