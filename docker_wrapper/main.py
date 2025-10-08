@@ -17,7 +17,9 @@ class DockerWrapper(base.BaseWrapper):
             self.image = self.check_image_v2()
 
     def __call__(self,
+                 input_ass_path:str,
                  fonts_path: list | str | None = None,
+                 packages:list[str] | None = None,
                  container_run_func = None,
                  _traceback:bool = False,
                  verbose:bool = False,
@@ -47,19 +49,24 @@ class DockerWrapper(base.BaseWrapper):
             print(container)
             # Pre exec
 
-            # Install fonts if they exist
-            if fonts_path is not None:
-                container_wrapper.install_fonts(fonts_path=fonts_path)
+            # Install fonts if they exist and copy input ass
+            container_wrapper.copy_needed_files(input_ass_path, fonts_path)
 
-                # Copy input ass
-                # Install packages (optional)
+            # Install packages (optional)
+            if packages is not None:
+                container_wrapper.install_packages(packages)
 
-            # Exec
-                # Execute the shapery command
-                # (Show Logs when error occurred)
+            # Execute the shapery command
+            # TODO: Use the actual shapery command
+            shapery_command = 'aegisub-cli --automation ILL.Shapery.moon --loglevel 4 input.ass output.ass ": Shapery macros :/Shape expand" || true'
+            container_wrapper(shapery_command)
 
-            # Post exec
-                # Get output from the aegisub-cli
+            container_wrapper('ls')
+
+            # Get output from the aegisub-cli
+            # TODO:Fix byte error
+            output = container_wrapper.retrieve_file('/home/output.ass', True)
+            print(output)
 
         except Exception as e:
             print(e)
