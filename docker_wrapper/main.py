@@ -2,6 +2,7 @@ import os
 from .container import ContainerWrapper
 from . import base
 import traceback
+from pysubs2 import SSAFile
 
 
 class DockerWrapper(base.BaseWrapper):
@@ -17,7 +18,7 @@ class DockerWrapper(base.BaseWrapper):
             self.image = self.check_image_v2()
 
     def __call__(self,
-                 input_ass_path:str,
+                 input_ass_path:str | SSAFile,
                  fonts_path: list | str | None = None,
                  packages:list[str] | None = None,
                  container_run_func = None,
@@ -29,7 +30,6 @@ class DockerWrapper(base.BaseWrapper):
         # container_run_func needs to take client and name as a input
         if not self.installed:
             raise ImportError('Docker needs to be installed for this section')
-
         # Init variables
         container = None
         container_wrapper = None
@@ -46,7 +46,7 @@ class DockerWrapper(base.BaseWrapper):
                 )
 
             container_wrapper = ContainerWrapper(container, verbose)
-            print(container)
+
             # Pre exec
 
             # Install fonts if they exist and copy input ass
@@ -64,9 +64,9 @@ class DockerWrapper(base.BaseWrapper):
             container_wrapper('ls')
 
             # Get output from the aegisub-cli
-            # TODO:Fix byte error
-            output = container_wrapper.retrieve_file('/home/output.ass', True)
-            print(output)
+            output : str = container_wrapper.retrieve_file('/home/output.ass', True)
+            output = output[output.find('[Script Info]'):]
+            return output
 
         except Exception as e:
             print(e)

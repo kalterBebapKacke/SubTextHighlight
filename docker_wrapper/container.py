@@ -2,6 +2,8 @@ from . import base
 import tarfile
 import tempfile
 from io import BytesIO
+import re
+from pysubs2 import SSAFile
 
 class ContainerWrapper(base.BaseWrapper):
 
@@ -27,10 +29,13 @@ class ContainerWrapper(base.BaseWrapper):
         if exit_code != 0:
             raise RuntimeError(f'Container run into the following error with exit code {exit_code}: {output}')
         if self.verbose:
-            if output != '' or output != '\n':
-                print('-------------------')
-                print(output.decode("utf-8"))
-                print('-------------------')
+            if output != '' and output != '\n':
+                text = output.decode("utf-8").strip()
+                if text:
+                    self.logger.info("\n%s\n%s\n%s", '', text,)
+                    print("\n" + "-" * 20)
+                    print(text)
+                    print("-" * 20 + "\n")
 
     def container_running(self):
         # loop for waiting container to start?
@@ -43,7 +48,7 @@ class ContainerWrapper(base.BaseWrapper):
     def build_command(self, commands: list[str]):
         return ' && '.join(commands)
 
-    def copy_needed_files(self, input_ass_path:str, fonts_path:list | str = None):
+    def copy_needed_files(self, input_ass_path:str | SSAFile, fonts_path:list | str = None):
         # Add if fonts should be copied
         if fonts_path is None:
             if_copy_fonts = False
@@ -90,7 +95,19 @@ class ContainerWrapper(base.BaseWrapper):
             for chunk in bits:
                 buffer.write(chunk)
             buffer.seek(0)
-            return buffer.read().decode('utf-8-sig').strip().lstrip('\x00\ufeff')
+
+            # Decode safely (ignore undecodable bytes)
+            content = buffer.read().decode('utf-8', errors='ignore')
+
+            # Remove BOMs and nulls
+            content = content.lstrip('\ufeff\x00').rstrip('\x00')
+
+            # Remove only *non-printable* control characters, except \n, \r, \t
+            content = re.sub(r'[^\x20-\x7E\n\r\t]+', '', content)
+
+            # Final clean string and return
+            return content.strip()
+
         else:
             return bits
 
