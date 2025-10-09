@@ -1,4 +1,5 @@
 import os
+import logging
 
 class BaseWrapper:
 
@@ -9,6 +10,8 @@ class BaseWrapper:
         # Ask if package is not installed
         if not self.installed:
             self.ask_install_docker_package()
+
+        self.logger = logging.getLogger(__name__)
 
     def check_docker_installation(self):
         try:
