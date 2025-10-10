@@ -18,7 +18,7 @@ class DockerWrapper(base.BaseWrapper):
             self.image = self.check_image_v2()
 
     def __call__(self,
-                 input_ass_path:str | SSAFile,
+                 input_ass:str | SSAFile,
                  fonts_path: list | str | None = None,
                  packages:list[str] | None = None,
                  container_run_func = None,
@@ -50,7 +50,7 @@ class DockerWrapper(base.BaseWrapper):
             # Pre exec
 
             # Install fonts if they exist and copy input ass
-            container_wrapper.copy_needed_files(input_ass_path, fonts_path)
+            container_wrapper.copy_needed_files(input_ass, fonts_path)
 
             # Install packages (optional)
             if packages is not None:

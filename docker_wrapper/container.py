@@ -48,7 +48,8 @@ class ContainerWrapper(base.BaseWrapper):
     def build_command(self, commands: list[str]):
         return ' && '.join(commands)
 
-    def copy_needed_files(self, input_ass_path:str | SSAFile, fonts_path:list | str = None):
+    def copy_needed_files(self, input_ass:str | SSAFile, fonts_path:list | str = None):
+
         # Add if fonts should be copied
         if fonts_path is None:
             if_copy_fonts = False
@@ -68,7 +69,14 @@ class ContainerWrapper(base.BaseWrapper):
                         else:
                             tar.add(font, arcname=f'fonts/{font.split("/")[-1]}')
                 # Add input ass
-                tar.add(input_ass_path, arcname='input.ass')
+
+                # if input is an ssafile object
+                if type(input_ass) == SSAFile:
+                    with tempfile.NamedTemporaryFile(suffix='.ass', delete=True) as ass:
+                        input_ass.save(ass.name)
+                        tar.add(ass.name, arcname='input.ass')
+                else:
+                    tar.add(input_ass, arcname='input.ass')
 
             # Flush and seek back to the beginning
             tmp.flush()
