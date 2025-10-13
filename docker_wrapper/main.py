@@ -58,6 +58,10 @@ class DockerWrapper(base.BaseWrapper):
 
             # Execute the shapery command
             # TODO: Use the actual shapery command
+            # TODO: Update Docker Version
+            # TODO: Set Settings for command
+            # TODO: Write Resultion in ass file
+            # aegisub-cli --dialog '{"button": 0, "values": {"offset": 20, "radius": 20, "transformY": -1, "borderColor": "&H000000&", "borderAlpha": "&H00"}}' --automation jz.RoundedBorders.lua input.ass output.ass "Create Rounded Border"
             shapery_command = 'aegisub-cli --automation ILL.Shapery.moon --loglevel 4 input.ass output.ass ": Shapery macros :/Shape expand" || true'
             container_wrapper(shapery_command)
 

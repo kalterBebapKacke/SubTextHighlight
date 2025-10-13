@@ -43,3 +43,14 @@ class BaseWrapper:
     def get_client(self):
         client = self.docker.from_env()
         return client
+
+class args_border:
+
+    def __init__(self,
+        offset:int = 20,
+        radius:int = 20,
+        transformy:int = -1,
+        bordercolor = None,
+        borderalpha = None,
+                 ):
+        pass
