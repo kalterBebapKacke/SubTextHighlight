@@ -58,6 +58,7 @@ class ContainerWrapper(base.BaseWrapper):
             if type(fonts_path) is str:
                 fonts_path = [fonts_path]
 
+        # Adding input ass and fonts to tar
         with tempfile.NamedTemporaryFile(suffix='.tar.gz', delete=True) as tmp:
 
             with tarfile.open(fileobj=tmp, mode='w:gz') as tar:
