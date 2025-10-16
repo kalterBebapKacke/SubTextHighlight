@@ -27,7 +27,7 @@ class ContainerWrapper(base.BaseWrapper):
         command = ['bash', '-c', command]
         exit_code, output = self.container.exec_run(command, workdir=workdir)
         if exit_code != 0:
-            raise RuntimeError(f'Container run into the following error with exit code {exit_code}: {output}')
+            raise RuntimeError(f'Container run into the following error with exit code {exit_code}: \n{output.decode('utf-8')}')
         if self.verbose:
             if output != '' and output != '\n':
                 text = output.decode("utf-8").strip()
