@@ -1,5 +1,6 @@
 import os
 import logging
+import pysubs2
 
 class BaseWrapper:
 
@@ -44,13 +45,43 @@ class BaseWrapper:
         client = self.docker.from_env()
         return client
 
+
+def pysub2_color_to_hex(color:pysubs2.Color):
+    """
+    Convert pysub2.Color object to hex format with separate alpha.
+
+    Args:
+        color: pysub2.Color object with r, g, b, a properties
+
+    Returns:
+        Tuple of (hex_color, alpha) where:
+        - hex_color is a string in format #RRGGBB
+        - alpha is the alpha value as an integer (0-255)
+    """
+    # Access the color properties from the Color object
+    red = color.r
+    green = color.g
+    blue = color.b
+    alpha = color.a
+
+    # Convert to hex format (RGB only)
+    hex_color = f"#{red:02X}{green:02X}{blue:02X}"
+
+    return hex_color, alpha
+
 class args_border:
 
     def __init__(self,
         offset:int = 20,
         radius:int = 20,
         transformy:int = -1,
-        bordercolor = None,
-        borderalpha = None,
+        color:pysubs2.Color | None = None,
                  ):
-        pass
+        self.offset:int = offset
+        self.radius:int = radius
+        self.transformy:int = transformy
+        if color is not None:
+            self.bordercolor, self.borderalpha = pysub2_color_to_hex(color)
+        else:
+            self.bordercolor = 
+            self.borderalpha = 0
