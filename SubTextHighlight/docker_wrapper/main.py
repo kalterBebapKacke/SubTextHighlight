@@ -22,8 +22,6 @@ class DockerWrapper(base.BaseWrapper):
     def __call__(self,
                  input_ass:str | SSAFile, # path or SAAFile, not ass in string form
                  args_border:base.args_border, # settings for the args border
-                 fonts_path: list | str | None = None,
-                 packages:list[str] | None = None,
                  return_pysubsSSAFile:bool = True,
                  container_run_func = None, # container_run_func needs to take client and name as a input
                  _traceback:bool = False,
@@ -54,11 +52,11 @@ class DockerWrapper(base.BaseWrapper):
             # Pre exec
 
             # Install fonts if they exist and copy input ass
-            container_wrapper.copy_needed_files(input_ass, fonts_path)
+            container_wrapper.copy_needed_files(input_ass, args_border.fonts_path)
 
             # Install packages (optional)
-            if packages is not None:
-                container_wrapper.install_packages(packages)
+            if args_border.packages is not None:
+                container_wrapper.install_packages(args_border.packages)
 
             # Execute the shapery command
             # TODO: Write Resultion in ass file
