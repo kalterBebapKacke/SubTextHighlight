@@ -3,3 +3,4 @@ from . import main
 from . import Effects
 from . import Highlight
 from . import utils
+from . import docker_wrapper

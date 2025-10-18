@@ -30,7 +30,7 @@ class Effects:
     def logic_highlighter(self, highlighter:Highlight.Highlighter, sample_highlighter:Highlight.Highlighter):
         # sees whether the highlighter already exists as it is needed for some effects
         if self.args.appear:
-            # sets highlighter if it doesnt already exists
+            # sets highlighter if it does not already exist
             if highlighter is not None:
                 new_highlighter = highlighter
             else:
@@ -44,6 +44,8 @@ class Effects:
             subs = self.fade(subs)
         if self.args.appear:
             subs = self.appear(subs)
+
+        # Implement rounded borders
         return subs
 
     def fade(self, subs):

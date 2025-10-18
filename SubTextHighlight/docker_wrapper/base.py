@@ -78,6 +78,8 @@ class args_border:
         radius:int = 20,
         transformy:int = -1,
         color:pysubs2.Color | None = None,
+        fonts_path: list | str | None = None,
+        packages: list[str] | None = None,
                  ):
         self.offset:int = offset
         self.radius:int = radius
@@ -87,6 +89,8 @@ class args_border:
         else:
             self.bordercolor = "#FFFFFF"
             self.borderalpha = 0
+        self.packages:list[str] = packages
+        self.fonts_path:list[str] = fonts_path
 
     def __call__(self):
         return json.dumps({
