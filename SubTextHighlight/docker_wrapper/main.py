@@ -62,6 +62,7 @@ class DockerWrapper(base.BaseWrapper):
             # TODO: Write Resultion in ass file
             # TODO: Connect Docker to Effects
             # TODO: Test Settings
+            # TODO: Expose Container Run Func
 
             dialog_json = json.dumps(
                 {"button": 0,
@@ -81,6 +82,8 @@ class DockerWrapper(base.BaseWrapper):
             # Get output from the aegisub-cli
             output : str = container_wrapper.retrieve_file('/home/output.ass', True)
             output : str = output[output.find('[Script Info]'):]
+
+            raise ImportError('Test Raise')
 
             # make output to sting if wanted and then return it
             if return_pysubsSSAFile:

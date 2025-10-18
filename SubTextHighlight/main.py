@@ -118,6 +118,9 @@ class Subtitle_Edit:
         self.fill_sub_times = self.args.fill_sub_times
         self.whisper_refine = self.args.whisper_refine
 
+        # builder
+        self.builder = utils.subs_builder()
+
         # Highlighters
         #self.args_highlight = args_highlight
 
@@ -159,11 +162,16 @@ class Subtitle_Edit:
             subs = self.shift_subs_time(subs)
 
         # edit
+        # for some parts of the effects the PlayResX and Y has to be set in the ass file
+        if not utils.check_for_PlayRes(sub_file):
+            pass
+            #TODO: Add PlayRes to sub file
+
         if self.effects is not None:
             subs  = self.effects(subs)
 
         # build and save
-        subs = self.build_finished_subs(subs)
+        subs = self.builder(subs)
         sub_file.events = subs
         return self.interpret_output(self.output, sub_file)
 
@@ -338,12 +346,4 @@ class Subtitle_Edit:
                 sub.shift(s=add_time)
         return subs
 
-    def build_finished_subs(self, subs):
-        new_subs = list()
-        for sub in subs:
-            if type(sub) == list:
-                new_subs.extend(sub)
-            else:
-                new_subs.append(sub)
-        return new_subs
 

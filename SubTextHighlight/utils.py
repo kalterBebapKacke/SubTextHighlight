@@ -103,6 +103,18 @@ def replace_all(str_:str, replace_from, replace_with):
         str_ = str_.replace(replace_from, replace_with)
     return str_
 
+def return_script_info(subtitleFile:pysubs2.SSAFile):
+    string_subtitles = subtitleFile.to_string('ass')
+    return string_subtitles[string_subtitles.find('[Script Info]'):string_subtitles.find('[V4+ Styles]')]
+
+def check_for_PlayRes(subtitleFile:pysubs2.SSAFile):
+    script_info = return_script_info(subtitleFile)
+    if script_info.__contains__('PlayResX:') and script_info.__contains__('PlayResY:'):
+        return True
+    else:
+        return False
+
+
 class args_styles:
 
     def __init__(self,
@@ -231,3 +243,17 @@ class args_styles:
             italic=self.italic,
             underline=self.underline
         )
+
+class subs_builder():
+
+    def __init__(self):
+        pass
+
+    def __call__(self, subs):
+        new_subs = list()
+        for sub in subs:
+            if type(sub) == list:
+                new_subs.extend(sub)
+            else:
+                new_subs.append(sub)
+        return new_subs

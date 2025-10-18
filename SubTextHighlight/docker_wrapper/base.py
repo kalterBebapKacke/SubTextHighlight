@@ -93,10 +93,10 @@ class args_border:
         self.fonts_path:list[str] = fonts_path
 
     def __call__(self):
-        return json.dumps({
+        return {
             "offset": self.offset,
             "radius": self.radius,
             "transformY": self.transformy,
             "borderColor": self.bordercolor,
             "borderAlpha": self.borderalpha,
-        })
+        }

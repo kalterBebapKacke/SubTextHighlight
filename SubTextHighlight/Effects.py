@@ -1,6 +1,7 @@
 import os
 from os import fdatasync
 from . import Highlight
+from . import docker_wrapper
 
 import pysubs2
 
@@ -9,6 +10,7 @@ class effects_args:
     def __init__(self,
         fade:tuple[float, float] = (0.0, 0.0), # first is fadeIn and second is fadeOut
         appear:bool = False,
+        args_border:docker_wrapper.base.args_border | None = None,
                  ):
         """
         fade: Controls the fade-in and fade-out durations.
@@ -20,6 +22,7 @@ class effects_args:
         self.fade_in_duration = fade[0]
         self.fade_out_duration = fade[1]
         self.appear = appear
+        self.args_border = args_border
 
 
 class Effects:
@@ -45,6 +48,8 @@ class Effects:
         if self.args.appear:
             subs = self.appear(subs)
 
+        if self.args.args_border is not None:
+            pass
         # Implement rounded borders
         return subs
 
@@ -65,3 +70,7 @@ class Effects:
                 if sub.text[num_split:].strip() != '':
                     sub.text = sub.text[:num_split] + r'{\alpha&HFF}' + sub.text[num_split:] + r'{\r}'
         return subs
+
+    def rounded_borders(self):
+        pass
+        # TODO: Build Subs and upgrade builder
