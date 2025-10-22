@@ -342,7 +342,7 @@ class Subtitle_Edit:
             return utils.get_duration_resolution(self.input)
         elif self.input_video is not None:
             # else get the endtime and resolutions from the input video
-            return utils.get_duration_resolution(self.input)
+            return utils.get_duration_resolution(self.input_video)
         else:
             # return None, if nothing was found
             return None, None
