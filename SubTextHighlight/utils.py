@@ -20,14 +20,24 @@ def dprint(txt):
     if os.environ['debug'] == 'True':
         print(txt)
 
-def get_duration(file_path):
+def get_duration_resolution(file_path):
     cmd = [
         'ffprobe', '-v', 'quiet', '-print_format', 'json',
-        '-show_format', file_path
+        '-show_format', '-show_streams', file_path
     ]
     result = subprocess.run(cmd, capture_output=True, text=True)
     data = json.loads(result.stdout)
-    return float(data['format']['duration'])
+
+    # Get resolution from the first video stream
+    resolution = None
+    for stream in data['streams']:
+        if stream['codec_type'] == 'video':
+            width = stream['width']
+            height = stream['height']
+            resolution = (width, height)
+            break
+    print(data)
+    return float(data['format']['duration']), resolution
 
 def exec_command(command:list):
     try:
@@ -113,6 +123,9 @@ def check_for_PlayRes(subtitleFile:pysubs2.SSAFile):
         return True
     else:
         return False
+
+def set_play_res(subtitleFile:pysubs2.SSAFile):
+    script_info = return_script_info(subtitleFile)
 
 
 class args_styles:
@@ -250,6 +263,9 @@ class subs_builder():
         pass
 
     def __call__(self, subs):
+        return self.normal_build(subs)
+
+    def normal_build(self, subs):
         new_subs = list()
         for sub in subs:
             if type(sub) == list:

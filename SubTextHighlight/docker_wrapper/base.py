@@ -80,6 +80,7 @@ class args_border:
         color:pysubs2.Color | None = None,
         fonts_path: list | str | None = None,
         packages: list[str] | None = None,
+        container_run_func : None=None # container_run_func needs to take client and name as a input
                  ):
         self.offset:int = offset
         self.radius:int = radius
@@ -91,6 +92,7 @@ class args_border:
             self.borderalpha = 0
         self.packages:list[str] = packages
         self.fonts_path:list[str] = fonts_path
+        self.container_run_func = container_run_func
 
     def __call__(self):
         return {

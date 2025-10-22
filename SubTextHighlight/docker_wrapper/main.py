@@ -22,8 +22,7 @@ class DockerWrapper(base.BaseWrapper):
     def __call__(self,
                  input_ass:str | SSAFile, # path or SAAFile, not ass in string form
                  args_border:base.args_border, # settings for the args border
-                 return_pysubsSSAFile:bool = True,
-                 container_run_func = None, # container_run_func needs to take client and name as a input
+                 return_pysubsSSAFile:bool = True, # container_run_func needs to take client and name as a input
                  _traceback:bool = False,
                  verbose:bool = False,
                  cleanup:bool = False,
@@ -37,8 +36,8 @@ class DockerWrapper(base.BaseWrapper):
         container_wrapper = None
 
         try:
-            if container_run_func is not None:
-                container = container_run_func(self.client, self.image_name)
+            if args_border.container_run_func is not None:
+                container = args_border.container_run_func(self.client, self.image_name)
             else:
                 container = self.client.containers.run(
                     self.image_name,
@@ -59,10 +58,6 @@ class DockerWrapper(base.BaseWrapper):
                 container_wrapper.install_packages(args_border.packages)
 
             # Execute the shapery command
-            # TODO: Write Resultion in ass file
-            # TODO: Connect Docker to Effects
-            # TODO: Test Settings
-            # TODO: Expose Container Run Func
 
             dialog_json = json.dumps(
                 {"button": 0,
