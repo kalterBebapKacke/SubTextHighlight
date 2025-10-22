@@ -165,7 +165,7 @@ class Subtitle_Edit:
         # edit
         # for some parts of the effects the PlayResX and Y has to be set in the ass file
         if not utils.check_for_PlayRes(sub_file):
-            pass
+            utils.set_play_res(sub_file)
             #TODO: Add PlayRes to sub file
 
         if self.effects is not None:
