@@ -102,9 +102,10 @@ class Test_Class():
 
 if __name__ == '__main__':
     debug()
-    #t = Test_Class()
+    t = Test_Class()
     #t(force_generate=True)
     #t.blank_srt()
     #t.separate_on_period_and_highlighting()
-    main1()
-    main2()
+    #main1()
+    #main2()
+    t.one_word_only_and_fade()
