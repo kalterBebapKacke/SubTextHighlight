@@ -124,8 +124,29 @@ def check_for_PlayRes(subtitleFile:pysubs2.SSAFile):
     else:
         return False
 
-def set_play_res(subtitleFile:pysubs2.SSAFile):
+def write_res(subtitleFile:str):
+    pass
+
+def set_play_res(subtitleFile:pysubs2.SSAFile, resolution:tuple[int, int]):
+    string_subtitles = subtitleFile.to_string('ass')
     script_info = return_script_info(subtitleFile)
+
+    # check if playres is set
+    if check_for_PlayRes(subtitleFile):
+        # if playres is set, confirm it is the right one
+        playresx = script_info[script_info.find('PlayResX:') + len('PlayResX:'):]
+        playresx = int(playresx[:playresx.find('\n')])
+        playresy = script_info[script_info.find('PlayResY:') + len('PlayResY:'):]
+        playresy = int(playresy[:playresy.find('\n')])
+        if (playresx, playresy) == resolution:
+            print(True)
+        else:
+            pass
+            #write the new resolution to file
+    else:
+        pass
+
+
 
 
 class args_styles:
