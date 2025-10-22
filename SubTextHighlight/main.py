@@ -117,6 +117,7 @@ class Subtitle_Edit:
         self.whisper_device= self.args.whisper_device
         self.fill_sub_times = self.args.fill_sub_times
         self.whisper_refine = self.args.whisper_refine
+        self.end_time, self.resolution = self.set_info()
 
         # builder
         self.builder = utils.subs_builder()
@@ -308,23 +309,10 @@ class Subtitle_Edit:
         if not self.fill_sub_times:
             return subs[0].start, subs[-1].end
         else:
-            # check whether the input is an audio or video
-            with open(self.input, "rb") as file:
-                info = fleep.get(file.read(128))
-            if info.type == ['video'] or info.type == ['audio']:
-                # main part
-                end_time = utils.get_duration(self.input)
-                return pysubs2.make_time(s=0), pysubs2.make_time(s=end_time)
-            # if not check if input video exists
-            elif self.input_video is not None:
-                # check if input video is audio or video
-                with open(self.input_video, "rb") as file:
-                    info = fleep.get(file.read(128))
-                if info.type == ['video']:
-                    # main part
-                    end_time = utils.get_duration(self.input_video)
-                    return pysubs2.make_time(s=0), pysubs2.make_time(s=end_time)
-            raise ValueError('For the argument "fill_sub_times" an video has to be inputted via input_video or the subtitles have to generated from a audio/video.')
+            if self.end_time is not None:
+                return pysubs2.make_time(s=0), pysubs2.make_time(s=self.end_time)
+            else:
+                raise ValueError('For the argument "fill_sub_times" an video has to be inputted via input_video or the subtitles have to generated from a audio/video.')
 
     def return_end_time_logic(self, last_iteration:bool, end_time:int, subs:list, sub:pysubs2.SSAEvent, i:int):
         if last_iteration:
@@ -345,5 +333,18 @@ class Subtitle_Edit:
             else:
                 sub.shift(s=add_time)
         return subs
+
+    def set_info(self):
+        with open(self.input, "rb") as file:
+            info = fleep.get(file.read(128))
+        # if video or audio, then set endtime and resolution
+        if info.type == ['video'] or info.type == ['audio']:
+            return utils.get_duration_resolution(self.input)
+        elif self.input_video is not None:
+            # else get the endtime and resolutions from the input video
+            return utils.get_duration_resolution(self.input)
+        else:
+            # return None, if nothing was found
+            return None, None
 
 

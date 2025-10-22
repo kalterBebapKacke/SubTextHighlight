@@ -74,3 +74,4 @@ class Effects:
     def rounded_borders(self):
         pass
         # TODO: Build Subs and upgrade builder
+        # TODO: Expose docker run func to main api
