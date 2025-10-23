@@ -36,7 +36,6 @@ def get_duration_resolution(file_path):
             height = stream['height']
             resolution = (width, height)
             break
-    print(data)
     return float(data['format']['duration']), resolution
 
 def exec_command(command:list):
@@ -139,12 +138,65 @@ def set_play_res(subtitleFile:pysubs2.SSAFile, resolution:tuple[int, int]):
         playresy = script_info[script_info.find('PlayResY:') + len('PlayResY:'):]
         playresy = int(playresy[:playresy.find('\n')])
         if (playresx, playresy) == resolution:
-            print(True)
+            return subtitleFile
         else:
-            pass
-            #write the new resolution to file
+            script_info = update_playres(script_info, resolution[0], resolution[1])
+            return build_full_sub_file(string_subtitles, script_info)
     else:
-        pass
+        # if it is not set, just add them to the file
+        script_info = update_playres(script_info, resolution[0], resolution[1])
+        return build_full_sub_file(string_subtitles, script_info)
+
+
+def update_playres(ass_content, playres_x, playres_y):
+    """
+    Update or add PlayResX and PlayResY values in ASS subtitle file content.
+
+    Args:
+        ass_content (str): The content of the ASS file as a string
+        playres_x (int): The new PlayResX value
+        playres_y (int): The new PlayResY value
+
+    Returns:
+        str: Updated ASS file content
+    """
+    lines = ass_content.split('\n')
+    playres_x_found = False
+    playres_y_found = False
+    script_info_idx = -1
+
+    # Find [Script Info] section and existing PlayRes values
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+
+        if stripped == '[Script Info]':
+            script_info_idx = i
+        elif stripped.startswith('PlayResX:'):
+            lines[i] = f'PlayResX: {playres_x}'
+            playres_x_found = True
+        elif stripped.startswith('PlayResY:'):
+            lines[i] = f'PlayResY: {playres_y}'
+            playres_y_found = True
+        elif stripped.startswith('[') and script_info_idx != -1 and i > script_info_idx:
+            # We've reached the next section
+            break
+
+    # If PlayRes values weren't found, add them after [Script Info]
+    if script_info_idx != -1:
+        insert_idx = script_info_idx + 1
+
+        if not playres_y_found:
+            lines.insert(insert_idx, f'PlayResY: {playres_y}')
+        if not playres_x_found:
+            lines.insert(insert_idx, f'PlayResX: {playres_x}')
+
+    return '\n'.join(lines)
+
+def build_full_sub_file(string_subs:str, script_info:str):
+    segments = string_subs.split('[')
+    segments[1] = script_info[1:]
+    segments = '['.join(segments)
+    return pysubs2.SSAFile.from_string(segments)
 
 
 

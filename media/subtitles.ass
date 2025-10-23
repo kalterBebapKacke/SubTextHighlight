@@ -5,7 +5,7 @@ WrapStyle: 0
 ScaledBorderAndShadow: yes
 Collisions: Normal
 ScriptType: v4.00+
-PlayResX: 1280
+PlayResX: 1281
 PlayResY: 688
 
 [V4+ Styles]

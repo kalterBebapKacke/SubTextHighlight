@@ -42,7 +42,7 @@ class Effects:
         else:
             return highlighter
 
-    def __call__(self, subs:list):
+    def __call__(self, subs:list, sub_file:pysubs2.SSAFile):
         if self.args.fade_out_duration != 0 and self.args.fade_in_duration != 0:
             subs = self.fade(subs)
         if self.args.appear:
@@ -74,4 +74,4 @@ class Effects:
     def rounded_borders(self):
         pass
         # TODO: Build Subs and upgrade builder
-        # TODO: Expose docker run func to main api
+        # TODO: Implement function
