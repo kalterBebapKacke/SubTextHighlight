@@ -26,8 +26,7 @@ class DockerWrapper(base.BaseWrapper):
                  _traceback:bool = False,
                  verbose:bool = False,
                  cleanup:bool = False,
-                 *args,
-                 **kwargs):
+                 ):
 
         if not self.installed and not self.docker_installed:
             raise ImportError('The Docker Package and Image needs to be installed for this section.')

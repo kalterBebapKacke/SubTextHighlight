@@ -335,14 +335,30 @@ class subs_builder():
     def __init__(self):
         pass
 
-    def __call__(self, subs):
-        return self.normal_build(subs)
+    def __call__(self, subs, type=None): # text_only
+        if type == 'text_only':
+            return self.text_only_build(subs)
+        else:
+            return self.normal_build(subs)
 
-    def normal_build(self, subs):
+    def normal_build(self, subs:list):
         new_subs = list()
         for sub in subs:
             if type(sub) == list:
                 new_subs.extend(sub)
             else:
                 new_subs.append(sub)
+        return new_subs
+
+    def text_only_build(self, subs:list):
+        if type(subs[0]) != list:
+            return subs
+        print('yes')
+        new_subs = list()
+        for sub in subs:
+            before, after = sub[0].text.split(r"{\rHighlight}")
+            after = after.replace(r"{\r}", "")
+            sub[0].text = before + after
+            sub[0].end = sub[-1].end
+            new_subs.append(sub[0])
         return new_subs

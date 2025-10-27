@@ -108,4 +108,4 @@ if __name__ == '__main__':
     #t.separate_on_period_and_highlighting()
     #main1()
     #main2()
-    t.one_word_only_and_fade()
+    t.separate_on_period_and_highlighting()
