@@ -2,6 +2,7 @@ import os
 from os import fdatasync
 from . import Highlight
 from . import docker_wrapper
+from . import utils
 
 import pysubs2
 
@@ -71,7 +72,35 @@ class Effects:
                     sub.text = sub.text[:num_split] + r'{\alpha&HFF}' + sub.text[num_split:] + r'{\r}'
         return subs
 
-    def rounded_borders(self):
-        pass
+    def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
         # TODO: Build Subs and upgrade builder
         # TODO: Implement function
+        builder = utils.subs_builder()
+
+        # check whether res is set, else raise error
+        if not utils.check_for_PlayRes(sub_file):
+            raise RuntimeError('The subtitle file does not contain a Resolution. For the right scaling of the subtitles a input with a video resolution has to be set.')
+
+        # build part of the background without the highlighting split (if one is given)
+        text_only_subs = builder(subs, 'text_only')
+
+        # make copy of saafile and replace events with text only
+
+
+        # start the docker wrapper and execute the script
+        # only execute on the part, that becomes the background
+        dw = docker_wrapper.main.DockerWrapper()
+        output = dw(
+            input_ass='',
+            args_border=self.args.args_border,
+            _traceback=True,
+            cleanup=True,
+        )
+
+        # filter out text from background
+
+        # combine both text and background
+
+        # return new subtitles list
+
+
