@@ -98,6 +98,13 @@ class Test_Class():
         effect_args = SubTextHighlight.effects_args(fade=(50, 50), appear=True)
         self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
 
+    def rounded_borders(self):
+        output_mp4, output_ass = self.return_output_name(self.rounded_borders)
+        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20, alignment=2)
+        effect_args = SubTextHighlight.effects_args(fade=(50, 50), appear=True, args_border=SubTextHighlight.args_border())
+        self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
+
+
 
 
 if __name__ == '__main__':
@@ -108,4 +115,5 @@ if __name__ == '__main__':
     #t.separate_on_period_and_highlighting()
     #main1()
     #main2()
-    t.separate_on_period_and_highlighting()
+    #t.separate_on_period_and_highlighting()
+    t.rounded_borders()

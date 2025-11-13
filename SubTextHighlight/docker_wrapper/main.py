@@ -77,8 +77,6 @@ class DockerWrapper(base.BaseWrapper):
             output : str = container_wrapper.retrieve_file('/home/output.ass', True)
             output : str = output[output.find('[Script Info]'):]
 
-            raise ImportError('Test Raise')
-
             # make output to sting if wanted and then return it
             if return_pysubsSSAFile:
                 output = SSAFile.from_string(output)

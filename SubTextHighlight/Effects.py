@@ -3,6 +3,7 @@ from os import fdatasync
 from . import Highlight
 from . import docker_wrapper
 from . import utils
+import copy
 
 import pysubs2
 
@@ -50,8 +51,8 @@ class Effects:
             subs = self.appear(subs)
 
         if self.args.args_border is not None:
-            pass
-        # Implement rounded borders
+            # Implement rounded borders
+            self.rounded_borders(subs, sub_file)
         return subs
 
     def fade(self, subs):
@@ -85,17 +86,21 @@ class Effects:
         text_only_subs = builder(subs, 'text_only')
 
         # make copy of saafile and replace events with text only
-
+        sub_file_copy = copy.deepcopy(sub_file)
+        sub_file_copy.events = text_only_subs
 
         # start the docker wrapper and execute the script
         # only execute on the part, that becomes the background
         dw = docker_wrapper.main.DockerWrapper()
-        output = dw(
-            input_ass='',
+        output : pysubs2.SSAFile = dw(
+            input_ass=sub_file_copy,
             args_border=self.args.args_border,
             _traceback=True,
             cleanup=True,
         )
+        print(output)
+        print(output.to_string('ass'))
+        print()
 
         # filter out text from background
 
