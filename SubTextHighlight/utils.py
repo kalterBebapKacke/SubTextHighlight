@@ -353,12 +353,25 @@ class subs_builder():
     def text_only_build(self, subs:list):
         if type(subs[0]) != list:
             return subs
-        print('yes')
         new_subs = list()
         for sub in subs:
+            # remove highlighting
             before, after = sub[0].text.split(r"{\rHighlight}")
             after = after.replace(r"{\r}", "")
             sub[0].text = before + after
+
+            # remove appear command
+            sub[0].text = sub[0].text.replace(r"{\alpha&HFF}", "")
+
+            # get fade from last sub
+            print(sub[0].text)
+            before, after = sub[0].text.split(r"}")
+            fade_out = before[1:]
+
+            # combine fade effect
+            before, after = sub[0].text.split(")")
+            sub[0].text = before + ")" + fade_out + after
+
             sub[0].end = sub[-1].end
             new_subs.append(sub[0])
         return new_subs
