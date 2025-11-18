@@ -1,7 +1,8 @@
 import os
 import pysubs2
 from . import utils
-from .utils import dprint
+from .utils import dprint, advanced_SAA_Events
+
 
 class highlight_args(utils.args_styles):
 
@@ -83,6 +84,9 @@ class Highlighter:
         highlighted_words = ''
         progress_in_words = ''
         cur_word += ' '
+        last_index = 0
+
+        sub_event = advanced_SAA_Events(text=cur_word, start=start, end=end, style="MainStyle", highlight_style=self.highlight_style)
 
         #dprint(sub_list)
 
@@ -95,11 +99,6 @@ class Highlighter:
 
                 progress_in_words = progress_in_words.strip()
 
-                if len(return_subs) == 0:
-                    new_cur_word = self._replace(cur_word, f'{highlighted_words} ', progress_in_words)
-                else:
-                    new_cur_word = self._replace(cur_word, f' {highlighted_words} ', progress_in_words)
-
                 if not last_iteration:
                     end_time = sub_list[i + 1].start
                 else:
@@ -108,7 +107,10 @@ class Highlighter:
                 if start is None:
                     start = sub.start
 
-                return_subs.append(pysubs2.SSAEvent(start=start, end=end_time, text=new_cur_word.strip(), style="MainStyle"))
+                #return_subs.append(pysubs2.SSAEvent(start=start, end=end_time, text=new_cur_word.strip(), style="MainStyle"))
+                sub_event.add_highlight_entry(last_index, i, start, end_time)
+
+                last_index = i + 1
                 highlighted_words = ''
                 start = None
                 progress_in_words += f' {sub.text}'
@@ -118,7 +120,8 @@ class Highlighter:
                 if start is None:
                     start = sub.start
 
-        all_subs.append(return_subs)
+        #all_subs.append(return_subs)
+        all_subs.append(sub_event)
         return all_subs
 
     def return_highlighted_style(self, style:pysubs2.SSAStyle):

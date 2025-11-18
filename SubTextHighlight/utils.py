@@ -1,3 +1,5 @@
+import dataclasses
+
 import pysubs2
 import stable_whisper
 import subprocess
@@ -343,7 +345,8 @@ class subs_builder():
 
     def normal_build(self, subs:list):
         new_subs = list()
-        for sub in subs:
+        build_subs = [x() for x in subs]
+        for sub in build_subs:
             if type(sub) == list:
                 new_subs.extend(sub)
             else:
@@ -375,3 +378,49 @@ class subs_builder():
             sub[0].end = sub[-1].end
             new_subs.append(sub[0])
         return new_subs
+
+@dataclasses.dataclass(repr=False, eq=False, order=False)
+class advanced_SAA_Events(pysubs2.SSAEvent):
+
+    #text_list:list = ()
+    highlighted_texts: list = ()
+    highlight_style: list = ()
+    appear_style:list = ()
+    fade_in:str = ''
+    fade_out:str = ''
+
+    @property
+    def text_list(self):
+        return self.text.split(' ')
+
+    def add_highlight_entry(self, index_start:int, index_end:int, start:int, end:int):
+        # replace the tuple
+        self.highlighted_texts = [] if len(self.highlighted_texts) == 0 else self.highlighted_texts
+        self.highlighted_texts.append([index_start, index_end, start, end])
+
+    def __call__(self):
+        return_subs = []
+        if self.highlighted_texts != ():
+            # If appear is true, replace the highlight styles
+            if self.appear_style != ():
+                self.highlight_style = self.appear_style
+
+            # Build the subs
+            for index_start, index_end, start, end  in self.highlighted_texts:
+                # build the text with hightlighting marks
+                text = f'{' '.join(self.text_list[0:index_start])} {self.highlight_style[0]}{' '.join(self.text_list[index_start:index_end+1])}{self.highlight_style[1]} {' '.join(self.text_list[index_end+1:])}'
+                return_subs.append(pysubs2.SSAEvent(text=text.strip(), start=start, end=end, style="MainStyle"))
+
+        else:
+            return_subs = [pysubs2.SSAEvent(text=self.text, start=self.start, end=self.end, style="MainStyle")]
+
+        # apply fade and return
+        if len(return_subs) == 1:
+            return_subs[0].effect = self.fade_in + self.fade_out
+            return return_subs[0]
+        else:
+            return_subs[0].effect = self.fade_in
+            return_subs[-1].effect = self.fade_out
+            return return_subs
+
+

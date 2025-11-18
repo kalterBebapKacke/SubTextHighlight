@@ -110,10 +110,9 @@ class Test_Class():
 if __name__ == '__main__':
     debug()
     t = Test_Class()
-    #t(force_generate=True)
+    t(force_generate=False)
     #t.blank_srt()
-    #t.separate_on_period_and_highlighting()
     #main1()
     #main2()
     #t.separate_on_period_and_highlighting()
-    t.rounded_borders()
+    #t.rounded_borders()

@@ -57,20 +57,14 @@ class Effects:
 
     def fade(self, subs):
         for i, sub in enumerate(subs):
-            if type(sub) == list:
-                sub[0].text = fr'{{\fad({self.args.fade_in_duration},0)}}{sub[0].text}'
-                sub[-1].text = fr'{{\fad(0,{self.args.fade_out_duration})}}{sub[-1].text}'
-            else:
-                sub.text = fr'{{\fad({self.args.fade_in_duration},{self.args.fade_out_duration})}}{sub.text}'
+            sub.fade_in =  fr'{{\fad({self.args.fade_in_duration},0)}}'
+            sub.fade_out = fr'{{\fad(0,{self.args.fade_out_duration})}}'
         return subs
 
     def appear(self, subs:list):
-        for sub_list in subs:
-            for i, sub in enumerate(sub_list):
-                # split text and put them back so that the second half is transparent
-                num_split = (sub.text.find(r'{\r}') + len(r'{\r}'))
-                if sub.text[num_split:].strip() != '':
-                    sub.text = sub.text[:num_split] + r'{\alpha&HFF}' + sub.text[num_split:] + r'{\r}'
+        styles = (r'{\alpha&HFF}', '')
+        for sub in subs:
+            sub.appear_style = styles
         return subs
 
     def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
