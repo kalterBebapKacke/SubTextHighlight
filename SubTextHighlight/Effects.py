@@ -57,8 +57,8 @@ class Effects:
 
     def fade(self, subs):
         for i, sub in enumerate(subs):
-            sub.fade_in =  fr'{{\fad({self.args.fade_in_duration},0)}}'
-            sub.fade_out = fr'{{\fad(0,{self.args.fade_out_duration})}}'
+            sub.fade_in =  self.args.fade_in_duration
+            sub.fade_out = self.args.fade_out_duration
         return subs
 
     def appear(self, subs:list):
