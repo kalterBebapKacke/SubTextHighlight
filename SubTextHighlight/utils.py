@@ -1,4 +1,6 @@
 import dataclasses
+import re
+from copy import deepcopy
 
 import pysubs2
 import stable_whisper
@@ -332,6 +334,24 @@ class args_styles:
             underline=self.underline
         )
 
+def is_text_line(line):
+    """
+    Returns True if the ASS Dialogue line contains normal subtitle text.
+    Returns False if the line is in drawing mode (\p1 or higher).
+    """
+
+    # Extract the Text field (10th field)
+    try:
+        text_field = line.split(",", 9)[9]
+    except IndexError:
+        return True  # If malformed, assume it's text
+
+    # Check if any override block contains \p1 or higher
+    if re.search(r'\\p[1-9]', text_field):
+        return False  # It's a drawing line
+
+    return True  # No drawing tags, so it's text
+
 class subs_builder():
 
     def __init__(self):
@@ -354,30 +374,7 @@ class subs_builder():
         return new_subs
 
     def text_only_build(self, subs:list):
-        if type(subs[0]) != list:
-            return subs
-        new_subs = list()
-        for sub in subs:
-            # remove highlighting
-            before, after = sub[0].text.split(r"{\rHighlight}")
-            after = after.replace(r"{\r}", "")
-            sub[0].text = before + after
-
-            # remove appear command
-            sub[0].text = sub[0].text.replace(r"{\alpha&HFF}", "")
-
-            # get fade from last sub
-            print(sub[0].text)
-            before, after = sub[0].text.split(r"}")
-            fade_out = before[1:]
-
-            # combine fade effect
-            before, after = sub[0].text.split(")")
-            sub[0].text = before + ")" + fade_out + after
-
-            sub[0].end = sub[-1].end
-            new_subs.append(sub[0])
-        return new_subs
+        return [sub.return_saa_event() for sub in subs]
 
 @dataclasses.dataclass(repr=False, eq=False, order=False)
 class advanced_SAA_Events(pysubs2.SSAEvent):
@@ -404,12 +401,22 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
         else:
             return fr'{{\fad({self.fade_in},0)}}', fr'{{\fad(0,{self.fade_out})}}'
 
+    def return_saa_event(self):
+        return pysubs2.SSAEvent(text=self.text.strip(), start=self.start, end=self.end, style="MainStyle")
+
+    def return_background_copy(self):
+        copy = deepcopy(self)
+        copy.highlighted_texts = []
+        copy.highlighted_texts = []
+        copy.highlight_style = []
+        copy.appear_style = []
+        return copy
 
     def __call__(self):
         return_subs = []
-        if self.highlighted_texts != ():
+        if self.highlighted_texts != () or self.highlighted_texts != []:
             # If appear is true, replace the highlight styles
-            if self.appear_style != ():
+            if self.appear_style != () or self.appear_style != []:
                 self.highlight_style = ['', self.appear_style[0]]
 
             # Build the subs

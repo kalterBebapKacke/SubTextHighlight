@@ -97,7 +97,11 @@ class Effects:
         print()
 
         # filter out text from background
-
+        background = list()
+        events = output.events
+        for i, event in enumerate(events):
+            if not utils.is_text_line(event.text):
+                background.append(event)
         # combine both text and background
 
         # return new subtitles list
