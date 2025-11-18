@@ -2,7 +2,7 @@ import os
 import datetime
 import pysubs2
 from Cython.Build.Dependencies import join_path
-from .utils import dprint
+from .utils import dprint, advanced_SAA_Events
 from .Highlight import Highlighter, highlight_args
 from .Effects import Effects, effects_args
 from . import utils
@@ -213,7 +213,7 @@ class Subtitle_Edit:
         if highlight_words is True:
             return self.highlighter(cur_word, start, end, all_subs, sub_list)
         else:
-            all_subs.append(pysubs2.SSAEvent(start=start, end=end, text=cur_word.strip(), style="MainStyle"))
+            all_subs.append(advanced_SAA_Events(start=start, end=end, text=cur_word.strip(), style="MainStyle"))
             return all_subs
 
     def short_subtitles(self, subs:list):
