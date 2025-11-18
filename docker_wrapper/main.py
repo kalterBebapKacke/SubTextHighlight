@@ -61,9 +61,6 @@ class DockerWrapper(base.BaseWrapper):
                 container_wrapper.install_packages(packages)
 
             # Execute the shapery command
-            # TODO: Write Resultion in ass file
-            # TODO: Connect Docker to Effects
-            # TODO: Test Settings
 
             dialog_json = json.dumps(
                 {"button": 0,
@@ -109,6 +106,11 @@ class DockerWrapper(base.BaseWrapper):
             if container is not None:
                 if container.status == 'running':
                     container.stop()
+                # try stopping the container just in case
+                try:
+                    container.stop()
+                except Exception:
+                    pass
                 container.remove()
 
             # stop and remove all other containers from the image if needed
@@ -170,4 +172,9 @@ class DockerWrapper(base.BaseWrapper):
             if container.image == self.image:
                 if container.status == 'running':
                     container.stop()
+                # try stopping the container just in case
+                try:
+                    container.stop()
+                except Exception:
+                    pass
                 container.remove()
