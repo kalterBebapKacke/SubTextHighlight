@@ -386,8 +386,8 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
     highlighted_texts: list = ()
     highlight_style: list = ()
     appear_style:list = ()
-    fade_in:str = ''
-    fade_out:str = ''
+    fade_in:int = 0
+    fade_out:int = 0
 
     @property
     def text_list(self):
@@ -398,12 +398,19 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
         self.highlighted_texts = [] if len(self.highlighted_texts) == 0 else self.highlighted_texts
         self.highlighted_texts.append([index_start, index_end, start, end])
 
+    def generate_fade(self, len_subs:int):
+        if len_subs == 1:
+            return fr'{{\fad({self.fade_in},{self.fade_out})}}', ''
+        else:
+            return fr'{{\fad({self.fade_in},0)}}', fr'{{\fad(0,{self.fade_out})}}'
+
+
     def __call__(self):
         return_subs = []
         if self.highlighted_texts != ():
             # If appear is true, replace the highlight styles
             if self.appear_style != ():
-                self.highlight_style = self.appear_style
+                self.highlight_style = ['', self.appear_style[0]]
 
             # Build the subs
             for index_start, index_end, start, end  in self.highlighted_texts:
@@ -416,11 +423,12 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
 
         # apply fade and return
         if len(return_subs) == 1:
-            return_subs[0].effect = self.fade_in + self.fade_out
+            return_subs[0].text = self.generate_fade(len(return_subs))[0] + return_subs[0].text
             return return_subs[0]
         else:
-            return_subs[0].effect = self.fade_in
-            return_subs[-1].effect = self.fade_out
+            fade = self.generate_fade(len(return_subs))
+            return_subs[0].text = fade[0] + return_subs[0].text
+            return_subs[-1].text = fade[1] + return_subs[-1].text
             return return_subs
 
 
