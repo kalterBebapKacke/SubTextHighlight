@@ -334,23 +334,30 @@ class args_styles:
             underline=self.underline
         )
 
-def is_text_line(line):
+def is_drawing_line(line):
     """
-    Returns True if the ASS Dialogue line contains normal subtitle text.
-    Returns False if the line is in drawing mode (\p1 or higher).
+    Determines if an ASS subtitle line contains a drawing or text.
+
+    Args:
+        line (str): A line from an ASS subtitle file
+
+    Returns:
+        bool: True if the line contains a drawing, False if it's text
+
+    Examples:
+        >>> is_drawing_line("Can I help you? Hmm?")
+        False
+        >>> is_drawing_line("{\\an7\\pos(640,678)\\p1}m -122 18.45 b -133.05...")
+        True
     """
+    # Check if line contains drawing mode tag \p1 or higher
+    # \p0 means text mode, \p1 or higher means drawing mode
+    drawing_pattern = r'\\p[1-9]'
 
-    # Extract the Text field (10th field)
-    try:
-        text_field = line.split(",", 9)[9]
-    except IndexError:
-        return True  # If malformed, assume it's text
+    if re.search(drawing_pattern, line):
+        return True
 
-    # Check if any override block contains \p1 or higher
-    if re.search(r'\\p[1-9]', text_field):
-        return False  # It's a drawing line
-
-    return True  # No drawing tags, so it's text
+    return False
 
 class subs_builder():
 
@@ -414,19 +421,19 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
 
     def __call__(self):
         return_subs = []
-        if self.highlighted_texts != () or self.highlighted_texts != []:
+        if self.highlighted_texts != () and self.highlighted_texts != []:
             # If appear is true, replace the highlight styles
-            if self.appear_style != () or self.appear_style != []:
+            if self.appear_style != () and self.appear_style != []:
                 self.highlight_style = ['', self.appear_style[0]]
 
             # Build the subs
             for index_start, index_end, start, end  in self.highlighted_texts:
                 # build the text with hightlighting marks
                 text = f'{' '.join(self.text_list[0:index_start])} {self.highlight_style[0]}{' '.join(self.text_list[index_start:index_end+1])}{self.highlight_style[1]} {' '.join(self.text_list[index_end+1:])}'
-                return_subs.append(pysubs2.SSAEvent(text=text.strip(), start=start, end=end, style="MainStyle"))
+                return_subs.append(pysubs2.SSAEvent(text=text.strip(), start=start, end=end, style="MainStyle", layer=self.layer))
 
         else:
-            return_subs = [pysubs2.SSAEvent(text=self.text, start=self.start, end=self.end, style="MainStyle")]
+            return_subs = [pysubs2.SSAEvent(text=self.text, start=self.start, end=self.end, style="MainStyle", layer=self.layer)]
 
         # apply fade and return
         if len(return_subs) == 1:

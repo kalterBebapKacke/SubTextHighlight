@@ -52,7 +52,7 @@ class Effects:
 
         if self.args.args_border is not None:
             # Implement rounded borders
-            self.rounded_borders(subs, sub_file)
+            subs = self.rounded_borders(subs, sub_file)
         return subs
 
     def fade(self, subs):
@@ -92,18 +92,23 @@ class Effects:
             _traceback=True,
             cleanup=True,
         )
-        print(output)
         print(output.to_string('ass'))
-        print()
-
-        # filter out text from background
+        # filter out text from background and give it the right timing
         background = list()
         events = output.events
-        for i, event in enumerate(events):
-            if not utils.is_text_line(event.text):
-                background.append(event)
+        for event in events:
+            if utils.is_drawing_line(event.text):
+                new_event = subs[0].return_background_copy()
+                new_event.start, new_event.end = event.start, event.end
+                new_event.text = event.text
+                background.append(new_event)
+
+        # Put the subs one layer up to be in front of the background
+        for sub in subs:
+            sub.layer = 1
+
         # combine both text and background
+        subs.extend(background)
 
         # return new subtitles list
-
-
+        return subs
