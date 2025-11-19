@@ -68,8 +68,7 @@ class Effects:
         return subs
 
     def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
-        # TODO: Build Subs and upgrade builder
-        # TODO: Implement function
+        # TODO: Rework for appear
         builder = utils.subs_builder()
 
         # check whether res is set, else raise error
@@ -92,7 +91,6 @@ class Effects:
             _traceback=True,
             cleanup=True,
         )
-        print(output.to_string('ass'))
         # filter out text from background and give it the right timing
         background = list()
         events = output.events
