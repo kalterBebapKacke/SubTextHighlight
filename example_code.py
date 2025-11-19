@@ -38,13 +38,15 @@ class Test_Class():
 
         self.input_video = './media/plain_video.mp4'
 
-        self.test_functions = [self.one_word_only_and_fade,
+        self.test_functions = [
+            self.one_word_only_and_fade,
             self.separate_on_period_and_highlighting,
             self.join_and_word_max,
-            self.appear
+            self.appear,
+            self.rounded_borders
         ]
 
-    def __call__(self, force_generate:bool=False):
+    def __call__(self, force_generate: bool = False):
         if not os.path.exists(self.blank_srt_path) or force_generate is True:
             self.blank_srt()
 
@@ -57,52 +59,88 @@ class Test_Class():
                 print(e)
                 print(traceback.format_exc())
 
-
     def blank_srt(self):
-        sub_args = SubTextHighlight.sub_args(input=self.input_video, output=None, subtitle_type='one_word_only', fill_sub_times=False, whisper_refine=True)
-        sub_file:pysubs2.SSAFile = SubTextHighlight.Subtitle_Edit(sub_args)()
+        sub_args = SubTextHighlight.sub_args(
+            input=self.input_video,
+            output=None,
+            subtitle_type='one_word_only',
+            fill_sub_times=False,
+            whisper_refine=True
+        )
+        sub_file: pysubs2.SSAFile = SubTextHighlight.Subtitle_Edit(sub_args)()
         sub_file.save(self.blank_srt_path)
 
-    def return_output_name(self, func):
-        return f'./test_output/{func.__name__}.mp4', f'./test_output/{func.__name__}.ass'
+    def _run_test(self, func_name, subtitle_type, fill_sub_times, word_max=None,
+                  highlight_args=None, effect_args=None, alignment=2):
+        """Helper method to run a test with given parameters"""
+        output_mp4 = f'./test_output/{func_name}.mp4'
+        output_ass = f'./test_output/{func_name}.ass'
 
-    def exec_test(self, output_mp4:str, output_ass:str, sub_args:SubTextHighlight.sub_args, highlight_args:SubTextHighlight.highlight_args = None, effect_args:SubTextHighlight.effects_args = None):
-        # executes the test on the given parameters
-        sub_args.input = self.blank_srt_path
-        sub_args.output = output_ass
-        sub_args.input_video = self.input_video
+        sub_args = SubTextHighlight.sub_args(
+            input=self.blank_srt_path,
+            output=output_ass,
+            subtitle_type=subtitle_type,
+            fill_sub_times=fill_sub_times,
+            alignment=alignment,
+            input_video=self.input_video
+        )
+
+        if word_max is not None:
+            sub_args.word_max = word_max
+
         sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
         sub_edit()
-        SubTextHighlight.utils.add_subtitles_with_ffmpeg_with_given_ass(self.input_video, output_mp4, output_ass)
+        SubTextHighlight.utils.add_subtitles_with_ffmpeg_with_given_ass(
+            self.input_video, output_mp4, output_ass
+        )
 
     def one_word_only_and_fade(self):
-        output_mp4, output_ass = self.return_output_name(self.one_word_only_and_fade)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='one_word_only', fill_sub_times=True, alignment=2)
-        effect_args = SubTextHighlight.effects_args(fade=(50, 50))
-        self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
+        self._run_test(
+            func_name='one_word_only_and_fade',
+            subtitle_type='one_word_only',
+            fill_sub_times=True,
+            effect_args=SubTextHighlight.effects_args(fade=(50, 50))
+        )
 
     def separate_on_period_and_highlighting(self):
-        output_mp4, output_ass = self.return_output_name(self.separate_on_period_and_highlighting)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='separate_on_period', fill_sub_times=False, alignment=2)
-        highlighter_args = SubTextHighlight.highlight_args(highlight_word_max=0, primarycolor='00AAFF')
-        self.exec_test(output_mp4, output_ass, sub_args, highlight_args=highlighter_args)
+        self._run_test(
+            func_name='separate_on_period_and_highlighting',
+            subtitle_type='separate_on_period',
+            fill_sub_times=False,
+            highlight_args=SubTextHighlight.highlight_args(
+                highlight_word_max=0,
+                primarycolor='00AAFF'
+            )
+        )
 
     def join_and_word_max(self):
-        output_mp4, output_ass = self.return_output_name(self.join_and_word_max)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20, alignment=2)
-        self.exec_test(output_mp4, output_ass, sub_args)
+        self._run_test(
+            func_name='join_and_word_max',
+            subtitle_type='join',
+            fill_sub_times=False,
+            word_max=20
+        )
 
     def appear(self):
-        output_mp4, output_ass = self.return_output_name(self.appear)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20, alignment=2)
-        effect_args = SubTextHighlight.effects_args(fade=(50, 50), appear=True)
-        self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
+        self._run_test(
+            func_name='appear',
+            subtitle_type='join',
+            fill_sub_times=False,
+            word_max=20,
+            effect_args=SubTextHighlight.effects_args(fade=(50, 50), appear=True)
+        )
 
     def rounded_borders(self):
-        output_mp4, output_ass = self.return_output_name(self.rounded_borders)
-        sub_args = SubTextHighlight.sub_args(input='', output='', subtitle_type='join', fill_sub_times=False, word_max=20, alignment=2)
-        effect_args = SubTextHighlight.effects_args(fade=(50, 50), appear=True, args_border=SubTextHighlight.args_border())
-        self.exec_test(output_mp4, output_ass, sub_args, effect_args=effect_args)
+        self._run_test(
+            func_name='rounded_borders',
+            subtitle_type='join',
+            fill_sub_times=False,
+            word_max=20,
+            effect_args=SubTextHighlight.effects_args(
+                fade=(50, 50),
+                args_border=SubTextHighlight.args_border()
+            )
+        )
 
 
 
@@ -110,9 +148,9 @@ class Test_Class():
 if __name__ == '__main__':
     debug()
     t = Test_Class()
-    #t(force_generate=False)
+    t(force_generate=False)
     #t.blank_srt()
     #main1()
     #main2()
     #t.separate_on_period_and_highlighting()
-    t.rounded_borders()
+    #t.rounded_borders()
