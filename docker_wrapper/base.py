@@ -74,8 +74,8 @@ def pysub2_color_to_hex(color:pysubs2.Color):
 class args_border:
 
     def __init__(self,
-        offset:int = 20,
-        radius:int = 20,
+        offset:int = 10,
+        radius:int = 10,
         transformy:int = -1,
         color:pysubs2.Color | None = None,
                  ):

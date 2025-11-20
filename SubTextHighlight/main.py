@@ -8,87 +8,42 @@ from .Effects import Effects, effects_args
 from . import utils
 import fleep
 import stable_whisper
+import dataclasses
 
 off_time = datetime.timedelta(seconds=0.025)
 
+@dataclasses.dataclass(kw_only=True)
 class sub_args(utils.args_styles):
+    """
+        Configuration for subtitle generation.
 
-    def __init__(self,
-        input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult,
-        output: str | None,
-        input_video: str | None = None,
-        subtitle_type: str = 'one_word_only',  # one_word_only, join, separate_on_period, appear
-        word_max: int = 11,
-        add_time:float = 0,
-        fill_sub_times:bool = True,
-        whisper_model: str = 'medium.en',
-        whisper_device: str = 'cpu',
-        whisper_refine:bool = False,
-        fontname: str = 'Arial',
-        fontsize: float | int = 24,
-        primarycolor: pysubs2.Color | str = pysubs2.Color(255, 255, 255),
-        backcolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0),
-        secondarycolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0, ),  # Black for border/shadow
-        outlinecolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0),
-        tertiarycolor: pysubs2.Color | str = pysubs2.Color(0, 0, 0),  # Black outline
-        outline: float | int = 1,
-        spacing: float | int = 0.75,
-        shadow: float | int = 0,
-        alignment: int = 5,
-        bold: bool = True,
-        angle: float = 0.0,
-        borderstyle: int = 1,
-        italic: bool = False,
-        underline: bool = False
-        ):
+        Attributes:
+            input (str): Path to the input to process.
+            output (str): Path where the generated subtitles will be saved.
+            input_video (str): Path to the input video, in which generated subtitles could be burned in.
+            subtitle_type (str): Subtitle formatting style. One of:
+                - 'one_word_only': One word per subtitle.
+                - 'join': Joins all words into subtitles segments with respect to the word_max parameter.
+                - 'separate_on_period': Splits subtitles at sentence boundaries.
+            word_max (int): Maximum words per subtitle segment (used only when subtitle_type is not 'one_word_only').
+            add_time (float): Extra seconds to add to each subtitle's duration.
+            fill_sub_times (bool):
+            whisper_model (str) = Controls which whisper model is used if necessary.
+            whisper_device (str) = Controls which device is used for whisper if necessary.
+            whisper_refine (bool) = Whether the results are refined for better timestamps.
+            The rest of the attributes inherit from the utils.args_styles.
         """
-            Configuration for subtitle generation.
 
-            Attributes:
-                input (str): Path to the input to process.
-                output (str): Path where the generated subtitles will be saved.
-                input_video (str): Path to the input video, in which generated subtitles could be burned in.
-                subtitle_type (str): Subtitle formatting style. One of:
-                    - 'one_word_only': One word per subtitle.
-                    - 'join': Joins all words into subtitles segments with respect to the word_max parameter.
-                    - 'separate_on_period': Splits subtitles at sentence boundaries.
-                word_max (int): Maximum words per subtitle segment (used only when subtitle_type is not 'one_word_only').
-                add_time (float): Extra seconds to add to each subtitle's duration.
-                fill_sub_times (bool):
-                whisper_model (str) = Controls which whisper model is used if necessary.
-                whisper_device (str) = Controls which device is used for whisper if necessary.
-                whisper_refine (bool) = Whether the results are refined for better timestamps.
-                The rest of the attributes inherit from the utils.args_styles.
-            """
-        super().__init__(
-            fontname,
-            fontsize,
-            primarycolor,
-            backcolor,
-            secondarycolor,  # Black for border/shadow
-            outlinecolor,   # Black outline
-            tertiarycolor,
-            outline,
-            spacing,
-            shadow,
-            alignment,
-            bold,
-            angle,
-            borderstyle,
-            italic,
-            underline
-        )
-
-        self.subtitle_type: str = subtitle_type # one_word_only, join, separate_on_period
-        self.word_max: float = word_max
-        self.add_time = add_time
-        self.input = input
-        self.output = output
-        self.input_video = input_video
-        self.whisper_model: str = whisper_model
-        self.whisper_device: str = whisper_device
-        self.fill_sub_times: bool = fill_sub_times
-        self.whisper_refine: bool = whisper_refine
+    input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult
+    output: str | None
+    input_video: str | None = None
+    subtitle_type: str = 'one_word_only'  # one_word_only, join, separate_on_period, appear
+    word_max: int = 11
+    add_time: float = 0
+    fill_sub_times: bool = True
+    whisper_model: str = 'medium.en'
+    whisper_device: str = 'cpu'
+    whisper_refine: bool = False
 
 
 

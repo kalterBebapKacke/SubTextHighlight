@@ -148,7 +148,8 @@ class Test_Class():
 if __name__ == '__main__':
     debug()
     t = Test_Class()
-    t(force_generate=False)
+    #t(force_generate=False)
+    t.separate_on_period_and_highlighting()
     #t.blank_srt()
     #main1()
     #main2()
