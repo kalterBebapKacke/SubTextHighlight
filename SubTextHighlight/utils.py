@@ -1,7 +1,6 @@
 import dataclasses
 import re
 from copy import deepcopy
-
 import pysubs2
 import stable_whisper
 import subprocess
@@ -200,118 +199,113 @@ def build_full_sub_file(string_subs:str, script_info:str):
     segments = string_subs.split('[')
     segments[1] = script_info[1:]
     segments = '['.join(segments)
+    print(segments)
     return pysubs2.SSAFile.from_string(segments)
 
 
 
-
+#@dataclasses.dataclass
+@dataclasses.dataclass(kw_only=True)
 class args_styles:
+    """
+            Subtitle style configuration class for customizing text appearance and formatting.
 
-    def __init__(self,
-        fontname:str = 'Arial',
-        fontsize:float | int = 24,
-        primarycolor:pysubs2.Color | str = pysubs2.Color(255, 255, 255),
-        backcolor:pysubs2.Color | str = pysubs2.Color(0, 0, 0),
-        secondarycolor:pysubs2.Color | str = pysubs2.Color(0, 0, 0, ),  # Black for border/shadow
-        outlinecolor:pysubs2.Color | str = pysubs2.Color(0, 0, 0),
-        tertiarycolor:pysubs2.Color | str = pysubs2.Color(0, 0, 0),       # Black outline
-        outline:float | int = 1,
-        spacing:float | int = 0.75,
-        shadow:float | int = 0,
-        alignment:int = 5,
-        bold:bool = True,
-        angle: float = 0.0,
-        borderstyle: int = 1,
-        italic: bool = False,
-        underline: bool = False
-    ):
-        """
-        Subtitle style configuration class for customizing text appearance and formatting.
+            This class provides comprehensive control over subtitle rendering including font properties,
+            colors, visual effects, and layout positioning using SubStation Alpha (SSA/ASS) format standards.
 
-        This class provides comprehensive control over subtitle rendering including font properties,
-        colors, visual effects, and layout positioning using SubStation Alpha (SSA/ASS) format standards.
+            Parameters:
+                fontname (str): Font family name. Any system-installed font can be specified.
+                    Default: 'Arial'
 
-        Parameters:
-            fontname (str): Font family name. Any system-installed font can be specified.
-                Default: 'Arial'
+                fontsize (float | int): Font size in points. Larger values create bigger text.
+                    Default: 24
 
-            fontsize (float | int): Font size in points. Larger values create bigger text.
-                Default: 24
+                primarycolor (pysubs2.Color | str): Main text fill color in RGBA format (0-255).
+                    Default: pysubs2.Color(255, 255, 255) (white)
 
-            primarycolor (pysubs2.Color | str): Main text fill color in RGBA format (0-255).
-                Default: pysubs2.Color(255, 255, 255) (white)
+                backcolor (pysubs2.Color | str): Background color behind text when using box border style.
+                    Default: pysubs2.Color(0, 0, 0) (black)
 
-            backcolor (pysubs2.Color | str): Background color behind text when using box border style.
-                Default: pysubs2.Color(0, 0, 0) (black)
+                secondarycolor (pysubs2.Color | str): Secondary color for karaoke effects and transitions.
+                    Default: pysubs2.Color(0, 0, 0) (black)
 
-            secondarycolor (pysubs2.Color | str): Secondary color for karaoke effects and transitions.
-                Default: pysubs2.Color(0, 0, 0) (black)
+                outlinecolor (pysubs2.Color | str): Color of text outline/border for readability.
+                    Default: pysubs2.Color(0, 0, 0) (black)
 
-            outlinecolor (pysubs2.Color | str): Color of text outline/border for readability.
-                Default: pysubs2.Color(0, 0, 0) (black)
+                tertiarycolor (pysubs2.Color | str): Additional outline color for complex border effects.
+                    Default: pysubs2.Color(0, 0, 0) (black)
 
-            tertiarycolor (pysubs2.Color | str): Additional outline color for complex border effects.
-                Default: pysubs2.Color(0, 0, 0) (black)
+                outline (float | int): Thickness of text outline in pixels. Higher values create thicker borders.
+                    Default: 1
 
-            outline (float | int): Thickness of text outline in pixels. Higher values create thicker borders.
-                Default: 1
+                spacing (float | int): Line spacing multiplier. Values <1.0 create tighter spacing, >1.0 looser.
+                    Default: 0.75
 
-            spacing (float | int): Line spacing multiplier. Values <1.0 create tighter spacing, >1.0 looser.
-                Default: 0.75
+                shadow (float | int): Drop shadow offset in pixels. 0 disables shadow effect.
+                    Default: 0
 
-            shadow (float | int): Drop shadow offset in pixels. 0 disables shadow effect.
-                Default: 0
+                alignment (int): Text positioning using numpad layout:
+                    1-3: Bottom (left/center/right), 4-6: Middle (left/center/right), 7-9: Top (left/center/right)
+                    Default: 5 (middle-center)
 
-            alignment (int): Text positioning using numpad layout:
-                1-3: Bottom (left/center/right), 4-6: Middle (left/center/right), 7-9: Top (left/center/right)
-                Default: 5 (middle-center)
+                bold (bool): Enable bold text formatting for improved readability.
+                    Default: True
 
-            bold (bool): Enable bold text formatting for improved readability.
-                Default: True
+                angle (float): Text rotation angle in degrees. Positive values rotate clockwise.
+                    Default: 0.0
 
-            angle (float): Text rotation angle in degrees. Positive values rotate clockwise.
-                Default: 0.0
+                borderstyle (int): Border rendering style. 1=outline border, 3=opaque box background.
+                    Default: 1
 
-            borderstyle (int): Border rendering style. 1=outline border, 3=opaque box background.
-                Default: 1
+                italic (bool): Enable italic text formatting.
+                    Default: False
 
-            italic (bool): Enable italic text formatting.
-                Default: False
+                underline (bool): Enable underline text formatting.
+                    Default: False
 
-            underline (bool): Enable underline text formatting.
-                Default: False
+            Example:
+                >>> # Create style with yellow text and blue outline
+                >>> style = args_styles(
+                ...     fontsize=28,
+                ...     primarycolor=pysubs2.Color(255, 255, 0),
+                ...     outlinecolor=pysubs2.Color(0, 100, 255),
+                ...     outline=2,
+                ...     alignment=2
+                ... )
 
-        Example:
-            >>> # Create style with yellow text and blue outline
-            >>> style = args_styles(
-            ...     fontsize=28,
-            ...     primarycolor=pysubs2.Color(255, 255, 0),
-            ...     outlinecolor=pysubs2.Color(0, 100, 255),
-            ...     outline=2,
-            ...     alignment=2
-            ... )
+            Note:
+                All color parameters accept either pysubs2.Color objects or compatible color strings.
+                The default configuration creates bold white text with black outline, optimized for
+                readability across various video backgrounds.
+            """
 
-        Note:
-            All color parameters accept either pysubs2.Color objects or compatible color strings.
-            The default configuration creates bold white text with black outline, optimized for
-            readability across various video backgrounds.
-        """
-        self.fontname = fontname
-        self.fontsize = fontsize
-        self.primarycolor = import_color(primarycolor)
-        self.backcolor = import_color(backcolor)
-        self.secondarycolor = import_color(secondarycolor) # Black for border/shadow
-        self.outlinecolor = import_color(outlinecolor) # Black outline
-        self.tertiarycolor = import_color(tertiarycolor)
-        self.outline = outline
-        self.spacing = spacing
-        self.shadow = shadow
-        self.alignment = alignment
-        self.bold = bold
-        self.angle: float = angle
-        self.borderstyle: int = borderstyle
-        self.italic: bool = italic
-        self.underline: bool = underline
+
+    fontname: str = 'Arial'
+    fontsize: float | int = 24
+    primarycolor: pysubs2.Color | str = dataclasses.field(
+        default_factory=lambda: pysubs2.Color(255, 255, 255)
+    )
+    backcolor: pysubs2.Color | str = dataclasses.field(
+        default_factory=lambda: pysubs2.Color(0, 0, 0)
+    )
+    secondarycolor: pysubs2.Color | str = dataclasses.field(
+        default_factory=lambda: pysubs2.Color(0, 0, 0)
+    ) # Black for border/shadow
+    outlinecolor: pysubs2.Color | str = dataclasses.field(
+        default_factory=lambda: pysubs2.Color(0, 0, 0)
+    )
+    tertiarycolor: pysubs2.Color | str = dataclasses.field(
+        default_factory=lambda: pysubs2.Color(0, 0, 0)
+    )
+    outline: float | int = 1
+    spacing: float | int = 0.75
+    shadow: float | int = 0
+    alignment: int = 5
+    bold: bool = True
+    angle: float = 0.0
+    borderstyle: int = 1
+    italic: bool = False
+    underline: bool = False
 
 
     def return_style(self):

@@ -2,49 +2,11 @@ import os
 import pysubs2
 from . import utils
 from .utils import dprint, advanced_SAA_Events
+import dataclasses
 
-
+@dataclasses.dataclass(kw_only=True)
 class highlight_args(utils.args_styles):
-
-    def __init__(self,
-        highlight_word_max:int | None = 0,
-        fontname: str | None= None,
-        fontsize: float | int | None = None,
-        primarycolor: pysubs2.Color | str | None = None,
-        backcolor: pysubs2.Color | str | None = None,
-        secondarycolor: pysubs2.Color | str | None = None,  # Black for border/shadow
-        outlinecolor: pysubs2.Color | str | None = None,
-        tertiarycolor: pysubs2.Color | str | None = None,  # Black outline
-        outline: float | int | None = None,
-        spacing: float | int | None = None,
-        shadow: float | int | None = None,
-        alignment: int | None = None,
-        bold: bool | None = None,
-        angle: float | None = None,
-        borderstyle: int | None = None,
-        italic: bool | None = None,
-        underline: bool | None = None,
-        ):
-        super().__init__(
-            fontname,
-            fontsize,
-            primarycolor,
-            backcolor,
-            secondarycolor,  # Black for border/shadow
-            outlinecolor,   # Black outline
-            tertiarycolor,
-            outline,
-            spacing,
-            shadow,
-            alignment,
-            bold,
-            angle,
-            borderstyle,
-            italic,
-            underline
-        )
-
-        self.highlight_word_max = highlight_word_max
+    highlight_word_max: int | None = 0
 
     def replace_main_style(self, main_style: pysubs2.SSAStyle):
         self.fontname = self.fontname if self.fontname is not None else main_style.fontname

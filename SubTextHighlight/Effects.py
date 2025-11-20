@@ -69,6 +69,7 @@ class Effects:
 
     def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
         # TODO: Rework for appear
+        # TODO: Highlight with rounded borders
         builder = utils.subs_builder()
 
         # check whether res is set, else raise error
