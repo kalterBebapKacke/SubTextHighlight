@@ -199,7 +199,6 @@ def build_full_sub_file(string_subs:str, script_info:str):
     segments = string_subs.split('[')
     segments[1] = script_info[1:]
     segments = '['.join(segments)
-    print(segments)
     return pysubs2.SSAFile.from_string(segments)
 
 

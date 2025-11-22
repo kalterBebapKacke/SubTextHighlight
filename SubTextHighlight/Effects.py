@@ -79,6 +79,17 @@ class Effects:
         # build part of the background without the highlighting split (if one is given)
         text_only_subs = builder(subs, 'text_only')
 
+
+
+        ####### TEST PURPOSE
+        subs[0].text = 'Test.        Test.'
+        subs[1].text = '      '
+        ####### TEST PURPOSE
+
+
+
+
+
         # make copy of saafile and replace events with text only
         sub_file_copy = copy.deepcopy(sub_file)
         sub_file_copy.events = text_only_subs
