@@ -309,6 +309,13 @@ class args_styles:
 
 
     def return_style(self):
+        # convert Colors to pysub2.Color if in string format
+        self.primarycolor = hex_to_pysub2_color(self.primarycolor) if type(self.primarycolor) is str else self.primarycolor
+        self.backcolor = hex_to_pysub2_color(self.backcolor) if type(self.backcolor) is str else self.backcolor
+        self.secondarycolor = hex_to_pysub2_color(self.secondarycolor) if type(self.secondarycolor) is str else self.secondarycolor
+        self.outlinecolor= hex_to_pysub2_color(self.outlinecolor) if type(self.outlinecolor) is str else self.outlinecolor
+        self.tertiarycolor = hex_to_pysub2_color(self.tertiarycolor) if type(self.tertiarycolor) is str else self.tertiarycolor
+        # return the pysub2 style
         return pysubs2.SSAStyle(
             fontname=self.fontname,
             fontsize=self.fontsize,
