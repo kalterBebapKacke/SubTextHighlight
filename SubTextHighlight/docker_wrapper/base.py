@@ -73,14 +73,16 @@ def pysub2_color_to_hex(color:pysubs2.Color):
 
 class args_border:
 
+    # container_run_func needs to take client and name as a input
     def __init__(self,
-        offset:int = 20,
-        radius:int = 20,
+        offset:int = 5,
+        radius:int = 5,
         transformy:int = -1,
         color:pysubs2.Color | None = None,
+        use_borders_as_highlight:bool = False,
         fonts_path: list | str | None = None,
         packages: list[str] | None = None,
-        container_run_func : None=None # container_run_func needs to take client and name as a input
+        container_run_func : None=None
                  ):
         self.offset:int = offset
         self.radius:int = radius
@@ -93,6 +95,7 @@ class args_border:
         self.packages:list[str] = packages
         self.fonts_path:list[str] = fonts_path
         self.container_run_func = container_run_func
+        self.use_borders_as_highlight = use_borders_as_highlight
 
     def __call__(self):
         return {

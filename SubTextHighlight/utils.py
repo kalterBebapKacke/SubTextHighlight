@@ -362,11 +362,14 @@ def is_drawing_line(line):
 class subs_builder():
 
     def __init__(self):
-        pass
+        # tracks the dimensions of the builded subs, which is important to rebuild the backgrounds, if present
+        self.dimensions_tracker = list()
 
     def __call__(self, subs, type=None): # text_only
         if type == 'text_only':
             return self.text_only_build(subs)
+        if type == 'return_only_highlighted_texts':
+            return self.return_only_highlighted_texts(subs)
         else:
             return self.normal_build(subs)
 
@@ -383,6 +386,15 @@ class subs_builder():
     def text_only_build(self, subs:list):
         return [sub.return_saa_event() for sub in subs]
 
+    def return_only_highlighted_texts(self, subs:list):
+        return_subs = list()
+        for sub in subs:
+            new_subs = sub.return_only_highlighted_texts()
+            # tracks length of subs
+            self.dimensions_tracker.append(len(new_subs))
+            return_subs.extend(new_subs)
+        return return_subs
+
 @dataclasses.dataclass(repr=False, eq=False, order=False)
 class advanced_SAA_Events(pysubs2.SSAEvent):
 
@@ -390,8 +402,8 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
     highlighted_texts: list = ()
     highlight_style: list = ()
     appear_style:list = ()
-    fade_in:int = 0
-    fade_out:int = 0
+    fade_in:float = 0
+    fade_out:float = 0
 
     @property
     def text_list(self):
@@ -419,6 +431,13 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
         copy.appear_style = []
         return copy
 
+    def return_only_highlighted_texts(self):
+        return_list = []
+        for index_start, index_end, start, end in self.highlighted_texts:
+            return_list.append(pysubs2.SSAEvent(text=' '.join(self.text_list[index_start:index_end+1]), start=start, end=end, style="MainStyle", layer=self.layer))
+        return return_list
+
+
     def __call__(self):
         return_subs = []
         if self.highlighted_texts != () and self.highlighted_texts != []:
@@ -444,5 +463,26 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
             return_subs[0].text = fade[0] + return_subs[0].text
             return_subs[-1].text = fade[1] + return_subs[-1].text
             return return_subs
+
+@dataclasses.dataclass(repr=False, eq=False, order=False)
+class Background_event(pysubs2.SSAEvent):
+    # position offset == 1/2 remaining text
+    background:str = ""
+    fade_in:float = 0
+    fade_out:float = 0
+    highlight_position_offset:int = 0
+
+    @property
+    def background_list(self):
+        return self.background.split(r"\ ".strip())
+
+    def __call__(self):
+        return_subs = []
+        if self.highlight_position_offset != 0:
+            pass # r"\ ".strip().join(self.background_list)
+        else:
+            text = fr'{{\fad({self.fade_in},{self.fade_out})}}{self.background}'
+
+        return pysubs2.SSAEvent(text=text, start=self.start, end=self.end, style="MainStyle", layer=0)
 
 

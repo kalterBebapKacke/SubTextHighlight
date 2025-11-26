@@ -68,7 +68,7 @@ class Effects:
         return subs
 
     def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
-        # TODO: Rework for appear
+        # TODO: Color Background
         # TODO: Highlight with rounded borders
         builder = utils.subs_builder()
 
@@ -76,23 +76,17 @@ class Effects:
         if not utils.check_for_PlayRes(sub_file):
             raise RuntimeError('The subtitle file does not contain a Resolution. For the right scaling of the subtitles a input with a video resolution has to be set.')
 
-        # build part of the background without the highlighting split (if one is given)
-        text_only_subs = builder(subs, 'text_only')
+        # Check if appear is active and if so throw an expectation
 
-
-
-        ####### TEST PURPOSE
-        subs[0].text = 'Test.        Test.'
-        subs[1].text = '      '
-        ####### TEST PURPOSE
-
-
-
-
+        # Check if Borders are used as highlight and build part of the background (if one is given)
+        if self.args.args_border.use_borders_as_highlight:
+            use_subs = builder(subs, 'return_only_highlighted_texts')
+        else:
+            use_subs = builder(subs, 'text_only')
 
         # make copy of saafile and replace events with text only
         sub_file_copy = copy.deepcopy(sub_file)
-        sub_file_copy.events = text_only_subs
+        sub_file_copy.events = use_subs
 
         # start the docker wrapper and execute the script
         # only execute on the part, that becomes the background
@@ -106,12 +100,16 @@ class Effects:
         # filter out text from background and give it the right timing
         background = list()
         events = output.events
-        for event in events:
-            if utils.is_drawing_line(event.text):
-                new_event = subs[0].return_background_copy()
-                new_event.start, new_event.end = event.start, event.end
-                new_event.text = event.text
-                background.append(new_event)
+
+        # filter drawings(backgrounds from the rest of the output events
+        events = [event for event in events if utils.is_drawing_line(event.text)]
+
+        # Background logic
+        if self.args.args_border.use_borders_as_highlight:
+            pass
+        else:
+            for event in events:
+                background.append(utils.Background_event(background=event.text, start=event.start, end=event.end, fade_in=self.args.fade_in_duration, fade_out=self.args.fade_out_duration))
 
         # Put the subs one layer up to be in front of the background
         for sub in subs:

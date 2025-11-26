@@ -142,6 +142,20 @@ class Test_Class():
             )
         )
 
+    def rounded_background_highlight(self):
+        self._run_test(
+            func_name='rounded_background_highlight',
+            subtitle_type='separate_on_period',
+            fill_sub_times=False,
+            highlight_args=SubTextHighlight.highlight_args(
+                highlight_word_max=0,
+            ),
+            effect_args=SubTextHighlight.effects_args(
+                fade=(50, 50),
+                args_border=SubTextHighlight.args_border(use_borders_as_highlight=True)
+            )
+        )
+
 
 
 
@@ -155,3 +169,4 @@ if __name__ == '__main__':
     #main2()
     #t.separate_on_period_and_highlighting()
     t.rounded_borders()
+    #t.rounded_background_highlight()
