@@ -88,6 +88,8 @@ class Effects:
         sub_file_copy = copy.deepcopy(sub_file)
         sub_file_copy.events = use_subs
 
+        print(sub_file_copy.to_string('ass'))
+
         # start the docker wrapper and execute the script
         # only execute on the part, that becomes the background
         dw = docker_wrapper.main.DockerWrapper()
@@ -101,12 +103,14 @@ class Effects:
         background = list()
         events = output.events
 
-        # filter drawings(backgrounds from the rest of the output events
+        # filter drawings (backgrounds) from the rest of the output events
         events = [event for event in events if utils.is_drawing_line(event.text)]
 
         # Background logic
         if self.args.args_border.use_borders_as_highlight:
             pass
+            # get length of highlighted text
+
         else:
             for event in events:
                 background.append(utils.Background_event(background=event.text, start=event.start, end=event.end, fade_in=self.args.fade_in_duration, fade_out=self.args.fade_out_duration))
