@@ -5,15 +5,16 @@ import json
 
 class BaseWrapper:
 
-    def __init__(self):
+    def __init__(self,
+                 force_install:bool = False):
         # Check for the install
         self.installed, self.docker = self.check_docker_installation()
 
         # Ask if package is not installed
-        if not self.installed:
+        if force_install and not self.installed:
+            self.install_docker_package()
+        elif not self.installed:
             self.ask_install_docker_package()
-
-        self.logger = logging.getLogger(__name__)
 
     def check_docker_installation(self):
         try:
@@ -32,15 +33,18 @@ class BaseWrapper:
 
         # Review answer
         if answer == 'y':
-            os.system('pip install -r docker')
-
-            # verify docker install
-            self.installed, self.docker = self.check_docker_installation()
-            if not self.installed:
-                raise ImportError('Docker could not be imported')
+            self.install_docker_package()
 
         elif answer == 'n':
             pass
+
+    def install_docker_package(self):
+        os.system('pip install -r docker')
+
+        # verify docker install
+        self.installed, self.docker = self.check_docker_installation()
+        if not self.installed:
+            raise ImportError('Docker could not be imported')
 
 
     def get_client(self):

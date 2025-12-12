@@ -15,7 +15,8 @@ class DockerWrapper(base.BaseWrapper):
 
         # Only continue if package is installed
         if self.installed:
-            self.image_name = 'n01d3a/aegisub-cli:ShaperyRoundedBorders'
+            self.image_name = 'n01d3a/aegisub-cli:ShaperyRoundedBorders-2.0'
+            self.rep_name = 'n01d3a/aegisub-cli'
             self.client = self.get_client()
             self.image = self.check_image_v2()
 
@@ -25,7 +26,7 @@ class DockerWrapper(base.BaseWrapper):
                  return_pysubsSSAFile:bool = True, # container_run_func needs to take client and name as a input
                  _traceback:bool = False,
                  verbose:bool = False,
-                 cleanup:bool = False,
+                 cleanup:bool = False
                  ):
 
         if not self.installed and not self.docker_installed:
@@ -164,3 +165,12 @@ class DockerWrapper(base.BaseWrapper):
                 if container.status == 'running':
                     container.stop()
                 container.remove()
+
+    def cleanup_old_images(self):
+        images = self.client.images.list(self.rep_name)
+
+        # delete all images with different tags
+        for image in images:
+            tag = image.attrs['RepoTags'][0]
+            if not tag == self.image_name:
+                self.client.images.remove(tag, force=True)
