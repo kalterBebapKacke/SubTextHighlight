@@ -43,7 +43,9 @@ class Test_Class():
             self.separate_on_period_and_highlighting,
             self.join_and_word_max,
             self.appear,
-            self.rounded_borders
+            self.rounded_borders,
+            self.rounded_background_highlight(),
+            self.rounded_background_appear()
         ]
 
     def __call__(self, force_generate: bool = False):
