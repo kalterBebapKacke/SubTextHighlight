@@ -77,14 +77,20 @@ class Effects:
             raise RuntimeError('The subtitle file does not contain a Resolution. For the right scaling of the subtitles a input with a video resolution has to be set.')
 
         # Check if appear is active and if so throw an expectation
+        if self.args.args_border.use_borders_as_highlight and self.args.appear:
+            raise RuntimeError('Cant use borders as highlighted subtitles and the appear at the same time.')
 
         # Check if Borders are used as highlight and build part of the background (if one is given)
-        if self.args.args_border.use_borders_as_highlight:
-            use_subs = builder(subs, 'return_only_highlighted_texts')
-        else:
-            use_subs = builder(subs, 'text_only')
+        use_subs = builder(subs)
 
-        # make copy of saafile and replace events with text only
+        # if borders as highlight, replace highlight with appear
+        if self.args.args_border.use_borders_as_highlight:
+            highlight_style = subs[0].highlight_style
+            for sub in use_subs:
+                sub.text = r'{\alpha&HFF}' + sub.text
+                sub.text = sub.text.replace(highlight_style[1], highlight_style[1] + r'{\alpha&HFF}')
+
+        # make copy of ssafile and replace events with text only
         sub_file_copy = copy.deepcopy(sub_file)
         sub_file_copy.events = use_subs
 
@@ -106,21 +112,14 @@ class Effects:
         # filter drawings (backgrounds) from the rest of the output events
         events = [event for event in events if utils.is_drawing_line(event.text)]
 
-        # Background logic
-        if self.args.args_border.use_borders_as_highlight:
-            pass
-            # get length of highlighted text
-
-        else:
-            for event in events:
-                background.append(utils.Background_event(background=event.text, start=event.start, end=event.end, fade_in=self.args.fade_in_duration, fade_out=self.args.fade_out_duration))
+        backgrounds = [utils.background_wrapper(event) for event in events]
 
         # Put the subs one layer up to be in front of the background
         for sub in subs:
             sub.layer = 1
 
         # combine both text and background
-        subs.extend(background)
+        subs.extend(backgrounds)
 
         # return new subtitles list
         return subs
