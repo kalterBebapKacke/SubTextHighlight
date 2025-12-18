@@ -160,10 +160,27 @@ class DockerWrapper(base.BaseWrapper):
 
     def cleanup(self):
         containers = self.client.containers.list(all=True)
+
+        # check if image of container can be opened, else delete container
+        new_containers = list()
+        for container in containers:
+            try:
+                image = container.image
+                new_containers.append(container)
+            except self.docker.errors.ImageNotFound:
+                container.remove(force=True)
+        containers = new_containers
+
+        # stop and remove containers
         for container in containers:
             if container.image == self.image:
                 if container.status == 'running':
                     container.stop()
+                # try stopping the container just in case
+                try:
+                    container.stop()
+                except Exception:
+                    pass
                 container.remove()
 
     def cleanup_old_images(self):

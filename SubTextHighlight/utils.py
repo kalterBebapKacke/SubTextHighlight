@@ -485,4 +485,10 @@ class Background_event(pysubs2.SSAEvent):
 
         return pysubs2.SSAEvent(text=text, start=self.start, end=self.end, style="MainStyle", layer=0)
 
+class background_wrapper():
 
+    def __init__(self, background_event:pysubs2.SSAEvent):
+        self.event = background_event
+
+    def __call__(self):
+        return self.event
