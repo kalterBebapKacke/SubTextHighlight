@@ -44,8 +44,8 @@ class Test_Class():
             self.join_and_word_max,
             self.appear,
             self.rounded_borders,
-            self.rounded_background_highlight(),
-            self.rounded_background_appear()
+            self.rounded_background_highlight,
+            self.rounded_background_appear
         ]
 
     def __call__(self, force_generate: bool = False):
@@ -154,7 +154,7 @@ class Test_Class():
             ),
             effect_args=SubTextHighlight.effects_args(
                 fade=(50, 50),
-                args_border=SubTextHighlight.args_border(use_borders_as_highlight=True)
+                args_border=SubTextHighlight.args_border(use_borders_as_highlight=True, height_scaling=1.0)
             )
         )
 
@@ -183,6 +183,6 @@ if __name__ == '__main__':
     #main2()
     #t.separate_on_period_and_highlighting()
     #t.rounded_borders()
-    #t.rounded_background_highlight()
-    t.rounded_background_appear()
+    t.rounded_background_highlight()
+    #t.rounded_background_appear()
     #t.appear()

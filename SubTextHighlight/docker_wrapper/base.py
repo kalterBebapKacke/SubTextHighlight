@@ -9,6 +9,8 @@ class BaseWrapper:
                  force_install:bool = False):
         # Check for the install
         self.installed, self.docker = self.check_docker_installation()
+        self.force_install = force_install
+        self.logger = logging.getLogger("__main__")
 
         # Ask if package is not installed
         if force_install and not self.installed:
@@ -79,9 +81,10 @@ class args_border:
 
     # container_run_func needs to take client and name as a input
     def __init__(self,
-        offset:int = 5,
-        radius:int = 5,
-        transformy:int = -1,
+        offset:int = 6,
+        radius:int = 6,
+        transformy:int = 1,
+        height_scaling:float = 1.2,
         color:pysubs2.Color | None = None,
         use_borders_as_highlight:bool = False,
         fonts_path: list | str | None = None,
@@ -100,12 +103,14 @@ class args_border:
         self.fonts_path:list[str] = fonts_path
         self.container_run_func = container_run_func
         self.use_borders_as_highlight = use_borders_as_highlight
+        self.height_scaling:float = height_scaling
 
     def __call__(self):
         return {
             "offset": self.offset,
             "radius": self.radius,
             "transformY": self.transformy,
+            "heightscaling": self.height_scaling,
             "borderColor": self.bordercolor,
             "borderAlpha": self.borderalpha,
         }

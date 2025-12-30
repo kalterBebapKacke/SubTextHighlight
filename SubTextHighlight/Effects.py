@@ -68,8 +68,6 @@ class Effects:
         return subs
 
     def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
-        # TODO: Color Background
-        # TODO: Highlight with rounded borders
         builder = utils.subs_builder()
 
         # check whether res is set, else raise error
@@ -90,11 +88,11 @@ class Effects:
                 sub.text = r'{\alpha&HFF}' + sub.text
                 sub.text = sub.text.replace(highlight_style[1], highlight_style[1] + r'{\alpha&HFF}')
 
-        # make copy of ssafile and replace events with text only
+        # make copy of ssafile
         sub_file_copy = copy.deepcopy(sub_file)
         sub_file_copy.events = use_subs
 
-        print(sub_file_copy.to_string('ass'))
+        #print(sub_file_copy.to_string('ass'))
 
         # start the docker wrapper and execute the script
         # only execute on the part, that becomes the background
@@ -105,21 +103,18 @@ class Effects:
             _traceback=True,
             cleanup=True,
         )
-        # filter out text from background and give it the right timing
-        background = list()
+
         events = output.events
 
-        # filter drawings (backgrounds) from the rest of the output events
-        events = [event for event in events if utils.is_drawing_line(event.text)]
+        # fix the fad tag issue
+        segmented_subs = utils.fix_fad_issue(events)
 
-        backgrounds = [utils.background_wrapper(event) for event in events]
-
-        # Put the subs one layer up to be in front of the background
+        # layer the subs
         for sub in subs:
             sub.layer = 1
 
-        # combine both text and background
-        subs.extend(backgrounds)
+        # merge subs and backgrounds
+        for x in segmented_subs:
+            subs.extend([utils.background_wrapper(event) for event in x[1:]])
 
-        # return new subtitles list
         return subs
