@@ -8,14 +8,14 @@ import json
 
 class DockerWrapper(base.BaseWrapper):
 
-    def __init__(self):
+    def __init__(self, force_install:bool = False):
         # Check for the install
-        super().__init__()
+        super().__init__(force_install)
         self.docker_installed = False
 
         # Only continue if package is installed
         if self.installed:
-            self.image_name = 'n01d3a/aegisub-cli:ShaperyRoundedBorders-2.0'
+            self.image_name = 'n01d3a/aegisub-cli:ShaperyRoundedBorders-2.3'
             self.rep_name = 'n01d3a/aegisub-cli'
             self.client = self.get_client()
             self.image = self.check_image_v2()
@@ -65,7 +65,7 @@ class DockerWrapper(base.BaseWrapper):
                  }
             )
 
-            # aegisub-cli --dialog '{"button": 0, "values": {"offset": 20, "radius": 20, "transformY": -1, "borderColor": "&H000000&", "borderAlpha": "&H00"}}' --automation jz.RoundedBorders.lua input.ass output.ass "Create Rounded Border"
+            # aegisub-cli --dialog '{"button": 0, "values": {"offset": 20, "radius": 20, "transformY": -1, "heightscaling": 1.3, "borderColor": "&H000000&", "borderAlpha": "&H00"}}' --automation jz.RoundedBorders.lua input.ass output.ass "Create Rounded Border"
             shapery_command_test = 'aegisub-cli --automation ILL.Shapery.moon --loglevel 4 input.ass output.ass ": Shapery macros :/Shape expand" || true'
             shapery_command = ['aegisub-cli', f"--dialog '{dialog_json}'",
                                '--automation', 'jz.RoundedBorders.lua',
@@ -140,7 +140,10 @@ class DockerWrapper(base.BaseWrapper):
         except self.docker.errors.ImageNotFound:
 
             # ask to install the docker image
-            answer = self.ask_install_docker_image()
+            if self.force_install:
+                answer = True
+            else:
+                answer = self.ask_install_docker_image()
 
             # if yes install docker image and set variable
             if answer:

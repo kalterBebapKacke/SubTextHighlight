@@ -359,6 +359,55 @@ def is_drawing_line(line):
 
     return False
 
+def segment_subs(events:list):
+    result = []
+    for event in events:
+        if not is_drawing_line(event.text):
+            result.append([event])
+        else:
+            result[-1].append(event)
+    return result
+
+def separate_tags(text:str):
+    styles = text[text.find('{')+1:text.find('}')]
+    return styles
+
+def filter_out_fad_tag(tag:str):
+    tags = tag.split(r"\ "[0])
+    for tag in tags:
+        if tag.__contains__('fad'):
+            return tag
+    return None
+
+def fix_fad_issue(events:list):
+    # check which tags dont contain an fad and then insert the needed fad tag
+    segments = segment_subs(events)
+    results = list()
+    for segment in segments:
+        text_tag = separate_tags(segment[0].text)
+        background_tags = [separate_tags(x.text) for x in segment[1:]]
+
+        # only continue if a fad statement is present
+        if text_tag.__contains__('fad'):
+            fad_tag = filter_out_fad_tag(text_tag)
+            new_background_events = list()
+
+            # only insert where the fad tag is not present
+            for i, background_tag in enumerate(background_tags):
+                if not fad_tag in background_tag:
+
+                    # insert the new tags into the original text
+                    new_background_events.append(background_tag + '\\'+ fad_tag)
+
+                    # insert the new tags into the original text
+                    segment[i+1].text = segment[i+1].text.replace(background_tag, background_tag + '\\'+ fad_tag)
+
+
+            results.append(new_background_events)
+    return segments
+
+
+
 class subs_builder():
 
     def __init__(self):
