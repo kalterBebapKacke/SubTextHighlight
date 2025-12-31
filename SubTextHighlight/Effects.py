@@ -15,11 +15,21 @@ class effects_args:
         args_border:docker_wrapper.base.args_border | None = None,
                  ):
         """
-        fade: Controls the fade-in and fade-out durations.
-        - fade[0]: Duration of fade-in (in seconds).
-        - fade[1]: Duration of fade-out (in seconds).
-        Defaults to (0.0, 0.0) — no fading.
-        - 'appear': Words accumulate as they appear.
+            Configuration for visual subtitle effects and animations.
+
+            This class defines how subtitles transition onto the screen and whether
+            additional decorative elements, like borders, are applied.
+
+            Attributes:
+                fade_in_duration (float): Time in seconds for the subtitle to transition
+                    from transparent to opaque.
+                fade_out_duration (float): Time in seconds for the subtitle to transition
+                    from opaque to transparent.
+                appear (bool): If True, words in a sequence stay on screen as new ones
+                    appear (cumulative display). If False, words typically replace
+                    one another.
+                args_border (docker_wrapper.base.args_border, optional): Configuration
+                    object for border-specific styling and effects.
         """
         self.fade_in_duration = fade[0]
         self.fade_out_duration = fade[1]

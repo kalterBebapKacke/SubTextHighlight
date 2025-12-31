@@ -9,6 +9,20 @@ import os
 import json
 
 def use_whisper(path:str, model='base.en', device='cpu', refine:bool=False):
+    """
+        Transcribes audio or video files into word-level subtitles using stable-whisper.
+
+        Args:
+            path (str): The file path to the input video or audio file.
+            model (str, optional): The Whisper model size/language to use. Defaults to 'base.en'.
+            device (str, optional): The device to run inference on (e.g., 'cpu', 'cuda').
+                Defaults to 'cpu'.
+            refine (bool, optional): If True, applies an additional refinement pass to improve
+                timestamp accuracy using voice frequency analysis. Defaults to False.
+
+        Returns:
+            str: The generated subtitles in SRT/VTT format content.
+        """
     model = stable_whisper.load_model(model, device=device)
     result = model.transcribe(audio=path, verbose=None)
     if refine:

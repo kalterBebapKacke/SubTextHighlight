@@ -6,6 +6,17 @@ import dataclasses
 
 @dataclasses.dataclass(kw_only=True)
 class highlight_args(utils.args_styles):
+    """
+        Configuration arguments for subtitle text highlighting.
+
+        Inherits visual styling properties from `utils.args_styles` and adds
+        specific constraints for the highlighting engine.
+
+        Attributes:
+            highlight_word_max (int | None): The maximum number of words to be
+                highlighted simultaneously in a single subtitle event.
+                Defaults to 0 (no limit or disabled).
+        """
     highlight_word_max: int | None = 0
 
     def replace_main_style(self, main_style: pysubs2.SSAStyle):

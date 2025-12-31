@@ -21,24 +21,37 @@ off_time = datetime.timedelta(seconds=0.025)
 @dataclasses.dataclass(kw_only=True)
 class sub_args(utils.args_styles):
     """
-        Configuration for subtitle generation.
+    Configuration for the core subtitle generation and transcription process.
 
-        Attributes:
-            input (str): Path to the input to process.
-            output (str): Path where the generated subtitles will be saved.
-            input_video (str): Path to the input video, in which generated subtitles could be burned in.
-            subtitle_type (str): Subtitle formatting style. One of:
-                - 'one_word_only': One word per subtitle.
-                - 'join': Joins all words into subtitles segments with respect to the word_max parameter.
-                - 'separate_on_period': Splits subtitles at sentence boundaries.
-            word_max (int): Maximum words per subtitle segment (used only when subtitle_type is not 'one_word_only').
-            add_time (float): Extra seconds to add to each subtitle's duration.
-            fill_sub_times (bool):
-            whisper_model (str) = Controls which whisper model is used if necessary.
-            whisper_device (str) = Controls which device is used for whisper if necessary.
-            whisper_refine (bool) = Whether the results are refined for better timestamps.
-            The rest of the attributes inherit from the utils.args_styles.
-        """
+    This class defines the input/output paths, the transcription engine
+    settings (Whisper), and the logic for how text is segmented into
+    subtitle events.
+
+    Attributes:
+        input (str | dict | list | WhisperResult): The source to process. Can be
+            a file path, a pre-transcribed dictionary/list, or a
+            `stable_whisper.WhisperResult` object.
+        output (str | None): File path where the generated subtitle file will
+            be saved.
+        input_video (str | None): Path to the source video file. Used for
+            resolution detection and potential burning of subtitles.
+        subtitle_type (str): The segmentation strategy. Supported options:
+            - 'one_word_only': Displays exactly one word at a time.
+            - 'join': Groups words into segments up to `word_max`.
+            - 'separate_on_period': Splits segments at sentence boundaries.
+        word_max (int): Maximum word count per subtitle event.
+            Note: This is ignored if `subtitle_type` is 'one_word_only'.
+        add_time (float): Time offset (in seconds) to extend the duration
+            of each subtitle segment.
+        fill_sub_times (bool): If True, ensures there are no gaps between
+            consecutive subtitle segments.
+        whisper_model (str): The specific OpenAI Whisper model size or
+            language variant (e.g., 'medium.en', 'large-v3').
+        whisper_device (str): The hardware device for inference (e.g., 'cpu',
+            'cuda', or 'mps').
+        whisper_refine (bool): If True, uses `stable-whisper` refinement to
+            improve timestamp precision using audio frequencies.
+    """
 
     input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult
     output: str | None
@@ -55,20 +68,41 @@ class sub_args(utils.args_styles):
 
 class Subtitle_Edit:
     """
-        This is the main class for the subtitle generation.
-        Execute 'Subtitle_Edit' to run the program.
+        The central engine for subtitle generation and stylistic processing.
+
+        This class handles the end-to-end workflow of subtitle creation, including
+        input interpretation, style application, formatting logic (e.g., word-level
+        splitting), visual effects, and final file building.
 
         Attributes:
-            args_sub_edit (SubTextHighlight.sub_args): Subtitle edit configurations.
-            args_highlight (SubTextHighlight.highlight_args): Highlight configurations.
-            args_effects: (SubTextHighlight.effects_args):
-    """
+            args (sub_args): Configuration object for subtitle editing and paths.
+            main_style (ass.Style): The base visual style for the subtitles.
+            word_max (int): Maximum number of words allowed per subtitle event.
+            subtitle_type (str): The formatting strategy ('one_word_only',
+                'separate_on_period', or 'join').
+            highlighter (Highlighter, optional): Instance responsible for text
+                highlighting logic.
+            effects (Effects, optional): Instance responsible for visual animations
+                and advanced styling.
+            builder (utils.subs_builder): Utility to compile final subtitle events.
+        """
 
     def __init__(self,
                  args_sub_edit:sub_args,
                  args_highlight:highlight_args | None = None,
                  args_effects: effects_args | None = None,
                 ):
+        """
+                Initializes the Subtitle_Edit class with configuration and styles.
+
+                Args:
+                    args_sub_edit (sub_args): Core configurations including input/output
+                        paths and model settings.
+                    args_highlight (highlight_args, optional): Settings for text
+                        highlighting. Defaults to None.
+                    args_effects (effects_args, optional): Settings for visual effects
+                        and animations. Defaults to None.
+        """
 
         # args
         self.args = args_sub_edit
