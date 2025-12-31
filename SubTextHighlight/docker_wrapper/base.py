@@ -91,6 +91,30 @@ class args_border:
         packages: list[str] | None = None,
         container_run_func : None=None
                  ):
+        """
+            Configuration for subtitle background borders or "box" styles.
+
+            This class defines the geometry, color, and environment settings for
+            rendering borders around subtitle text. It supports external rendering
+            via containerized functions and custom package dependencies.
+
+            Attributes:
+                offset (int): The padding/offset of the border from the text.
+                radius (int): The corner radius for rounded borders.
+                transformy (int): Vertical transformation or shift for the border position.
+                height_scaling (float): Multiplier to adjust the border height relative
+                    to the text.
+                bordercolor (str): Hex color code of the border (derived from input color).
+                borderalpha (int): Alpha transparency level (derived from input color).
+                use_borders_as_highlight (bool): If True, the border style is used to
+                    indicate highlighted words.
+                fonts_path (list | str | None): Path(s) to custom fonts required for
+                    the border rendering.
+                packages (list[str] | None): List of system or Python packages needed
+                    inside the rendering container.
+                container_run_func (Callable | None): A function used to execute the
+                    rendering logic within a container.
+        """
         self.offset:int = offset
         self.radius:int = radius
         self.transformy:int = transformy
