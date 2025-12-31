@@ -10,6 +10,12 @@ import fleep
 import stable_whisper
 import dataclasses
 
+# TODO: ADD docs to all important classes and functions
+# TODO: Fix parameters on subtitle generation
+# TODO: ADD option to only generate one word simpler
+# TODO: Update README
+# TODO: ADD better Test for program using pytest
+
 off_time = datetime.timedelta(seconds=0.025)
 
 @dataclasses.dataclass(kw_only=True)
@@ -48,15 +54,24 @@ class sub_args(utils.args_styles):
 
 
 class Subtitle_Edit:
+    """
+        This is the main class for the subtitle generation.
+        Execute 'Subtitle_Edit' to run the program.
+
+        Attributes:
+            args_sub_edit (SubTextHighlight.sub_args): Subtitle edit configurations.
+            args_highlight (SubTextHighlight.highlight_args): Highlight configurations.
+            args_effects: (SubTextHighlight.effects_args):
+    """
 
     def __init__(self,
-                 args_sub_edit_:sub_args,
+                 args_sub_edit:sub_args,
                  args_highlight:highlight_args | None = None,
                  args_effects: effects_args | None = None,
                 ):
 
         # args
-        self.args = args_sub_edit_
+        self.args = args_sub_edit
 
         # Style
         self.main_style = self.args.return_style()

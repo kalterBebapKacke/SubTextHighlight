@@ -106,6 +106,8 @@ class Effects:
 
         events = output.events
 
+        # TODO: Implement better segments, so that the backgrounds appear next to the subs, not at the end of the file
+
         # fix the fad tag issue
         segmented_subs = utils.fix_fad_issue(events)
 
