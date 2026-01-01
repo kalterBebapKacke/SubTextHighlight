@@ -10,11 +10,10 @@ import fleep
 import stable_whisper
 import dataclasses
 
-# TODO: ADD docs to all important classes and functions
 # TODO: Fix parameters on subtitle generation
-# TODO: ADD option to only generate one word simpler
 # TODO: Update README
 # TODO: ADD better Test for program using pytest
+# TODO: Better Input/Output Control by using separate class
 
 off_time = datetime.timedelta(seconds=0.025)
 
@@ -349,5 +348,42 @@ class Subtitle_Edit:
         else:
             # return None, if nothing was found
             return None, None
+
+
+def generate_subs_simple(
+        input,
+        output,
+    ):
+    """
+        Generates one-word-only subtitles from a media file with refined timestamps.
+
+        This is a convenience wrapper that validates the input file type,
+        transcribes it using the 'one_word_only' strategy, applies Whisper
+        refinement for high precision, and saves the final result to disk.
+
+        Args:
+            input (str): Path to the source audio or video file.
+            output (str): Destination path where the subtitle file (e.g., .ass, .srt)
+                will be saved.
+
+        Raises:
+            ValueError: If the input file is not identified as a valid audio or
+                video format by the `fleep` library.
+        """
+    # check for right type
+    with open(input, "rb") as file:
+        info = fleep.get(file.read(128))
+    if not info.type == ['audio'] or info.type == ['video']:
+        raise ValueError('The subtitles have to be generated from a audio/video.')
+    else:
+        sub_arg = sub_args(
+            input=input,
+            output=None,
+            subtitle_type='one_word_only',
+            fill_sub_times=False,
+            whisper_refine=True
+        )
+        sub_file: pysubs2.SSAFile = Subtitle_Edit(sub_arg)()
+        sub_file.save(output)
 
 
