@@ -215,8 +215,6 @@ def build_full_sub_file(string_subs:str, script_info:str):
     segments = '['.join(segments)
     return pysubs2.SSAFile.from_string(segments)
 
-
-
 #@dataclasses.dataclass
 @dataclasses.dataclass(kw_only=True)
 class args_styles:
