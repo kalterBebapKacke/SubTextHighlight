@@ -89,7 +89,8 @@ class args_border:
         use_borders_as_highlight:bool = False,
         fonts_path: list | str | None = None,
         packages: list[str] | None = None,
-        container_run_func : None=None
+        container_run_func : None=None,
+        force_install:bool = False,
                  ):
         """
             Configuration for subtitle background borders or "box" styles.
@@ -112,8 +113,11 @@ class args_border:
                     the border rendering.
                 packages (list[str] | None): List of system or Python packages needed
                     inside the rendering container.
-                container_run_func (Callable | None): A function used to execute the
-                    rendering logic within a container.
+                container_run_func (Callable | None): A given function to return a
+                    docker container with customized parameters. It gets the
+                    docker client and name of the image as inputs.
+                force_install (bool): If true, automatically install the docker package
+                    as well as the necessary image. Otherwise, you are prompted to install.
         """
         self.offset:int = offset
         self.radius:int = radius
@@ -128,6 +132,7 @@ class args_border:
         self.container_run_func = container_run_func
         self.use_borders_as_highlight = use_borders_as_highlight
         self.height_scaling:float = height_scaling
+        self.force_install = force_install
 
     def __call__(self):
         return {
