@@ -106,7 +106,7 @@ class Effects:
 
         # start the docker wrapper and execute the script
         # only execute on the part, that becomes the background
-        dw = docker_wrapper.main.DockerWrapper()
+        dw = docker_wrapper.main.DockerWrapper(self.args.args_border.force_install)
         output : pysubs2.SSAFile = dw(
             input_ass=sub_file_copy,
             args_border=self.args.args_border,

@@ -1,198 +1,240 @@
+
 # SubTextHighlight
-This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features.
+**SubTextHighlight** is a comprehensive Python package for generating, formatting, and styling subtitles. It focuses on user-friendliness while providing high-end visual features for video editing and automation.
 
-This is an example video generated with this package (A clip from [1984](https://www.youtube.com/watch?v=q2JEfGIALH0&list=PLQ6ZU-TDLlnwlfYLxfktJbVv56WaBuCmd&index=3) is used as an example video):
 
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/kalterBebapKacke/SubTextHighlight?include_prereleases)](https://img.shields.io/github/v/release/kalterBebapKacke/SubTextHighlight?include_prereleases) \
+[![GitHub last commit](https://img.shields.io/github/last-commit/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/last-commit/kalterBebapKacke/SubTextHighlight) \
+[![GitHub issues](https://img.shields.io/github/issues-raw/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/issues-raw/kalterBebapKacke/SubTextHighlight) \
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/issues-pr/kalterBebapKacke/SubTextHighlight) \
+[![GitHub](https://img.shields.io/github/license/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/license/kalterBebapKacke/SubTextHighlight)
+
+Below is a clip from *1984*, styled using SubTextHighlight as an example:
 
 https://github.com/user-attachments/assets/8e74f775-3661-4421-a75b-01f688e04c86
 
 
-#### Note
+## Table of Contents
 
-You can see that some subtitle timestamps are not perfect, but they can be adjusted further with [Stable TTS](https://github.com/jianfch/stable-ts/tree/main). The focus of this project is to style the subtitles and to give basic subtitle generation.
+This is a table of contents for your project. It helps the reader navigate through the README quickly.
+- [Requirements](#-Requirements)
+- [Installation](#-Installation)
+- [How to Use](#-How-to-Use)
+  - [1. Style Basics](#1-style-basics-utilsargs_styles)
+  - [2. Configuration Classes](#2-Configuration-Classes)
+  - [3. Advanced Borders (args_border)](#3-Advanced-Borders-args_border)
+- [Example Usage](#-Example-Usage)
+- [Feedback & Contributions](#Feedback--Contributions)
 
-# Requirements
+## 🛠 Requirements
 
-For this package to work ffmpeg has to be installed on your machine. See the [ffmpeg website](https://ffmpeg.org/) for more details. 
+* **FFmpeg**: Must be installed and added to your system PATH.
+    * [Download FFmpeg](https://ffmpeg.org/)
 
-# Installation
-You can install this package via `pip` or via GitHub:
-- pip: `pip install SubTextHighlight`
-- GitHub: `pip install git+https://github.com/kalterBebapKacke/SubTextHighlight@main`
+## 📦 Installation
 
-# How to use
+Install from PYPI or directly from GitHub:
 
-You have tree Args classes to input, that control, what should be done. These are:
+```bash
+# Via pip
+pip install SubTextHighlight
 
-1. `sub_args` - they control the styling of the subtitles, give the input and have general settings
-2. `highlight_args` - they control the highlight args
-3. `effects_args` - they control the effects and which should be used 
+# Via GitHub (Latest)
+pip install git+[https://github.com/kalterBebapKacke/SubTextHighlight@main](https://github.com/kalterBebapKacke/SubTextHighlight@main)
+```
 
-## General styling of subs and highlighted words - utils.args_styles
+## 🚀 How to Use
+This is the script to generate the shown subtitles:
+```python
+    import SubTextHighlight # import package
 
-Both sub_args and highlight_args inherit from the utils.args_styles, which controls the styling of your text.
+    # configure styles and set inputs
+    sub_args = SubTextHighlight.sub_args(
+        input='./media/plain_video.mp4', # set the input to a video, which will generate the subtitles for me
+        output='./media/output_video.mp4', # set the output to a .mp4, so that the subtitles will be burned in
+        subtitle_type='separate_on_period', # styling option
+        # more styling options like size or font
+    )
+    highlight_args = SubTextHighlight.highlight_args(
+        highlight_word_max=0 # only one word will be highlighted
+        # Note: The default settings are the same as in sub_args (font, etc), only change what differs as a highlight
+        # As the background is used as a highlight, no more settings are needed
+    )
+    effects_args = SubTextHighlight.effects_args(
+        fade=(50,50),
+        args_border=SubTextHighlight.args_border() # Just the default settings to use the borders as a highlight
+    )
 
-Here is an overview of the attributes:
+    # generate the subtitles
+    SubTextHighlight.Subtitle_Edit(
+        sub_args,
+        highlight_args,
+        effects_args,
+    )
+```
+The package uses three main configuration classes to control the output. You initialize these classes and pass them to `Subtitle_Edit`:
 
-### Font Settings
+1. **`sub_args`**: Controls general styling, input/output paths, and transcription settings.
+2. **`highlight_args`**: Controls the styling of highlighted words.
+3. **`effects_args`**: Controls animations, transitions, and advanced border effects.
 
-`fontname: str (default: 'Arial')`
-Font family to use for subtitle text. Must be installed on the system.
+### 1. Style Basics (`utils.args_styles`)
 
-`fontsize: float | int (default: 24)`
-Size of the font in points.
+Both `sub_args` and `highlight_args` inherit from `utils.args_styles`. These attributes control the visual appearance of your text.
 
-`bold: bool (default: True)`
-Renders text in bold for improved readability.
+#### **Font & Text Settings**
 
-`italic: bool (default: False)`
-Applies italic styling to the text.
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `fontname` | `str` | `'Arial'` | Font family (must be installed on system). |
+| `fontsize` | `float` | `24` | Font size in points. |
+| `bold` | `bool` | `True` | Renders text in bold. |
+| `italic` | `bool` | `False` | Renders text in italics. |
+| `underline` | `bool` | `False` | Renders text with underline. |
+---
+#### **Color Settings**
 
-`underline: bool (default: False)`
-Enables underline decoration on subtitle text.
+*Accepts `pysubs2.Color` objects or HEX strings (e.g., `'ff0000'`).*
 
-### Color Settings
+| Attribute | Default | Description |
+| --- | --- | --- |
+| `primarycolor` | `White` | Main text fill color. |
+| `secondarycolor` | `Black` | Used for karaoke/transitional effects. |
+| `backcolor` | `Black` | Background color for boxed styles. |
+| `outlinecolor` | `Black` | Text outline color. |
+---
+#### **Layout & Visuals**
 
-All color values accept either pysubs2.Color objects or HEX colors (e.g., 'ff0000' for red).
+| Attribute | Default | Description |
+| --- | --- | --- |
+| `outline` | `1` | Thickness of text outline (pixels). |
+| `shadow` | `0` | Drop shadow offset (pixels). |
+| `alignment` | `5` | Numpad positioning (e.g., `2`=Bottom, `5`=Center). |
+| `borderstyle` | `1` | `1`: Outline only, `3`: Opaque box. |
+| `spacing` | `0.75` | Line spacing multiplier. |
 
-`primarycolor: pysubs2.Color | str (default: Color(255, 255, 255))`
-Main fill color for subtitle text.
+### 2. Configuration Classes
 
-`secondarycolor: pysubs2.Color | str (default: Color(0, 0, 0))`
-Used for karaoke and transitional effects.
+#### `sub_args`
 
-`backcolor: pysubs2.Color | str (default: Color(0, 0, 0))`
-Background color behind text when using boxed styles.
+*General subtitle parameters.*
 
-`outlinecolor: pysubs2.Color | str (default: Color(0, 0, 0))`
-Color of the text outline to enhance visibility.
-
-`tertiarycolor: pysubs2.Color | str (default: Color(0, 0, 0))`
-Optional secondary outline color for complex border effects.
-
-### Visual Effects
-
-`outline: float | int (default: 1)`
-Thickness of the text outline in pixels.
-
-`shadow: float | int (default: 0)`
-Drop shadow offset in pixels. A value of 0 disables the shadow.
-
-`borderstyle: int (default: 1)`
-Specifies the text border style:
-
-        1: Standard outline
-
-        3: Opaque box background
-
-### Layout and Positioning
-
-`alignment: int (default: 5)`
-Text positioning based on numpad-style layout:
+* **`input`** (`str | WhisperResult`): **Required.** Path to file (video/audio/srt) or Whisper result.
+* **`output`** (`str`): **Required.** Output path (`.ass`, `.mp4`, etc.).
+* **`subtitle_type`** (`str`):
+* `'one_word_only'`: One word per subtitle.
+* `'join'`: Join words based on `word_max`.
+* `'separate_on_period'`: Split at the sentence ends.
 
 
-    7 8 9
-    4 5 6
-    1 2 3
-
-For example, `1 = bottom-left`, `5 = center`, `9 = top-right`.
-
-- `spacing: float | int` (default: `0.75`) – Line spacing multiplier  
-- `angle: float` (default: `0.0`) – Text rotation angle (degrees)
+* **`whisper_model`** (`str`): Model name (e.g., `'medium.en'`).
+* **`whisper_refine`** (`bool`): Refine timestamps (English only).
 
 ---
 
-## `sub_args` – Subtitle Parameters
+#### `highlight_args`
 
-Inherits from `utils.args_styles`.
+*Highlight specific words.*
 
-### Parameters:
+Inherits all style attributes from above. If an attribute is set to `None`, it defaults to the value set in `sub_args`.
 
-- `input: str | WhisperResult` (**required**)  
-Path to input file (video/audio/SRT/ASS/plain text). Supports automatic transcription via Whisper if using video/audio. Must contain **only one word per subtitle** for proper formatting.
-
-- `output: str` (**required**)  
-Output path (ASS or video). If `None`, returns `pysubs2.SSAFile`.
-
-- `input_video: str | None`  
-Video path for burned-in subs (optional).
-
-- `subtitle_type: str` (default: `'one_word_only'`)  
-  - `'one_word_only'`: One word per subtitle  
-  - `'join'`: Join words into longer segments in respect to the `word_max` parameter
-  - `'separate_on_period'`: Split at sentence boundaries
-
-- `word_max: int` (default: `11`)  
-Max words per subtitle segment (ignored in `'one_word_only'` mode).
-
-- `add_time: float` (default: `0`)  
-Extra seconds to shift the timestamps of all subtitles.
-
-- `fill_sub_times: float` (default: `0`)  
-Fills the gap between subtitle segments.
-
-- `whisper_model: str` (default: `'medium.en'`)  
-Whisper model name. See [Whisper GitHub](https://github.com/openai/whisper).
-
-- `whisper_refine: bool` (default: `False`)  
-Enables timestamp refinement for improved results. For even better results generating your own subtitles via [Stable TTS](https://github.com/jianfch/stable-ts/tree/main) is recommended. Only english Subtitles are supported with this parameter.
+* **`highlight_word_max`** (`int`): Number of words to highlight at once (`0` = single word).
 
 ---
+#### `effects_args`
 
-## `highlight_args` – Highlighted Word Styling
+*Transitions and borders.*
 
-Also inherits from `utils.args_styles`, but with default values set to `None`. If an attribute is `None`, the corresponding `sub_args` value is used.
+* **`fade`** (`tuple[float, float]`): `(FadeIn, FadeOut)` duration in milliseconds.
+* **`appear`** (`bool`): If `True`, words appear cumulatively rather than replacing each other.
+* **`args_border`** (`args_border | None`): Configuration for advanced border/box rendering.
 
-### New Parameter:
+### 3. Advanced Borders (`args_border`)
 
-- `highlight_word_max: int` (default: `0`)  
-Number of words to highlight per segment (`0` = highlight one word only).
+Use the `args_border` class to create custom background boxes or border effects. Pass this object to `effects_args`.
 
----
+```python
+border_conf = SubTextHighlight.args_border(
+    offset=6,
+    radius=10,
+    color="FF0000"
+)
+effects = SubTextHighlight.effects_args(args_border=border_conf)
 
-## `effects_args` – Subtitle Effects
+```
 
-Controls special effects.
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `offset` | `int` | `6` | Padding between text and border edge. |
+| `radius` | `int` | `6` | Corner radius for rounded boxes. |
+| `transformy` | `int` | `1` | Vertical shift/correction. |
+| `height_scaling` | `float` | `1.2` | Multiplier for border height relative to text. |
+| `color` | `Color` | `None` | Border color. Defaults to White if None. |
+| `use_borders_as_highlight` | `bool` | `False` | If True, uses the border style to indicate highlights. |
+| `container_run_func` | `func` | `None` | Custom function for containerized rendering. |
 
-- `fade: tuple[float, float]` (default: `(0.0, 0.0)`)  
-  - `fade[0]`: Fade-in duration (ms)  
-  - `fade[1]`: Fade-out duration (ms)
+## 💻 Example Usage
 
-- `appear: bool` (default: `False`)  
-Words appear cumulatively. Controlled via `highlight_word_max`.  
-If `highlight_args` is `None`, default settings are applied automatically.
+### 1. Burned-in Subtitles with Highlights
 
----
-
-## Example Usage
-
-### Generate Video with Burned-in Subtitles
- 
 ```python
 import SubTextHighlight
 
-input = './media/plain_video.webm'
-output = './media/edited_video.mp4'
-sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, fontname='Arial Rounded MT Bold', alignment=2, whisper_refine=True)
-highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
-effect_args = SubTextHighlight.effects_args((50, 50))
+# Define Input/Output
+input_file = './media/plain_video.webm'
+output_file = './media/edited_video.mp4'
+
+# 1. Configure General Settings
+sub_args = SubTextHighlight.sub_args(
+    input=input_file,
+    output=output_file,
+    input_video=input_file,
+    subtitle_type='separate_on_period',
+    fontname='Arial Rounded MT Bold',
+    alignment=2,
+    whisper_refine=True
+)
+
+# 2. Configure Highlights (Blue text)
+highlight_args = SubTextHighlight.highlight_args(
+    primarycolor='00AAFF'
+)
+
+# 3. Configure Effects (Fade + Custom Border)
+border_settings = SubTextHighlight.args_border(
+    radius=10, 
+    color='000000', 
+    height_scaling=1.1
+)
+effect_args = SubTextHighlight.effects_args(
+    fade=(50, 50), 
+    args_border=border_settings
+)
+
+# 4. Run
 sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
 sub_edit()
+
 ```
 
-### Generate Subtitle File Only (`.ass`)
+### 2. Generate `.ass` File Only
+
 ```python
 import SubTextHighlight
 
-input = './media/plain_video.webm'
-output = './media/subtitles.ass'
-sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, fontname='Arial Rounded MT Bold', alignment=2, whisper_refine=True)
-highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
-effect_args = SubTextHighlight.effects_args((50, 50))
-sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
+sub_args = SubTextHighlight.sub_args(
+    input='./media/plain_video.webm', 
+    output='./media/subtitles.ass',
+    subtitle_type='separate_on_period'
+)
+# ... initialize other args as needed
+sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, None, None)
 sub_edit()
-```
-If you want even more examples see the test code in `example_code.py`.
 
-# We welcome feedback and feature suggestions!
-This project aims to be feature-rich and highly customizable. While it's actively maintained, major updates may take time as they require careful planning. Your ideas and contributions are greatly appreciated. We hope you find this package useful and enjoyable in your own projects.
+```
+
+# Feedback & Contributions
+
+We welcome feedback! This project aims to be highly customizable. Please feel free to open issues or submit PRs on GitHub.
+
+
