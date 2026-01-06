@@ -10,11 +10,8 @@ import fleep
 import stable_whisper
 import dataclasses
 
-# TODO: Fix parameters on subtitle generation
-# TODO: Update README
 # TODO: ADD better Test for program using pytest
 # TODO: Better Input/Output Control by using separate class
-# TODO: Release old version and make install from gitub possible
 
 off_time = datetime.timedelta(seconds=0.025)
 
