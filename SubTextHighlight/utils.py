@@ -215,6 +215,13 @@ def build_full_sub_file(string_subs:str, script_info:str):
     segments = '['.join(segments)
     return pysubs2.SSAFile.from_string(segments)
 
+def strip_subtitle_text(event_text):
+    splits = event_text.split('{')
+    for i, split in enumerate(splits):
+        if split.__contains__('}'):
+            splits[i] = split[split.find('}')+1:]
+    return ''.join(splits)
+
 #@dataclasses.dataclass
 @dataclasses.dataclass(kw_only=True)
 class args_styles:
