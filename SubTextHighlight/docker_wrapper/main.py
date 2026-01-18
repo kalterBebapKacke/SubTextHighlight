@@ -15,6 +15,7 @@ class DockerWrapper(base.BaseWrapper):
 
         # Only continue if package is installed
         if self.installed:
+            print(self.docker)
             self.image_name = 'n01d3a/aegisub-cli:ShaperyRoundedBorders-2.3'
             self.rep_name = 'n01d3a/aegisub-cli'
             self.client = self.get_client()

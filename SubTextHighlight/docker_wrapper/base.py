@@ -1,7 +1,7 @@
 import os
 import logging
 import pysubs2
-import json
+import subprocess
 
 class BaseWrapper:
 
@@ -41,7 +41,11 @@ class BaseWrapper:
             pass
 
     def install_docker_package(self):
-        os.system('pip install -r docker')
+        try:
+            subprocess.run(['pip', 'install', 'docker'], encoding='utf-8')
+        except Exception as e:
+            print(e)
+            print('Could not install docker package')
 
         # verify docker install
         self.installed, self.docker = self.check_docker_installation()
