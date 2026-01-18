@@ -29,12 +29,12 @@ class Test_Class():
 
     def __init__(self):
         debug()
-        if not os.path.exists('./test_output'):
-            os.mkdir('./test_output')
+        if not os.path.exists('test_output'):
+            os.mkdir('test_output')
 
         # making a blank srt file with the wanted input format can decrease run time considerably, since whisper wont have to generate the subtitles
         # for every test case
-        self.blank_srt_path = './test_output/blank.srt'
+        self.blank_srt_path = 'test_output/blank.srt'
 
         self.input_video = './media/plain_video.mp4'
 

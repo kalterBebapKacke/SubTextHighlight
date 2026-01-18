@@ -89,7 +89,8 @@ class Effects:
             raise RuntimeError('Cant use borders as highlighted subtitles and the appear at the same time.')
 
         # Check if Borders are used as highlight and build part of the background (if one is given)
-        use_subs = builder(subs)
+        use_subs, depth = builder(subs, return_depth=True)
+
 
         # if borders as highlight, replace highlight with appear
         if self.args.args_border.use_borders_as_highlight:
@@ -116,8 +117,6 @@ class Effects:
 
         events = output.events
 
-        # TODO: Implement better segments, so that the backgrounds appear next to the subs, not at the end of the file
-
         # fix the fad tag issue
         segmented_subs = utils.fix_fad_issue(events)
 
@@ -126,7 +125,11 @@ class Effects:
             sub.layer = 1
 
         # merge subs and backgrounds
-        for x in segmented_subs:
-            subs.extend([utils.background_wrapper(event) for event in x[1:]])
+        #subs[index].add_background(segment[1:])
+        segment_index = 0
+        for i, cur in enumerate(depth):
+            for x in range(cur):
+                subs[i].add_background(segmented_subs[segment_index][1:])
+                segment_index += 1
 
         return subs
