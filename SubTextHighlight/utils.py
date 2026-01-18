@@ -433,23 +433,31 @@ class subs_builder():
         # tracks the dimensions of the builded subs, which is important to rebuild the backgrounds, if present
         self.dimensions_tracker = list()
 
-    def __call__(self, subs, type=None): # text_only
+    def __call__(self, subs, type=None, return_depth:bool=False): # text_only
         if type == 'text_only':
             return self.text_only_build(subs)
         if type == 'return_only_highlighted_texts':
             return self.return_only_highlighted_texts(subs)
         else:
-            return self.normal_build(subs)
+            return self.normal_build(subs, return_depth)
 
-    def normal_build(self, subs:list):
+    def normal_build(self, subs:list, return_depth:bool=False):
         new_subs = list()
+        depth = list()
         build_subs = [x() for x in subs]
         for sub in build_subs:
             if type(sub) == list:
                 new_subs.extend(sub)
+                depth.append(len(sub))
             else:
+                depth.append(1)
                 new_subs.append(sub)
-        return new_subs
+
+        # Depth needed to reverse input
+        if not return_depth:
+            return new_subs
+        else:
+            return new_subs, depth
 
     def text_only_build(self, subs:list):
         return [sub.return_saa_event() for sub in subs]
@@ -472,6 +480,7 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
     appear_style:list = ()
     fade_in:float = 0
     fade_out:float = 0
+    backgrounds:list = ()
 
     @property
     def text_list(self):
@@ -491,13 +500,6 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
     def return_saa_event(self):
         return pysubs2.SSAEvent(text=self.text.strip(), start=self.start, end=self.end, style="MainStyle")
 
-    def return_background_copy(self):
-        copy = deepcopy(self)
-        copy.highlighted_texts = []
-        copy.highlighted_texts = []
-        copy.highlight_style = []
-        copy.appear_style = []
-        return copy
 
     def return_only_highlighted_texts(self):
         return_list = []
@@ -505,19 +507,29 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
             return_list.append(pysubs2.SSAEvent(text=' '.join(self.text_list[index_start:index_end+1]), start=start, end=end, style="MainStyle", layer=self.layer))
         return return_list
 
+    def add_background(self, backgrounds:list):
+        if self.backgrounds == ():
+            self.backgrounds = [backgrounds]
+        else:
+            self.backgrounds.append(backgrounds)
 
     def __call__(self):
         return_subs = []
+        print(self.backgrounds)
         if self.highlighted_texts != () and self.highlighted_texts != []:
             # If appear is true, replace the highlight styles
             if self.appear_style != () and self.appear_style != []:
                 self.highlight_style = ['', self.appear_style[0]]
 
             # Build the subs
-            for index_start, index_end, start, end  in self.highlighted_texts:
+            for i, (index_start, index_end, start, end)  in enumerate(self.highlighted_texts):
                 # build the text with hightlighting marks
                 text = f'{' '.join(self.text_list[0:index_start])} {self.highlight_style[0]}{' '.join(self.text_list[index_start:index_end+1])}{self.highlight_style[1]} {' '.join(self.text_list[index_end+1:])}'
                 return_subs.append(pysubs2.SSAEvent(text=text.strip(), start=start, end=end, style="MainStyle", layer=self.layer))
+
+                # add backgrounds to the subs
+                if self.backgrounds != ():
+                    return_subs.extend(self.backgrounds[i])
 
         else:
             return_subs = [pysubs2.SSAEvent(text=self.text, start=self.start, end=self.end, style="MainStyle", layer=self.layer)]
@@ -531,32 +543,3 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
             return_subs[0].text = fade[0] + return_subs[0].text
             return_subs[-1].text = fade[1] + return_subs[-1].text
             return return_subs
-
-@dataclasses.dataclass(repr=False, eq=False, order=False)
-class Background_event(pysubs2.SSAEvent):
-    # position offset == 1/2 remaining text
-    background:str = ""
-    fade_in:float = 0
-    fade_out:float = 0
-    highlight_position_offset:int = 0
-
-    @property
-    def background_list(self):
-        return self.background.split(r"\ ".strip())
-
-    def __call__(self):
-        return_subs = []
-        if self.highlight_position_offset != 0:
-            pass # r"\ ".strip().join(self.background_list)
-        else:
-            text = fr'{{\fad({self.fade_in},{self.fade_out})}}{self.background}'
-
-        return pysubs2.SSAEvent(text=text, start=self.start, end=self.end, style="MainStyle", layer=0)
-
-class background_wrapper():
-
-    def __init__(self, background_event:pysubs2.SSAEvent):
-        self.event = background_event
-
-    def __call__(self):
-        return self.event

@@ -12,6 +12,7 @@ import dataclasses
 
 # TODO: ADD better Test for program using pytest
 # TODO: Better Input/Output Control by using separate class
+# TODO: Make Whisper Import Optional
 
 off_time = datetime.timedelta(seconds=0.025)
 
