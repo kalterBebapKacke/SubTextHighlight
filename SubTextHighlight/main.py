@@ -10,7 +10,6 @@ import fleep
 import stable_whisper
 import dataclasses
 
-# TODO: ADD better Test for program using pytest
 # TODO: Better Input/Output Control by using separate class
 # TODO: Make Whisper Import Optional
 
