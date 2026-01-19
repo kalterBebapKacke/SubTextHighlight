@@ -120,7 +120,7 @@ Both `sub_args` and `highlight_args` inherit from `utils.args_styles`. These att
 *General subtitle parameters.*
 
 * **`input`** (`str | WhisperResult`): **Required.** Path to file (video/audio/srt) or Whisper result.
-* **`output`** (`str`): **Required.** Output path (`.ass`, `.mp4`, etc.).
+* **`output`** (`str`): **Required.** Output path (`.ass`, `.mp4`, or `None` to return the pysubs2 SSA_File object).
 * **`subtitle_type`** (`str`):
 * `'one_word_only'`: One word per subtitle.
 * `'join'`: Join words based on `word_max`.

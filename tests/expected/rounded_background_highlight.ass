@@ -17,176 +17,176 @@ Style: Highlight,Arial,24,&H00FFFFFF,&H00000000,&H00000000,&H00000000,-1,0,0,0,1
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 1,0:00:03.60,0:00:03.72,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Can{\r} I help you?
-Dialogue: 1,0:00:03.72,0:00:03.92,MainStyle,,0,0,0,,Can {\rHighlight}I{\r} help you?
-Dialogue: 1,0:00:03.92,0:00:04.14,MainStyle,,0,0,0,,Can I {\rHighlight}help{\r} you?
-Dialogue: 1,0:00:04.14,0:00:04.46,MainStyle,,0,0,0,,{\fad(0,50)}Can I help {\rHighlight}you?{\r}
-Dialogue: 1,0:00:08.38,0:00:08.58,MainStyle,,0,0,0,,{\fad(50,50)}{\rHighlight}Hmm?{\r}
-Dialogue: 1,0:00:10.29,0:00:10.95,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Anything{\r} special?
-Dialogue: 1,0:00:10.95,0:00:11.06,MainStyle,,0,0,0,,{\fad(0,50)}Anything {\rHighlight}special?{\r}
-Dialogue: 1,0:00:13.14,0:00:13.32,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}I{\r} was here before.
-Dialogue: 1,0:00:13.32,0:00:13.54,MainStyle,,0,0,0,,I {\rHighlight}was{\r} here before.
-Dialogue: 1,0:00:13.54,0:00:13.72,MainStyle,,0,0,0,,I was {\rHighlight}here{\r} before.
-Dialogue: 1,0:00:13.72,0:00:14.13,MainStyle,,0,0,0,,{\fad(0,50)}I was here {\rHighlight}before.{\r}
-Dialogue: 1,0:00:15.96,0:00:16.48,MainStyle,,0,0,0,,{\fad(50,50)}{\rHighlight}Razorblades.{\r}
-Dialogue: 1,0:00:19.86,0:00:19.96,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}You{\r} sold me the notebook.
-Dialogue: 1,0:00:19.96,0:00:20.20,MainStyle,,0,0,0,,You {\rHighlight}sold{\r} me the notebook.
-Dialogue: 1,0:00:20.20,0:00:20.34,MainStyle,,0,0,0,,You sold {\rHighlight}me{\r} the notebook.
-Dialogue: 1,0:00:20.34,0:00:20.46,MainStyle,,0,0,0,,You sold me {\rHighlight}the{\r} notebook.
-Dialogue: 1,0:00:20.46,0:00:20.84,MainStyle,,0,0,0,,{\fad(0,50)}You sold me the {\rHighlight}notebook.{\r}
-Dialogue: 1,0:00:22.10,0:00:22.22,MainStyle,,0,0,0,,{\fad(50,50)}{\rHighlight}Yes.{\r}
-Dialogue: 1,0:00:23.72,0:00:23.88,MainStyle,,0,0,0,,{\fad(50,50)}{\rHighlight}Yes.{\r}
-Dialogue: 1,0:00:25.98,0:00:26.18,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Please{\r} look around.
-Dialogue: 1,0:00:26.18,0:00:26.42,MainStyle,,0,0,0,,Please {\rHighlight}look{\r} around.
-Dialogue: 1,0:00:26.42,0:00:26.68,MainStyle,,0,0,0,,{\fad(0,50)}Please look {\rHighlight}around.{\r}
-Dialogue: 1,0:00:52.79,0:00:54.04,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}What's{\r} this?
-Dialogue: 1,0:00:54.04,0:00:54.22,MainStyle,,0,0,0,,{\fad(0,50)}What's {\rHighlight}this?{\r}
-Dialogue: 1,0:00:56.61,0:00:56.76,MainStyle,,0,0,0,,{\fad(50,50)}{\rHighlight}Oh,{\r}
-Dialogue: 1,0:00:56.78,0:00:57.06,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}it's{\r} a beautiful thing.
-Dialogue: 1,0:00:57.06,0:00:57.27,MainStyle,,0,0,0,,it's {\rHighlight}a{\r} beautiful thing.
-Dialogue: 1,0:00:57.27,0:00:57.58,MainStyle,,0,0,0,,it's a {\rHighlight}beautiful{\r} thing.
-Dialogue: 1,0:00:57.58,0:00:58.01,MainStyle,,0,0,0,,{\fad(0,50)}it's a beautiful {\rHighlight}thing.{\r}
-Dialogue: 1,0:00:59.46,0:00:59.56,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}It's{\r} over 100 years old.
-Dialogue: 1,0:00:59.56,0:00:59.70,MainStyle,,0,0,0,,It's {\rHighlight}over{\r} 100 years old.
-Dialogue: 1,0:00:59.70,0:01:00.06,MainStyle,,0,0,0,,It's over {\rHighlight}100{\r} years old.
-Dialogue: 1,0:01:00.06,0:01:00.38,MainStyle,,0,0,0,,It's over 100 {\rHighlight}years{\r} old.
-Dialogue: 1,0:01:00.38,0:01:00.60,MainStyle,,0,0,0,,{\fad(0,50)}It's over 100 years {\rHighlight}old.{\r}
-Dialogue: 1,0:01:04.02,0:01:05.16,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}It{\r} cost you $4.
-Dialogue: 1,0:01:05.16,0:01:05.26,MainStyle,,0,0,0,,It {\rHighlight}cost{\r} you $4.
-Dialogue: 1,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,{\fad(0,50)}It cost {\rHighlight}you{\r} $4.
-Dialogue: 1,0:01:24.70,0:01:24.84,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}There's{\r} another room upstairs you might like to see.
-Dialogue: 1,0:01:24.84,0:01:25.08,MainStyle,,0,0,0,,There's {\rHighlight}another{\r} room upstairs you might like to see.
-Dialogue: 1,0:01:25.08,0:01:25.30,MainStyle,,0,0,0,,There's another {\rHighlight}room{\r} upstairs you might like to see.
-Dialogue: 1,0:01:25.30,0:01:26.16,MainStyle,,0,0,0,,There's another room {\rHighlight}upstairs{\r} you might like to see.
-Dialogue: 1,0:01:26.16,0:01:26.26,MainStyle,,0,0,0,,There's another room upstairs {\rHighlight}you{\r} might like to see.
-Dialogue: 1,0:01:26.26,0:01:26.56,MainStyle,,0,0,0,,There's another room upstairs you {\rHighlight}might{\r} like to see.
-Dialogue: 1,0:01:26.56,0:01:26.82,MainStyle,,0,0,0,,There's another room upstairs you might {\rHighlight}like{\r} to see.
-Dialogue: 1,0:01:26.82,0:01:27.02,MainStyle,,0,0,0,,There's another room upstairs you might like {\rHighlight}to{\r} see.
-Dialogue: 1,0:01:27.02,0:01:27.38,MainStyle,,0,0,0,,{\fad(0,50)}There's another room upstairs you might like to {\rHighlight}see.{\r}
-Dialogue: 1,0:01:28.66,0:01:28.78,MainStyle,,0,0,0,,{\fad(50,50)}{\rHighlight}Yes,{\r}
-Dialogue: 1,0:01:29.02,0:01:29.68,MainStyle,,0,0,0,,{\fad(50,50)}{\rHighlight}it's,{\r} uh,
-Dialogue: 1,0:01:29.86,0:01:30.06,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}not{\r} much in it.
-Dialogue: 1,0:01:30.06,0:01:30.24,MainStyle,,0,0,0,,not {\rHighlight}much{\r} in it.
-Dialogue: 1,0:01:30.24,0:01:30.38,MainStyle,,0,0,0,,not much {\rHighlight}in{\r} it.
-Dialogue: 1,0:01:30.38,0:01:30.50,MainStyle,,0,0,0,,{\fad(0,50)}not much in {\rHighlight}it.{\r}
 Dialogue: 0,0:00:03.60,0:00:03.72,MainStyle,,0,0,0,,{\an7\pos(576,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -20 3 b -23.31 3 -26 0.31 -26 -3 l -26 -18 b -26 -21.31 -23.31 -24 -20 -24 l 18 -24 b 21.31 -24 24 -21.31 24 -18 l 24 -3 b 24 0.31 21.31 3 18 3
 Dialogue: 0,0:00:03.60,0:00:03.72,MainStyle,,0,0,0,,{\an7\pos(664.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -59 3 b -62.31 3 -65 0.31 -65 -3 l -65 -18 b -65 -21.31 -62.31 -24 -59 -24 l 58 -24 b 61.31 -24 64 -21.31 64 -18 l 64 -3 b 64 0.31 61.31 3 58 3
+Dialogue: 1,0:00:03.72,0:00:03.92,MainStyle,,0,0,0,,Can {\rHighlight}I{\r} help you?
 Dialogue: 0,0:00:03.72,0:00:03.92,MainStyle,,0,0,0,,{\an7\pos(576,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -20 3 b -23.31 3 -26 0.31 -26 -3 l -26 -18 b -26 -21.31 -23.31 -24 -20 -24 l 18 -24 b 21.31 -24 24 -21.31 24 -18 l 24 -3 b 24 0.31 21.31 3 18 3
 Dialogue: 0,0:00:03.72,0:00:03.92,MainStyle,,0,0,0,,{\an7\pos(607.25,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -1 3 b -4.31 3 -7 0.31 -7 -3 l -7 -18 b -7 -21.31 -4.31 -24 -1 -24 l 1 -24 b 4.31 -24 7 -21.31 7 -18 l 7 -3 b 7 0.31 4.31 3 1 3
 Dialogue: 0,0:00:03.72,0:00:03.92,MainStyle,,0,0,0,,{\an7\pos(671.25,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -52 3 b -55.31 3 -58 0.31 -58 -3 l -58 -18 b -58 -21.31 -55.31 -24 -52 -24 l 52 -24 b 55.31 -24 58 -21.31 58 -18 l 58 -3 b 58 0.31 55.31 3 52 3
+Dialogue: 1,0:00:03.92,0:00:04.14,MainStyle,,0,0,0,,Can I {\rHighlight}help{\r} you?
 Dialogue: 0,0:00:03.92,0:00:04.14,MainStyle,,0,0,0,,{\an7\pos(582.75,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -26 3 b -29.31 3 -32 0.31 -32 -3 l -32 -18 b -32 -21.31 -29.31 -24 -26 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
 Dialogue: 0,0:00:03.92,0:00:04.14,MainStyle,,0,0,0,,{\an7\pos(640.875,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
 Dialogue: 0,0:00:03.92,0:00:04.14,MainStyle,,0,0,0,,{\an7\pos(698.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -26 3 b -29.31 3 -32 0.31 -32 -3 l -32 -18 b -32 -21.31 -29.31 -24 -26 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
+Dialogue: 1,0:00:04.14,0:00:04.46,MainStyle,,0,0,0,,Can I help {\rHighlight}you?{\r}
 Dialogue: 0,0:00:04.14,0:00:04.46,MainStyle,,0,0,0,,{\an7\pos(609.625,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -53 3 b -56.31 3 -59 0.31 -59 -3 l -59 -18 b -59 -21.31 -56.31 -24 -53 -24 l 53 -24 b 56.31 -24 59 -21.31 59 -18 l 59 -3 b 59 0.31 56.31 3 53 3
-Dialogue: 0,0:00:04.14,0:00:04.46,MainStyle,,0,0,0,,{\an7\pos(698.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -26 3 b -29.31 3 -32 0.31 -32 -3 l -32 -18 b -32 -21.31 -29.31 -24 -26 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
-Dialogue: 0,0:00:08.38,0:00:08.58,MainStyle,,0,0,0,,{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -32 3 b -35.31 3 -38 0.31 -38 -3 l -38 -18 b -38 -21.31 -35.31 -24 -32 -24 l 32 -24 b 35.31 -24 38 -21.31 38 -18 l 38 -3 b 38 0.31 35.31 3 32 3
+Dialogue: 0,0:00:04.14,0:00:04.46,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(698.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -26 3 b -29.31 3 -32 0.31 -32 -3 l -32 -18 b -32 -21.31 -29.31 -24 -26 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
+Dialogue: 1,0:00:08.38,0:00:08.58,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Hmm?{\r}
+Dialogue: 0,0:00:08.38,0:00:08.58,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -32 3 b -35.31 3 -38 0.31 -38 -3 l -38 -18 b -38 -21.31 -35.31 -24 -32 -24 l 32 -24 b 35.31 -24 38 -21.31 38 -18 l 38 -3 b 38 0.31 35.31 3 32 3
+Dialogue: 1,0:00:10.29,0:00:10.95,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Anything{\r} special?
 Dialogue: 0,0:00:10.29,0:00:10.95,MainStyle,,0,0,0,,{\an7\pos(590.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -49 3 b -52.31 3 -55 0.31 -55 -3 l -55 -18 b -55 -21.31 -52.31 -24 -49 -24 l 46 -24 b 49.31 -24 52 -21.31 52 -18 l 52 -3 b 52 0.31 49.31 3 46 3
 Dialogue: 0,0:00:10.29,0:00:10.95,MainStyle,,0,0,0,,{\an7\pos(692.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -45 3 b -48.31 3 -51 0.31 -51 -3 l -51 -18 b -51 -21.31 -48.31 -24 -45 -24 l 44 -24 b 47.31 -24 50 -21.31 50 -18 l 50 -3 b 50 0.31 47.31 3 44 3
+Dialogue: 1,0:00:10.95,0:00:11.06,MainStyle,,0,0,0,,Anything {\rHighlight}special?{\r}
 Dialogue: 0,0:00:10.95,0:00:11.06,MainStyle,,0,0,0,,{\an7\pos(590.625,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -49 3 b -52.31 3 -55 0.31 -55 -3 l -55 -18 b -55 -21.31 -52.31 -24 -49 -24 l 46 -24 b 49.31 -24 52 -21.31 52 -18 l 52 -3 b 52 0.31 49.31 3 46 3
-Dialogue: 0,0:00:10.95,0:00:11.06,MainStyle,,0,0,0,,{\an7\pos(692.375,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -45 3 b -48.31 3 -51 0.31 -51 -3 l -51 -18 b -51 -21.31 -48.31 -24 -45 -24 l 44 -24 b 47.31 -24 50 -21.31 50 -18 l 50 -3 b 50 0.31 47.31 3 44 3
+Dialogue: 0,0:00:10.95,0:00:11.06,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(692.375,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -45 3 b -48.31 3 -51 0.31 -51 -3 l -51 -18 b -51 -21.31 -48.31 -24 -45 -24 l 44 -24 b 47.31 -24 50 -21.31 50 -18 l 50 -3 b 50 0.31 47.31 3 44 3
+Dialogue: 1,0:00:13.14,0:00:13.32,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}I{\r} was here before.
 Dialogue: 0,0:00:13.14,0:00:13.32,MainStyle,,0,0,0,,{\an7\pos(546.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -1 3 b -4.31 3 -7 0.31 -7 -3 l -7 -18 b -7 -21.31 -4.31 -24 -1 -24 l 1 -24 b 4.31 -24 7 -21.31 7 -18 l 7 -3 b 7 0.31 4.31 3 1 3
 Dialogue: 0,0:00:13.14,0:00:13.32,MainStyle,,0,0,0,,{\an7\pos(646.75,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -89 3 b -92.31 3 -95 0.31 -95 -3 l -95 -18 b -95 -21.31 -92.31 -24 -89 -24 l 87 -24 b 90.31 -24 93 -21.31 93 -18 l 93 -3 b 93 0.31 90.31 3 87 3
+Dialogue: 1,0:00:13.32,0:00:13.54,MainStyle,,0,0,0,,I {\rHighlight}was{\r} here before.
 Dialogue: 0,0:00:13.32,0:00:13.54,MainStyle,,0,0,0,,{\an7\pos(546.625,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -1 3 b -4.31 3 -7 0.31 -7 -3 l -7 -18 b -7 -21.31 -4.31 -24 -1 -24 l 1 -24 b 4.31 -24 7 -21.31 7 -18 l 7 -3 b 7 0.31 4.31 3 1 3
 Dialogue: 0,0:00:13.32,0:00:13.54,MainStyle,,0,0,0,,{\an7\pos(577.875,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -21 3 b -24.31 3 -27 0.31 -27 -3 l -27 -18 b -27 -21.31 -24.31 -24 -21 -24 l 19 -24 b 22.31 -24 25 -21.31 25 -18 l 25 -3 b 25 0.31 22.31 3 19 3
 Dialogue: 0,0:00:13.32,0:00:13.54,MainStyle,,0,0,0,,{\an7\pos(671.25,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -64 3 b -67.31 3 -70 0.31 -70 -3 l -70 -18 b -70 -21.31 -67.31 -24 -64 -24 l 63 -24 b 66.31 -24 69 -21.31 69 -18 l 69 -3 b 69 0.31 66.31 3 63 3
+Dialogue: 1,0:00:13.54,0:00:13.72,MainStyle,,0,0,0,,I was {\rHighlight}here{\r} before.
 Dialogue: 0,0:00:13.54,0:00:13.72,MainStyle,,0,0,0,,{\an7\pos(571.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -26 3 b -29.31 3 -32 0.31 -32 -3 l -32 -18 b -32 -21.31 -29.31 -24 -26 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
 Dialogue: 0,0:00:13.54,0:00:13.72,MainStyle,,0,0,0,,{\an7\pos(629.75,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 22 -24 b 25.31 -24 28 -21.31 28 -18 l 28 -3 b 28 0.31 25.31 3 22 3
 Dialogue: 0,0:00:13.54,0:00:13.72,MainStyle,,0,0,0,,{\an7\pos(698.625,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -36 3 b -39.31 3 -42 0.31 -42 -3 l -42 -18 b -42 -21.31 -39.31 -24 -36 -24 l 35 -24 b 38.31 -24 41 -21.31 41 -18 l 41 -3 b 41 0.31 38.31 3 35 3
+Dialogue: 1,0:00:13.72,0:00:14.13,MainStyle,,0,0,0,,I was here {\rHighlight}before.{\r}
 Dialogue: 0,0:00:13.72,0:00:14.13,MainStyle,,0,0,0,,{\an7\pos(598.5,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -53 3 b -56.31 3 -59 0.31 -59 -3 l -59 -18 b -59 -21.31 -56.31 -24 -53 -24 l 53 -24 b 56.31 -24 59 -21.31 59 -18 l 59 -3 b 59 0.31 56.31 3 53 3
-Dialogue: 0,0:00:13.72,0:00:14.13,MainStyle,,0,0,0,,{\an7\pos(698.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -36 3 b -39.31 3 -42 0.31 -42 -3 l -42 -18 b -42 -21.31 -39.31 -24 -36 -24 l 35 -24 b 38.31 -24 41 -21.31 41 -18 l 41 -3 b 41 0.31 38.31 3 35 3
-Dialogue: 0,0:00:15.96,0:00:16.48,MainStyle,,0,0,0,,{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -69 3 b -72.31 3 -75 0.31 -75 -3 l -75 -18 b -75 -21.31 -72.31 -24 -69 -24 l 68 -24 b 71.31 -24 74 -21.31 74 -18 l 74 -3 b 74 0.31 71.31 3 68 3
+Dialogue: 0,0:00:13.72,0:00:14.13,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(698.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -36 3 b -39.31 3 -42 0.31 -42 -3 l -42 -18 b -42 -21.31 -39.31 -24 -36 -24 l 35 -24 b 38.31 -24 41 -21.31 41 -18 l 41 -3 b 41 0.31 38.31 3 35 3
+Dialogue: 1,0:00:15.96,0:00:16.48,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Razorblades.{\r}
+Dialogue: 0,0:00:15.96,0:00:16.48,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -69 3 b -72.31 3 -75 0.31 -75 -3 l -75 -18 b -75 -21.31 -72.31 -24 -69 -24 l 68 -24 b 71.31 -24 74 -21.31 74 -18 l 74 -3 b 74 0.31 71.31 3 68 3
+Dialogue: 1,0:00:19.86,0:00:19.96,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}You{\r} sold me the notebook.
 Dialogue: 0,0:00:19.86,0:00:19.96,MainStyle,,0,0,0,,{\an7\pos(515.25,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -21 3 b -24.31 3 -27 0.31 -27 -3 l -27 -18 b -27 -21.31 -24.31 -24 -21 -24 l 18 -24 b 21.31 -24 24 -21.31 24 -18 l 24 -3 b 24 0.31 21.31 3 18 3
 Dialogue: 0,0:00:19.86,0:00:19.96,MainStyle,,0,0,0,,{\an7\pos(664.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -120 3 b -123.31 3 -126 0.31 -126 -3 l -126 -18 b -126 -21.31 -123.31 -24 -120 -24 l 119 -24 b 122.31 -24 125 -21.31 125 -18 l 125 -3 b 125 0.31 122.31 3 119 3
+Dialogue: 1,0:00:19.96,0:00:20.20,MainStyle,,0,0,0,,You {\rHighlight}sold{\r} me the notebook.
 Dialogue: 0,0:00:19.96,0:00:20.20,MainStyle,,0,0,0,,{\an7\pos(515.25,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -21 3 b -24.31 3 -27 0.31 -27 -3 l -27 -18 b -27 -21.31 -24.31 -24 -21 -24 l 18 -24 b 21.31 -24 24 -21.31 24 -18 l 24 -3 b 24 0.31 21.31 3 18 3
 Dialogue: 0,0:00:19.96,0:00:20.20,MainStyle,,0,0,0,,{\an7\pos(566.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
 Dialogue: 0,0:00:19.96,0:00:20.20,MainStyle,,0,0,0,,{\an7\pos(691.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -93 3 b -96.31 3 -99 0.31 -99 -3 l -99 -18 b -99 -21.31 -96.31 -24 -93 -24 l 92 -24 b 95.31 -24 98 -21.31 98 -18 l 98 -3 b 98 0.31 95.31 3 92 3
+Dialogue: 1,0:00:20.20,0:00:20.34,MainStyle,,0,0,0,,You sold {\rHighlight}me{\r} the notebook.
 Dialogue: 0,0:00:20.20,0:00:20.34,MainStyle,,0,0,0,,{\an7\pos(542.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -48 3 b -51.31 3 -54 0.31 -54 -3 l -54 -18 b -54 -21.31 -51.31 -24 -48 -24 l 45 -24 b 48.31 -24 51 -21.31 51 -18 l 51 -3 b 51 0.31 48.31 3 45 3
 Dialogue: 0,0:00:20.20,0:00:20.34,MainStyle,,0,0,0,,{\an7\pos(613.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -14 3 b -17.31 3 -20 0.31 -20 -3 l -20 -18 b -20 -21.31 -17.31 -24 -14 -24 l 14 -24 b 17.31 -24 20 -21.31 20 -18 l 20 -3 b 20 0.31 17.31 3 14 3
 Dialogue: 0,0:00:20.20,0:00:20.34,MainStyle,,0,0,0,,{\an7\pos(711,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -74 3 b -77.31 3 -80 0.31 -80 -3 l -80 -18 b -80 -21.31 -77.31 -24 -74 -24 l 72 -24 b 75.31 -24 78 -21.31 78 -18 l 78 -3 b 78 0.31 75.31 3 72 3
+Dialogue: 1,0:00:20.34,0:00:20.46,MainStyle,,0,0,0,,You sold me {\rHighlight}the{\r} notebook.
 Dialogue: 0,0:00:20.34,0:00:20.46,MainStyle,,0,0,0,,{\an7\pos(561.75,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -67 3 b -70.31 3 -73 0.31 -73 -3 l -73 -18 b -73 -21.31 -70.31 -24 -67 -24 l 65 -24 b 68.31 -24 71 -21.31 71 -18 l 71 -3 b 71 0.31 68.31 3 65 3
 Dialogue: 0,0:00:20.34,0:00:20.46,MainStyle,,0,0,0,,{\an7\pos(653.25,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -16 3 b -19.31 3 -22 0.31 -22 -3 l -22 -18 b -22 -21.31 -19.31 -24 -16 -24 l 15 -24 b 18.31 -24 21 -21.31 21 -18 l 21 -3 b 21 0.31 18.31 3 15 3
 Dialogue: 0,0:00:20.34,0:00:20.46,MainStyle,,0,0,0,,{\an7\pos(731.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -52 3 b -55.31 3 -58 0.31 -58 -3 l -58 -18 b -58 -21.31 -55.31 -24 -52 -24 l 52 -24 b 55.31 -24 58 -21.31 58 -18 l 58 -3 b 58 0.31 55.31 3 52 3
+Dialogue: 1,0:00:20.46,0:00:20.84,MainStyle,,0,0,0,,You sold me the {\rHighlight}notebook.{\r}
 Dialogue: 0,0:00:20.46,0:00:20.84,MainStyle,,0,0,0,,{\an7\pos(582.25,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -88 3 b -91.31 3 -94 0.31 -94 -3 l -94 -18 b -94 -21.31 -91.31 -24 -88 -24 l 86 -24 b 89.31 -24 92 -21.31 92 -18 l 92 -3 b 92 0.31 89.31 3 86 3
-Dialogue: 0,0:00:20.46,0:00:20.84,MainStyle,,0,0,0,,{\an7\pos(731.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -52 3 b -55.31 3 -58 0.31 -58 -3 l -58 -18 b -58 -21.31 -55.31 -24 -52 -24 l 52 -24 b 55.31 -24 58 -21.31 58 -18 l 58 -3 b 58 0.31 55.31 3 52 3
-Dialogue: 0,0:00:22.10,0:00:22.22,MainStyle,,0,0,0,,{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
-Dialogue: 0,0:00:23.72,0:00:23.88,MainStyle,,0,0,0,,{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
+Dialogue: 0,0:00:20.46,0:00:20.84,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(731.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -52 3 b -55.31 3 -58 0.31 -58 -3 l -58 -18 b -58 -21.31 -55.31 -24 -52 -24 l 52 -24 b 55.31 -24 58 -21.31 58 -18 l 58 -3 b 58 0.31 55.31 3 52 3
+Dialogue: 1,0:00:22.10,0:00:22.22,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Yes.{\r}
+Dialogue: 0,0:00:22.10,0:00:22.22,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
+Dialogue: 1,0:00:23.72,0:00:23.88,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Yes.{\r}
+Dialogue: 0,0:00:23.72,0:00:23.88,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
+Dialogue: 1,0:00:25.98,0:00:26.18,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Please{\r} look around.
 Dialogue: 0,0:00:25.98,0:00:26.18,MainStyle,,0,0,0,,{\an7\pos(568.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -34 3 b -37.31 3 -40 0.31 -40 -3 l -40 -18 b -40 -21.31 -37.31 -24 -34 -24 l 34 -24 b 37.31 -24 40 -21.31 40 -18 l 40 -3 b 40 0.31 37.31 3 34 3
 Dialogue: 0,0:00:25.98,0:00:26.18,MainStyle,,0,0,0,,{\an7\pos(679.625,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -67 3 b -70.31 3 -73 0.31 -73 -3 l -73 -18 b -73 -21.31 -70.31 -24 -67 -24 l 66 -24 b 69.31 -24 72 -21.31 72 -18 l 72 -3 b 72 0.31 69.31 3 66 3
+Dialogue: 1,0:00:26.18,0:00:26.42,MainStyle,,0,0,0,,Please {\rHighlight}look{\r} around.
 Dialogue: 0,0:00:26.18,0:00:26.42,MainStyle,,0,0,0,,{\an7\pos(568.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -34 3 b -37.31 3 -40 0.31 -40 -3 l -40 -18 b -40 -21.31 -37.31 -24 -34 -24 l 34 -24 b 37.31 -24 40 -21.31 40 -18 l 40 -3 b 40 0.31 37.31 3 34 3
 Dialogue: 0,0:00:26.18,0:00:26.42,MainStyle,,0,0,0,,{\an7\pos(634.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 22 -24 b 25.31 -24 28 -21.31 28 -18 l 28 -3 b 28 0.31 25.31 3 22 3
 Dialogue: 0,0:00:26.18,0:00:26.42,MainStyle,,0,0,0,,{\an7\pos(706.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -40 3 b -43.31 3 -46 0.31 -46 -3 l -46 -18 b -46 -21.31 -43.31 -24 -40 -24 l 39 -24 b 42.31 -24 45 -21.31 45 -18 l 45 -3 b 45 0.31 42.31 3 39 3
+Dialogue: 1,0:00:26.42,0:00:26.68,MainStyle,,0,0,0,,Please look {\rHighlight}around.{\r}
 Dialogue: 0,0:00:26.42,0:00:26.68,MainStyle,,0,0,0,,{\an7\pos(595,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -61 3 b -64.31 3 -67 0.31 -67 -3 l -67 -18 b -67 -21.31 -64.31 -24 -61 -24 l 61 -24 b 64.31 -24 67 -21.31 67 -18 l 67 -3 b 67 0.31 64.31 3 61 3
-Dialogue: 0,0:00:26.42,0:00:26.68,MainStyle,,0,0,0,,{\an7\pos(706.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -40 3 b -43.31 3 -46 0.31 -46 -3 l -46 -18 b -46 -21.31 -43.31 -24 -40 -24 l 39 -24 b 42.31 -24 45 -21.31 45 -18 l 45 -3 b 45 0.31 42.31 3 39 3
+Dialogue: 0,0:00:26.42,0:00:26.68,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(706.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -40 3 b -43.31 3 -46 0.31 -46 -3 l -46 -18 b -46 -21.31 -43.31 -24 -40 -24 l 39 -24 b 42.31 -24 45 -21.31 45 -18 l 45 -3 b 45 0.31 42.31 3 39 3
+Dialogue: 1,0:00:52.79,0:00:54.04,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}What's{\r} this?
 Dialogue: 0,0:00:52.79,0:00:54.04,MainStyle,,0,0,0,,{\an7\pos(609.25,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -36 3 b -39.31 3 -42 0.31 -42 -3 l -42 -18 b -42 -21.31 -39.31 -24 -36 -24 l 34 -24 b 37.31 -24 40 -21.31 40 -18 l 40 -3 b 40 0.31 37.31 3 34 3
 Dialogue: 0,0:00:52.79,0:00:54.04,MainStyle,,0,0,0,,{\an7\pos(680.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -27 3 b -30.31 3 -33 0.31 -33 -3 l -33 -18 b -33 -21.31 -30.31 -24 -27 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
+Dialogue: 1,0:00:54.04,0:00:54.22,MainStyle,,0,0,0,,What's {\rHighlight}this?{\r}
 Dialogue: 0,0:00:54.04,0:00:54.22,MainStyle,,0,0,0,,{\an7\pos(609.25,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -36 3 b -39.31 3 -42 0.31 -42 -3 l -42 -18 b -42 -21.31 -39.31 -24 -36 -24 l 34 -24 b 37.31 -24 40 -21.31 40 -18 l 40 -3 b 40 0.31 37.31 3 34 3
-Dialogue: 0,0:00:54.04,0:00:54.22,MainStyle,,0,0,0,,{\an7\pos(680.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -27 3 b -30.31 3 -33 0.31 -33 -3 l -33 -18 b -33 -21.31 -30.31 -24 -27 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
-Dialogue: 0,0:00:56.61,0:00:56.76,MainStyle,,0,0,0,,{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -17 3 b -20.31 3 -23 0.31 -23 -3 l -23 -18 b -23 -21.31 -20.31 -24 -17 -24 l 16 -24 b 19.31 -24 22 -21.31 22 -18 l 22 -3 b 22 0.31 19.31 3 16 3
+Dialogue: 0,0:00:54.04,0:00:54.22,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(680.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -27 3 b -30.31 3 -33 0.31 -33 -3 l -33 -18 b -33 -21.31 -30.31 -24 -27 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
+Dialogue: 1,0:00:56.61,0:00:56.76,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Oh,{\r}
+Dialogue: 0,0:00:56.61,0:00:56.76,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -17 3 b -20.31 3 -23 0.31 -23 -3 l -23 -18 b -23 -21.31 -20.31 -24 -17 -24 l 16 -24 b 19.31 -24 22 -21.31 22 -18 l 22 -3 b 22 0.31 19.31 3 16 3
+Dialogue: 1,0:00:56.78,0:00:57.06,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}it's{\r} a beautiful thing.
 Dialogue: 0,0:00:56.78,0:00:57.06,MainStyle,,0,0,0,,{\an7\pos(544.375,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 14 -24 b 17.31 -24 20 -21.31 20 -18 l 20 -3 b 20 0.31 17.31 3 14 3
 Dialogue: 0,0:00:56.78,0:00:57.06,MainStyle,,0,0,0,,{\an7\pos(659.875,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -91 3 b -94.31 3 -97 0.31 -97 -3 l -97 -18 b -97 -21.31 -94.31 -24 -91 -24 l 89 -24 b 92.31 -24 95 -21.31 95 -18 l 95 -3 b 95 0.31 92.31 3 89 3
+Dialogue: 1,0:00:57.06,0:00:57.27,MainStyle,,0,0,0,,it's {\rHighlight}a{\r} beautiful thing.
 Dialogue: 0,0:00:57.06,0:00:57.27,MainStyle,,0,0,0,,{\an7\pos(544.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 14 -24 b 17.31 -24 20 -21.31 20 -18 l 20 -3 b 20 0.31 17.31 3 14 3
 Dialogue: 0,0:00:57.06,0:00:57.27,MainStyle,,0,0,0,,{\an7\pos(574,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -5 3 b -8.31 3 -11 0.31 -11 -3 l -11 -18 b -11 -21.31 -8.31 -24 -5 -24 l 4 -24 b 7.31 -24 10 -21.31 10 -18 l 10 -3 b 10 0.31 7.31 3 4 3
 Dialogue: 0,0:00:57.06,0:00:57.27,MainStyle,,0,0,0,,{\an7\pos(669.625,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -81 3 b -84.31 3 -87 0.31 -87 -3 l -87 -18 b -87 -21.31 -84.31 -24 -81 -24 l 80 -24 b 83.31 -24 86 -21.31 86 -18 l 86 -3 b 86 0.31 83.31 3 80 3
+Dialogue: 1,0:00:57.27,0:00:57.58,MainStyle,,0,0,0,,it's a {\rHighlight}beautiful{\r} thing.
 Dialogue: 0,0:00:57.27,0:00:57.58,MainStyle,,0,0,0,,{\an7\pos(554.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -24 3 b -27.31 3 -30 0.31 -30 -3 l -30 -18 b -30 -21.31 -27.31 -24 -24 -24 l 24 -24 b 27.31 -24 30 -21.31 30 -18 l 30 -3 b 30 0.31 27.31 3 24 3
 Dialogue: 0,0:00:57.27,0:00:57.58,MainStyle,,0,0,0,,{\an7\pos(635,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -46 3 b -49.31 3 -52 0.31 -52 -3 l -52 -18 b -52 -21.31 -49.31 -24 -46 -24 l 45 -24 b 48.31 -24 51 -21.31 51 -18 l 51 -3 b 51 0.31 48.31 3 45 3
 Dialogue: 0,0:00:57.27,0:00:57.58,MainStyle,,0,0,0,,{\an7\pos(720.875,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -30 3 b -33.31 3 -36 0.31 -36 -3 l -36 -18 b -36 -21.31 -33.31 -24 -30 -24 l 28 -24 b 31.31 -24 34 -21.31 34 -18 l 34 -3 b 34 0.31 31.31 3 28 3
+Dialogue: 1,0:00:57.58,0:00:58.01,MainStyle,,0,0,0,,it's a beautiful {\rHighlight}thing.{\r}
 Dialogue: 0,0:00:57.58,0:00:58.01,MainStyle,,0,0,0,,{\an7\pos(605.375,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -76 3 b -79.31 3 -82 0.31 -82 -3 l -82 -18 b -82 -21.31 -79.31 -24 -76 -24 l 75 -24 b 78.31 -24 81 -21.31 81 -18 l 81 -3 b 81 0.31 78.31 3 75 3
-Dialogue: 0,0:00:57.58,0:00:58.01,MainStyle,,0,0,0,,{\an7\pos(720.875,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -30 3 b -33.31 3 -36 0.31 -36 -3 l -36 -18 b -36 -21.31 -33.31 -24 -30 -24 l 28 -24 b 31.31 -24 34 -21.31 34 -18 l 34 -3 b 34 0.31 31.31 3 28 3
+Dialogue: 0,0:00:57.58,0:00:58.01,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(720.875,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -30 3 b -33.31 3 -36 0.31 -36 -3 l -36 -18 b -36 -21.31 -33.31 -24 -30 -24 l 28 -24 b 31.31 -24 34 -21.31 34 -18 l 34 -3 b 34 0.31 31.31 3 28 3
+Dialogue: 1,0:00:59.46,0:00:59.56,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}It's{\r} over 100 years old.
 Dialogue: 0,0:00:59.46,0:00:59.56,MainStyle,,0,0,0,,{\an7\pos(533,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 14 -24 b 17.31 -24 20 -21.31 20 -18 l 20 -3 b 20 0.31 17.31 3 14 3
 Dialogue: 0,0:00:59.46,0:00:59.56,MainStyle,,0,0,0,,{\an7\pos(659.875,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -102 3 b -105.31 3 -108 0.31 -108 -3 l -108 -18 b -108 -21.31 -105.31 -24 -102 -24 l 101 -24 b 104.31 -24 107 -21.31 107 -18 l 107 -3 b 107 0.31 104.31 3 101 3
+Dialogue: 1,0:00:59.56,0:00:59.70,MainStyle,,0,0,0,,It's {\rHighlight}over{\r} 100 years old.
 Dialogue: 0,0:00:59.56,0:00:59.70,MainStyle,,0,0,0,,{\an7\pos(533,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 14 -24 b 17.31 -24 20 -21.31 20 -18 l 20 -3 b 20 0.31 17.31 3 14 3
 Dialogue: 0,0:00:59.56,0:00:59.70,MainStyle,,0,0,0,,{\an7\pos(580.25,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 23 -24 b 26.31 -24 29 -21.31 29 -18 l 29 -3 b 29 0.31 26.31 3 23 3
 Dialogue: 0,0:00:59.56,0:00:59.70,MainStyle,,0,0,0,,{\an7\pos(687.25,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -74 3 b -77.31 3 -80 0.31 -80 -3 l -80 -18 b -80 -21.31 -77.31 -24 -74 -24 l 73 -24 b 76.31 -24 79 -21.31 79 -18 l 79 -3 b 79 0.31 76.31 3 73 3
+Dialogue: 1,0:00:59.70,0:01:00.06,MainStyle,,0,0,0,,It's over {\rHighlight}100{\r} years old.
 Dialogue: 0,0:00:59.70,0:01:00.06,MainStyle,,0,0,0,,{\an7\pos(560.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -42 3 b -45.31 3 -48 0.31 -48 -3 l -48 -18 b -48 -21.31 -45.31 -24 -42 -24 l 43 -24 b 46.31 -24 49 -21.31 49 -18 l 49 -3 b 49 0.31 46.31 3 43 3
 Dialogue: 0,0:00:59.70,0:01:00.06,MainStyle,,0,0,0,,{\an7\pos(630.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -17 3 b -20.31 3 -23 0.31 -23 -3 l -23 -18 b -23 -21.31 -20.31 -24 -17 -24 l 17 -24 b 20.31 -24 23 -21.31 23 -18 l 23 -3 b 23 0.31 20.31 3 17 3
 Dialogue: 0,0:00:59.70,0:01:00.06,MainStyle,,0,0,0,,{\an7\pos(709.75,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -53 3 b -56.31 3 -59 0.31 -59 -3 l -59 -18 b -59 -21.31 -56.31 -24 -53 -24 l 51 -24 b 54.31 -24 57 -21.31 57 -18 l 57 -3 b 57 0.31 54.31 3 51 3
+Dialogue: 1,0:01:00.06,0:01:00.38,MainStyle,,0,0,0,,It's over 100 {\rHighlight}years{\r} old.
 Dialogue: 0,0:01:00.06,0:01:00.38,MainStyle,,0,0,0,,{\an7\pos(582.875,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -64 3 b -67.31 3 -70 0.31 -70 -3 l -70 -18 b -70 -21.31 -67.31 -24 -64 -24 l 64 -24 b 67.31 -24 70 -21.31 70 -18 l 70 -3 b 70 0.31 67.31 3 64 3
 Dialogue: 0,0:01:00.06,0:01:00.38,MainStyle,,0,0,0,,{\an7\pos(685.875,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -29 3 b -32.31 3 -35 0.31 -35 -3 l -35 -18 b -35 -21.31 -32.31 -24 -29 -24 l 27 -24 b 30.31 -24 33 -21.31 33 -18 l 33 -3 b 33 0.31 30.31 3 27 3
 Dialogue: 0,0:01:00.06,0:01:00.38,MainStyle,,0,0,0,,{\an7\pos(743,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -19 3 b -22.31 3 -25 0.31 -25 -3 l -25 -18 b -25 -21.31 -22.31 -24 -19 -24 l 18 -24 b 21.31 -24 24 -21.31 24 -18 l 24 -3 b 24 0.31 21.31 3 18 3
+Dialogue: 1,0:01:00.38,0:01:00.60,MainStyle,,0,0,0,,It's over 100 years {\rHighlight}old.{\r}
 Dialogue: 0,0:01:00.38,0:01:00.60,MainStyle,,0,0,0,,{\an7\pos(616.125,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -98 3 b -101.31 3 -104 0.31 -104 -3 l -104 -18 b -104 -21.31 -101.31 -24 -98 -24 l 97 -24 b 100.31 -24 103 -21.31 103 -18 l 103 -3 b 103 0.31 100.31 3 97 3
-Dialogue: 0,0:01:00.38,0:01:00.60,MainStyle,,0,0,0,,{\an7\pos(743,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -19 3 b -22.31 3 -25 0.31 -25 -3 l -25 -18 b -25 -21.31 -22.31 -24 -19 -24 l 18 -24 b 21.31 -24 24 -21.31 24 -18 l 24 -3 b 24 0.31 21.31 3 18 3
+Dialogue: 0,0:01:00.38,0:01:00.60,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(743,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -19 3 b -22.31 3 -25 0.31 -25 -3 l -25 -18 b -25 -21.31 -22.31 -24 -19 -24 l 18 -24 b 21.31 -24 24 -21.31 24 -18 l 24 -3 b 24 0.31 21.31 3 18 3
+Dialogue: 1,0:01:04.02,0:01:05.16,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}It{\r} cost you $4.
 Dialogue: 0,0:01:04.02,0:01:05.16,MainStyle,,0,0,0,,{\an7\pos(570.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -5 3 b -8.31 3 -11 0.31 -11 -3 l -11 -18 b -11 -21.31 -8.31 -24 -5 -24 l 6 -24 b 9.31 -24 12 -21.31 12 -18 l 12 -3 b 12 0.31 9.31 3 6 3
 Dialogue: 0,0:01:04.02,0:01:05.16,MainStyle,,0,0,0,,{\an7\pos(650.625,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -65 3 b -68.31 3 -71 0.31 -71 -3 l -71 -18 b -71 -21.31 -68.31 -24 -65 -24 l 64 -24 b 67.31 -24 70 -21.31 70 -18 l 70 -3 b 70 0.31 67.31 3 64 3
+Dialogue: 1,0:01:05.16,0:01:05.26,MainStyle,,0,0,0,,It {\rHighlight}cost{\r} you $4.
 Dialogue: 0,0:01:05.16,0:01:05.26,MainStyle,,0,0,0,,{\an7\pos(570.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -5 3 b -8.31 3 -11 0.31 -11 -3 l -11 -18 b -11 -21.31 -8.31 -24 -5 -24 l 6 -24 b 9.31 -24 12 -21.31 12 -18 l 12 -3 b 12 0.31 9.31 3 6 3
 Dialogue: 0,0:01:05.16,0:01:05.26,MainStyle,,0,0,0,,{\an7\pos(607.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 22 -24 b 25.31 -24 28 -21.31 28 -18 l 28 -3 b 28 0.31 25.31 3 22 3
 Dialogue: 0,0:01:05.16,0:01:05.26,MainStyle,,0,0,0,,{\an7\pos(677.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -39 3 b -42.31 3 -45 0.31 -45 -3 l -45 -18 b -45 -21.31 -42.31 -24 -39 -24 l 37 -24 b 40.31 -24 43 -21.31 43 -18 l 43 -3 b 43 0.31 40.31 3 37 3
+Dialogue: 1,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,It cost {\rHighlight}you{\r} $4.
 Dialogue: 0,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,{\an7\pos(597,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -32 3 b -35.31 3 -38 0.31 -38 -3 l -38 -18 b -38 -21.31 -35.31 -24 -32 -24 l 33 -24 b 36.31 -24 39 -21.31 39 -18 l 39 -3 b 39 0.31 36.31 3 33 3
 Dialogue: 0,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,{\an7\pos(658,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -19 3 b -22.31 3 -25 0.31 -25 -3 l -25 -18 b -25 -21.31 -22.31 -24 -19 -24 l 17 -24 b 20.31 -24 23 -21.31 23 -18 l 23 -3 b 23 0.31 20.31 3 17 3
-Dialogue: 0,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,{\an7\pos(701,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(0,50)}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 13 -24 b 16.31 -24 19 -21.31 19 -18 l 19 -3 b 19 0.31 16.31 3 13 3
+Dialogue: 0,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(701,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(0,50)}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 13 -24 b 16.31 -24 19 -21.31 19 -18 l 19 -3 b 19 0.31 16.31 3 13 3
+Dialogue: 1,0:01:24.70,0:01:24.84,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}There's{\r} another room upstairs you might like to see.
 Dialogue: 0,0:01:24.70,0:01:24.84,MainStyle,,0,0,0,,{\an7\pos(395.125,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -39 3 b -42.31 3 -45 0.31 -45 -3 l -45 -18 b -45 -21.31 -42.31 -24 -39 -24 l 38 -24 b 41.31 -24 44 -21.31 44 -18 l 44 -3 b 44 0.31 41.31 3 38 3
 Dialogue: 0,0:01:24.70,0:01:24.84,MainStyle,,0,0,0,,{\an7\pos(683.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -240 3 b -243.31 3 -246 0.31 -246 -3 l -246 -18 b -246 -21.31 -243.31 -24 -240 -24 l 239 -24 b 242.31 -24 245 -21.31 245 -18 l 245 -3 b 245 0.31 242.31 3 239 3
+Dialogue: 1,0:01:24.84,0:01:25.08,MainStyle,,0,0,0,,There's {\rHighlight}another{\r} room upstairs you might like to see.
 Dialogue: 0,0:01:24.84,0:01:25.08,MainStyle,,0,0,0,,{\an7\pos(395.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -39 3 b -42.31 3 -45 0.31 -45 -3 l -45 -18 b -45 -21.31 -42.31 -24 -39 -24 l 38 -24 b 41.31 -24 44 -21.31 44 -18 l 44 -3 b 44 0.31 41.31 3 38 3
 Dialogue: 0,0:01:24.84,0:01:25.08,MainStyle,,0,0,0,,{\an7\pos(483.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -40 3 b -43.31 3 -46 0.31 -46 -3 l -46 -18 b -46 -21.31 -43.31 -24 -40 -24 l 41 -24 b 44.31 -24 47 -21.31 47 -18 l 47 -3 b 47 0.31 44.31 3 41 3
 Dialogue: 0,0:01:24.84,0:01:25.08,MainStyle,,0,0,0,,{\an7\pos(728.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -195 3 b -198.31 3 -201 0.31 -201 -3 l -201 -18 b -201 -21.31 -198.31 -24 -195 -24 l 194 -24 b 197.31 -24 200 -21.31 200 -18 l 200 -3 b 200 0.31 197.31 3 194 3
+Dialogue: 1,0:01:25.08,0:01:25.30,MainStyle,,0,0,0,,There's another {\rHighlight}room{\r} upstairs you might like to see.
 Dialogue: 0,0:01:25.08,0:01:25.30,MainStyle,,0,0,0,,{\an7\pos(440.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -84 3 b -87.31 3 -90 0.31 -90 -3 l -90 -18 b -90 -21.31 -87.31 -24 -84 -24 l 84 -24 b 87.31 -24 90 -21.31 90 -18 l 90 -3 b 90 0.31 87.31 3 84 3
 Dialogue: 0,0:01:25.08,0:01:25.30,MainStyle,,0,0,0,,{\an7\pos(560,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -26 3 b -29.31 3 -32 0.31 -32 -3 l -32 -18 b -32 -21.31 -29.31 -24 -26 -24 l 25 -24 b 28.31 -24 31 -21.31 31 -18 l 31 -3 b 31 0.31 28.31 3 25 3
 Dialogue: 0,0:01:25.08,0:01:25.30,MainStyle,,0,0,0,,{\an7\pos(759.875,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -163 3 b -166.31 3 -169 0.31 -169 -3 l -169 -18 b -169 -21.31 -166.31 -24 -163 -24 l 162 -24 b 165.31 -24 168 -21.31 168 -18 l 168 -3 b 168 0.31 165.31 3 162 3
+Dialogue: 1,0:01:25.30,0:01:26.16,MainStyle,,0,0,0,,There's another room {\rHighlight}upstairs{\r} you might like to see.
 Dialogue: 0,0:01:25.30,0:01:26.16,MainStyle,,0,0,0,,{\an7\pos(471.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -116 3 b -119.31 3 -122 0.31 -122 -3 l -122 -18 b -122 -21.31 -119.31 -24 -116 -24 l 114 -24 b 117.31 -24 120 -21.31 120 -18 l 120 -3 b 120 0.31 117.31 3 114 3
 Dialogue: 0,0:01:25.30,0:01:26.16,MainStyle,,0,0,0,,{\an7\pos(639.25,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -43 3 b -46.31 3 -49 0.31 -49 -3 l -49 -18 b -49 -21.31 -46.31 -24 -43 -24 l 42 -24 b 45.31 -24 48 -21.31 48 -18 l 48 -3 b 48 0.31 45.31 3 42 3
 Dialogue: 0,0:01:25.30,0:01:26.16,MainStyle,,0,0,0,,{\an7\pos(807.75,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -117 3 b -120.31 3 -123 0.31 -123 -3 l -123 -18 b -123 -21.31 -120.31 -24 -117 -24 l 114 -24 b 117.31 -24 120 -21.31 120 -18 l 120 -3 b 120 0.31 117.31 3 114 3
+Dialogue: 1,0:01:26.16,0:01:26.26,MainStyle,,0,0,0,,There's another room upstairs {\rHighlight}you{\r} might like to see.
 Dialogue: 0,0:01:26.16,0:01:26.26,MainStyle,,0,0,0,,{\an7\pos(519.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -163 3 b -166.31 3 -169 0.31 -169 -3 l -169 -18 b -169 -21.31 -166.31 -24 -163 -24 l 162 -24 b 165.31 -24 168 -21.31 168 -18 l 168 -3 b 168 0.31 165.31 3 162 3
 Dialogue: 0,0:01:26.16,0:01:26.26,MainStyle,,0,0,0,,{\an7\pos(710.625,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -19 3 b -22.31 3 -25 0.31 -25 -3 l -25 -18 b -25 -21.31 -22.31 -24 -19 -24 l 17 -24 b 20.31 -24 23 -21.31 23 -18 l 23 -3 b 23 0.31 20.31 3 17 3
 Dialogue: 0,0:01:26.16,0:01:26.26,MainStyle,,0,0,0,,{\an7\pos(831.25,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -92 3 b -95.31 3 -98 0.31 -98 -3 l -98 -18 b -98 -21.31 -95.31 -24 -92 -24 l 91 -24 b 94.31 -24 97 -21.31 97 -18 l 97 -3 b 97 0.31 94.31 3 91 3
+Dialogue: 1,0:01:26.26,0:01:26.56,MainStyle,,0,0,0,,There's another room upstairs you {\rHighlight}might{\r} like to see.
 Dialogue: 0,0:01:26.26,0:01:26.56,MainStyle,,0,0,0,,{\an7\pos(542.875,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -187 3 b -190.31 3 -193 0.31 -193 -3 l -193 -18 b -193 -21.31 -190.31 -24 -187 -24 l 185 -24 b 188.31 -24 191 -21.31 191 -18 l 191 -3 b 191 0.31 188.31 3 185 3
 Dialogue: 0,0:01:26.26,0:01:26.56,MainStyle,,0,0,0,,{\an7\pos(768.375,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -29 3 b -32.31 3 -35 0.31 -35 -3 l -35 -18 b -35 -21.31 -32.31 -24 -29 -24 l 29 -24 b 32.31 -24 35 -21.31 35 -18 l 35 -3 b 35 0.31 32.31 3 29 3
 Dialogue: 0,0:01:26.26,0:01:26.56,MainStyle,,0,0,0,,{\an7\pos(865.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -58 3 b -61.31 3 -64 0.31 -64 -3 l -64 -18 b -64 -21.31 -61.31 -24 -58 -24 l 57 -24 b 60.31 -24 63 -21.31 63 -18 l 63 -3 b 63 0.31 60.31 3 57 3
+Dialogue: 1,0:01:26.56,0:01:26.82,MainStyle,,0,0,0,,There's another room upstairs you might {\rHighlight}like{\r} to see.
 Dialogue: 0,0:01:26.56,0:01:26.82,MainStyle,,0,0,0,,{\an7\pos(577.125,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -221 3 b -224.31 3 -227 0.31 -227 -3 l -227 -18 b -227 -21.31 -224.31 -24 -221 -24 l 221 -24 b 224.31 -24 227 -21.31 227 -18 l 227 -3 b 227 0.31 224.31 3 221 3
 Dialogue: 0,0:01:26.56,0:01:26.82,MainStyle,,0,0,0,,{\an7\pos(825.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -18 3 b -21.31 3 -24 0.31 -24 -3 l -24 -18 b -24 -21.31 -21.31 -24 -18 -24 l 17 -24 b 20.31 -24 23 -21.31 23 -18 l 23 -3 b 23 0.31 20.31 3 17 3
 Dialogue: 0,0:01:26.56,0:01:26.82,MainStyle,,0,0,0,,{\an7\pos(888.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -36 3 b -39.31 3 -42 0.31 -42 -3 l -42 -18 b -42 -21.31 -39.31 -24 -36 -24 l 34 -24 b 37.31 -24 40 -21.31 40 -18 l 40 -3 b 40 0.31 37.31 3 34 3
+Dialogue: 1,0:01:26.82,0:01:27.02,MainStyle,,0,0,0,,There's another room upstairs you might like {\rHighlight}to{\r} see.
 Dialogue: 0,0:01:26.82,0:01:27.02,MainStyle,,0,0,0,,{\an7\pos(600,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -244 3 b -247.31 3 -250 0.31 -250 -3 l -250 -18 b -250 -21.31 -247.31 -24 -244 -24 l 243 -24 b 246.31 -24 249 -21.31 249 -18 l 249 -3 b 249 0.31 246.31 3 243 3
 Dialogue: 0,0:01:26.82,0:01:27.02,MainStyle,,0,0,0,,{\an7\pos(862.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -10 3 b -13.31 3 -16 0.31 -16 -3 l -16 -18 b -16 -21.31 -13.31 -24 -10 -24 l 9 -24 b 12.31 -24 15 -21.31 15 -18 l 15 -3 b 15 0.31 12.31 3 9 3
 Dialogue: 0,0:01:26.82,0:01:27.02,MainStyle,,0,0,0,,{\an7\pos(902.5,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 20 -24 b 23.31 -24 26 -21.31 26 -18 l 26 -3 b 26 0.31 23.31 3 20 3
+Dialogue: 1,0:01:27.02,0:01:27.38,MainStyle,,0,0,0,,There's another room upstairs you might like to {\rHighlight}see.{\r}
 Dialogue: 0,0:01:27.02,0:01:27.38,MainStyle,,0,0,0,,{\an7\pos(614.125,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -258 3 b -261.31 3 -264 0.31 -264 -3 l -264 -18 b -264 -21.31 -261.31 -24 -258 -24 l 257 -24 b 260.31 -24 263 -21.31 263 -18 l 263 -3 b 263 0.31 260.31 3 257 3
-Dialogue: 0,0:01:27.02,0:01:27.38,MainStyle,,0,0,0,,{\an7\pos(902.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 20 -24 b 23.31 -24 26 -21.31 26 -18 l 26 -3 b 26 0.31 23.31 3 20 3
-Dialogue: 0,0:01:28.66,0:01:28.78,MainStyle,,0,0,0,,{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
+Dialogue: 0,0:01:27.02,0:01:27.38,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(902.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 20 -24 b 23.31 -24 26 -21.31 26 -18 l 26 -3 b 26 0.31 23.31 3 20 3
+Dialogue: 1,0:01:28.66,0:01:28.78,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}Yes,{\r}
+Dialogue: 0,0:01:28.66,0:01:28.78,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(640,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -23 3 b -26.31 3 -29 0.31 -29 -3 l -29 -18 b -29 -21.31 -26.31 -24 -23 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
+Dialogue: 1,0:01:29.02,0:01:29.68,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}it's,{\r} uh,
 Dialogue: 0,0:01:29.02,0:01:29.68,MainStyle,,0,0,0,,{\an7\pos(619.5,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,50)}m -18 3 b -21.31 3 -24 0.31 -24 -3 l -24 -18 b -24 -21.31 -21.31 -24 -18 -24 l 17 -24 b 20.31 -24 23 -21.31 23 -18 l 23 -3 b 23 0.31 20.31 3 17 3
-Dialogue: 0,0:01:29.02,0:01:29.68,MainStyle,,0,0,0,,{\an7\pos(663.25,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,50)}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 14 -24 b 17.31 -24 20 -21.31 20 -18 l 20 -3 b 20 0.31 17.31 3 14 3
+Dialogue: 0,0:01:29.02,0:01:29.68,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(663.25,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,50)}m -15 3 b -18.31 3 -21 0.31 -21 -3 l -21 -18 b -21 -21.31 -18.31 -24 -15 -24 l 14 -24 b 17.31 -24 20 -21.31 20 -18 l 20 -3 b 20 0.31 17.31 3 14 3
+Dialogue: 1,0:01:29.86,0:01:30.06,MainStyle,,0,0,0,,{\fad(50,0)}{\rHighlight}not{\r} much in it.
 Dialogue: 0,0:01:29.86,0:01:30.06,MainStyle,,0,0,0,,{\an7\pos(579,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(50,0)}m -16 3 b -19.31 3 -22 0.31 -22 -3 l -22 -18 b -22 -21.31 -19.31 -24 -16 -24 l 16 -24 b 19.31 -24 22 -21.31 22 -18 l 22 -3 b 22 0.31 19.31 3 16 3
 Dialogue: 0,0:01:29.86,0:01:30.06,MainStyle,,0,0,0,,{\an7\pos(661,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF\fad(50,0)}m -56 3 b -59.31 3 -62 0.31 -62 -3 l -62 -18 b -62 -21.31 -59.31 -24 -56 -24 l 55 -24 b 58.31 -24 61 -21.31 61 -18 l 61 -3 b 61 0.31 58.31 3 55 3
+Dialogue: 1,0:01:30.06,0:01:30.24,MainStyle,,0,0,0,,not {\rHighlight}much{\r} in it.
 Dialogue: 0,0:01:30.06,0:01:30.24,MainStyle,,0,0,0,,{\an7\pos(579,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -16 3 b -19.31 3 -22 0.31 -22 -3 l -22 -18 b -22 -21.31 -19.31 -24 -16 -24 l 16 -24 b 19.31 -24 22 -21.31 22 -18 l 22 -3 b 22 0.31 19.31 3 16 3
 Dialogue: 0,0:01:30.06,0:01:30.24,MainStyle,,0,0,0,,{\an7\pos(633.375,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -28 3 b -31.31 3 -34 0.31 -34 -3 l -34 -18 b -34 -21.31 -31.31 -24 -28 -24 l 27 -24 b 30.31 -24 33 -21.31 33 -18 l 33 -3 b 33 0.31 30.31 3 27 3
 Dialogue: 0,0:01:30.06,0:01:30.24,MainStyle,,0,0,0,,{\an7\pos(694.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -22 3 b -25.31 3 -28 0.31 -28 -3 l -28 -18 b -28 -21.31 -25.31 -24 -22 -24 l 21 -24 b 24.31 -24 27 -21.31 27 -18 l 27 -3 b 27 0.31 24.31 3 21 3
+Dialogue: 1,0:01:30.24,0:01:30.38,MainStyle,,0,0,0,,not much {\rHighlight}in{\r} it.
 Dialogue: 0,0:01:30.24,0:01:30.38,MainStyle,,0,0,0,,{\an7\pos(612.375,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -49 3 b -52.31 3 -55 0.31 -55 -3 l -55 -18 b -55 -21.31 -52.31 -24 -49 -24 l 48 -24 b 51.31 -24 54 -21.31 54 -18 l 54 -3 b 54 0.31 51.31 3 48 3
 Dialogue: 0,0:01:30.24,0:01:30.38,MainStyle,,0,0,0,,{\an7\pos(680.375,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0}m -8 3 b -11.31 3 -14 0.31 -14 -3 l -14 -18 b -14 -21.31 -11.31 -24 -8 -24 l 7 -24 b 10.31 -24 13 -21.31 13 -18 l 13 -3 b 13 0.31 10.31 3 7 3
 Dialogue: 0,0:01:30.24,0:01:30.38,MainStyle,,0,0,0,,{\an7\pos(708,678)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -9 3 b -12.31 3 -15 0.31 -15 -3 l -15 -18 b -15 -21.31 -12.31 -24 -9 -24 l 8 -24 b 11.31 -24 14 -21.31 14 -18 l 14 -3 b 14 0.31 11.31 3 8 3
+Dialogue: 1,0:01:30.38,0:01:30.50,MainStyle,,0,0,0,,not much in {\rHighlight}it.{\r}
 Dialogue: 0,0:01:30.38,0:01:30.50,MainStyle,,0,0,0,,{\an7\pos(626,678)\fad(0,50)\alpha&HFF\fscx100\fscy100\frz0\p1\c#FFFFFF\1a&HFF}m -63 3 b -66.31 3 -69 0.31 -69 -3 l -69 -18 b -69 -21.31 -66.31 -24 -63 -24 l 62 -24 b 65.31 -24 68 -21.31 68 -18 l 68 -3 b 68 0.31 65.31 3 62 3
-Dialogue: 0,0:01:30.38,0:01:30.50,MainStyle,,0,0,0,,{\an7\pos(708,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -9 3 b -12.31 3 -15 0.31 -15 -3 l -15 -18 b -15 -21.31 -12.31 -24 -9 -24 l 8 -24 b 11.31 -24 14 -21.31 14 -18 l 14 -3 b 14 0.31 11.31 3 8 3
+Dialogue: 0,0:01:30.38,0:01:30.50,MainStyle,,0,0,0,,{\fad(0,50)}{\an7\pos(708,678)\fscx100\fscy100\frz0\p1\c#FFFFFF\1a0\fad(0,50)}m -9 3 b -12.31 3 -15 0.31 -15 -3 l -15 -18 b -15 -21.31 -12.31 -24 -9 -24 l 8 -24 b 11.31 -24 14 -21.31 14 -18 l 14 -3 b 14 0.31 11.31 3 8 3

@@ -515,7 +515,6 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
 
     def __call__(self):
         return_subs = []
-        print(self.backgrounds)
         if self.highlighted_texts != () and self.highlighted_texts != []:
             # If appear is true, replace the highlight styles
             if self.appear_style != () and self.appear_style != []:

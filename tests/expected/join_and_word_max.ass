@@ -15,20 +15,20 @@ Style: MainStyle,Arial,24,&H00FFFFFF,&H00000000,&H00000000,&H00000000,-1,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:03.58,0:00:08.52,MainStyle,,0,0,0,,{\fad(0,0)}Can I help you? Hmm?
-Dialogue: 0,0:00:10.34,0:00:13.32,MainStyle,,0,0,0,,{\fad(0,0)}Anything special? I
-Dialogue: 0,0:00:13.32,0:00:14.06,MainStyle,,0,0,0,,{\fad(0,0)}was here before.
-Dialogue: 0,0:00:15.96,0:00:19.94,MainStyle,,0,0,0,,{\fad(0,0)}Razorblades. You
-Dialogue: 0,0:00:19.98,0:00:20.46,MainStyle,,0,0,0,,{\fad(0,0)}sold me the
-Dialogue: 0,0:00:20.46,0:00:23.79,MainStyle,,0,0,0,,{\fad(0,0)}notebook. Yes. Yes.
-Dialogue: 0,0:00:26.13,0:00:26.72,MainStyle,,0,0,0,,{\fad(0,0)}Please, look around.
-Dialogue: 0,0:00:42.53,0:00:56.76,MainStyle,,0,0,0,,{\fad(0,0)}Ah. What's this? Oh,
-Dialogue: 0,0:00:56.76,0:00:57.58,MainStyle,,0,0,0,,{\fad(0,0)}it's a beautiful
-Dialogue: 0,0:00:57.58,0:00:59.86,MainStyle,,0,0,0,,{\fad(0,0)}thing. It's over the
-Dialogue: 0,0:00:59.86,0:00:59.98,MainStyle,,0,0,0,,{\fad(0,0)}hundredth of an hour.
-Dialogue: 0,0:01:00.00,0:01:00.46,MainStyle,,0,0,0,,{\fad(0,0)}A hundred years old.
-Dialogue: 0,0:01:04.80,0:01:24.84,MainStyle,,0,0,0,,{\fad(0,0)}Cost you $4. There's
+Dialogue: 0,0:00:03.60,0:00:08.58,MainStyle,,0,0,0,,{\fad(0,0)}Can I help you? Hmm?
+Dialogue: 0,0:00:10.29,0:00:13.32,MainStyle,,0,0,0,,{\fad(0,0)}Anything special? I
+Dialogue: 0,0:00:13.32,0:00:14.13,MainStyle,,0,0,0,,{\fad(0,0)}was here before.
+Dialogue: 0,0:00:15.96,0:00:19.96,MainStyle,,0,0,0,,{\fad(0,0)}Razorblades. You
+Dialogue: 0,0:00:19.96,0:00:20.46,MainStyle,,0,0,0,,{\fad(0,0)}sold me the
+Dialogue: 0,0:00:20.46,0:00:23.88,MainStyle,,0,0,0,,{\fad(0,0)}notebook. Yes. Yes.
+Dialogue: 0,0:00:25.98,0:00:26.68,MainStyle,,0,0,0,,{\fad(0,0)}Please look around.
+Dialogue: 0,0:00:52.79,0:00:56.76,MainStyle,,0,0,0,,{\fad(0,0)}What's this? Oh,
+Dialogue: 0,0:00:56.78,0:00:57.58,MainStyle,,0,0,0,,{\fad(0,0)}it's a beautiful
+Dialogue: 0,0:00:57.58,0:01:00.06,MainStyle,,0,0,0,,{\fad(0,0)}thing. It's over 100
+Dialogue: 0,0:01:00.06,0:01:05.06,MainStyle,,0,0,0,,{\fad(0,0)}years old. It cost
+Dialogue: 0,0:01:05.16,0:01:24.84,MainStyle,,0,0,0,,{\fad(0,0)}you $4. There's
 Dialogue: 0,0:01:24.84,0:01:25.30,MainStyle,,0,0,0,,{\fad(0,0)}another room
 Dialogue: 0,0:01:25.30,0:01:26.56,MainStyle,,0,0,0,,{\fad(0,0)}upstairs you might
-Dialogue: 0,0:01:26.56,0:01:29.36,MainStyle,,0,0,0,,{\fad(0,0)}like to see. It's
-Dialogue: 0,0:01:29.36,0:01:29.58,MainStyle,,0,0,0,,{\fad(0,0)}a...
+Dialogue: 0,0:01:26.56,0:01:28.78,MainStyle,,0,0,0,,{\fad(0,0)}like to see. Yes,
+Dialogue: 0,0:01:29.02,0:01:30.24,MainStyle,,0,0,0,,{\fad(0,0)}it's, uh, not much
+Dialogue: 0,0:01:30.24,0:01:30.50,MainStyle,,0,0,0,,{\fad(0,0)}in it.
