@@ -2,36 +2,10 @@ import dataclasses
 import re
 from copy import deepcopy
 import pysubs2
-import stable_whisper
 import subprocess
 import tempfile
 import os
 import json
-
-def use_whisper(path:str, model='base.en', device='cpu', refine:bool=False):
-    """
-        Transcribes audio or video files into word-level subtitles using stable-whisper.
-
-        Args:
-            path (str): The file path to the input video or audio file.
-            model (str, optional): The Whisper model size/language to use. Defaults to 'base.en'.
-            device (str, optional): The device to run inference on (e.g., 'cpu', 'cuda').
-                Defaults to 'cpu'.
-            refine (bool, optional): If True, applies an additional refinement pass to improve
-                timestamp accuracy using voice frequency analysis. Defaults to False.
-
-        Returns:
-            str: The generated subtitles in SRT/VTT format content.
-        """
-    model = stable_whisper.load_model(model, device=device)
-    result = model.transcribe(audio=path, verbose=None)
-    if refine:
-        model.refine(path, result, word_level=False, only_voice_freq=True, precision=0.05)
-    r = result.to_srt_vtt(None, segment_level=False, word_level=True)
-    return r
-
-def return_whisper_result(result:stable_whisper.result.WhisperResult):
-    return result.to_srt_vtt(None, segment_level=False, word_level=True)
 
 def dprint(txt):
     if os.environ['debug'] == 'True':
@@ -124,10 +98,6 @@ def import_color(color:pysubs2.Color | str | None):
     else:
         return hex_to_pysub2_color(color)
 
-def replace_all(str_:str, replace_from, replace_with):
-    while str_.__contains__(replace_from):
-        str_ = str_.replace(replace_from, replace_with)
-    return str_
 
 def return_script_info(subtitleFile:pysubs2.SSAFile):
     string_subtitles = subtitleFile.to_string('ass')
@@ -139,9 +109,6 @@ def check_for_PlayRes(subtitleFile:pysubs2.SSAFile):
         return True
     else:
         return False
-
-def write_res(subtitleFile:str):
-    pass
 
 def set_play_res(subtitleFile:pysubs2.SSAFile, resolution:tuple[int, int]):
     string_subtitles = subtitleFile.to_string('ass')
@@ -215,12 +182,6 @@ def build_full_sub_file(string_subs:str, script_info:str):
     segments = '['.join(segments)
     return pysubs2.SSAFile.from_string(segments)
 
-def strip_subtitle_text(event_text):
-    splits = event_text.split('{')
-    for i, split in enumerate(splits):
-        if split.__contains__('}'):
-            splits[i] = split[split.find('}')+1:]
-    return ''.join(splits)
 
 #@dataclasses.dataclass
 @dataclasses.dataclass(kw_only=True)
