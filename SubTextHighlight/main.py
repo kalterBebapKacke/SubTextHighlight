@@ -114,8 +114,8 @@ class Subtitle_Edit:
         self.input = self.args.input
         self.input_video = self.args.input_video
         self.output = self.args.output
-        self.whisper_model= self.args.whisper_model
-        self.whisper_device= self.args.whisper_device
+        self.whisper_model = self.args.whisper_model
+        self.whisper_device = self.args.whisper_device
         self.fill_sub_times = self.args.fill_sub_times
         self.whisper_refine = self.args.whisper_refine
         self.end_time, self.resolution = self.set_info()
