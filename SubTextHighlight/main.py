@@ -9,6 +9,7 @@ from . import utils
 import fleep
 import stable_whisper
 import dataclasses
+from . import handler
 
 # TODO: Better Input/Output Control by using separate class
 # TODO: Make Whisper Import Optional
@@ -111,17 +112,11 @@ class Subtitle_Edit:
         self.word_max = self.args.word_max
         self.subtitle_type = self.args.subtitle_type
         self.add_time = self.args.add_time
-        self.input = self.args.input
-        self.input_video = self.args.input_video
-        self.output = self.args.output
-        self.whisper_model = self.args.whisper_model
-        self.whisper_device = self.args.whisper_device
         self.fill_sub_times = self.args.fill_sub_times
-        self.whisper_refine = self.args.whisper_refine
-        self.end_time, self.resolution = self.set_info()
 
-        # builder
+        # Set handler and builder
         self.builder = utils.subs_builder()
+        self.Handler = handler.Input_Output_Handler(args_sub_edit)
 
         # Highlighters
         #self.args_highlight = args_highlight
@@ -141,7 +136,7 @@ class Subtitle_Edit:
 
 
     def __call__(self):
-        sub_file = self.interpret_input(self.input)
+        sub_file = self.Handler.handle_input()
         sub_file.styles["MainStyle"] = self.main_style
 
         if self.highlighter is not None:
@@ -164,9 +159,6 @@ class Subtitle_Edit:
             subs = self.shift_subs_time(subs)
 
         # edit
-        # for some parts of the effects the PlayResX and Y has to be set in the ass file
-        if not utils.check_for_PlayRes(sub_file):
-            sub_file = utils.set_play_res(sub_file, self.resolution)
 
         if self.effects is not None:
             subs  = self.effects(subs, sub_file)
@@ -174,41 +166,7 @@ class Subtitle_Edit:
         # build and save
         subs = self.builder(subs)
         sub_file.events = subs
-        return self.interpret_output(self.output, sub_file)
-
-    def interpret_input(self, input):
-        if type(input) == stable_whisper.result.WhisperResult:
-            subs_str = utils.return_whisper_result(input)
-            return pysubs2.SSAFile.from_string(subs_str)
-        elif type(input) is dict[str, any] or type(input) is list[dict[str, any]]:
-            return pysubs2.load_from_whisper(input)
-        elif type(input) is str:
-            file_extension = input.split('.')[-1]
-            if file_extension == 'srt' or file_extension == 'ass':
-                return pysubs2.load(input)
-            else:
-                with open(input, "rb") as file:
-                    info = fleep.get(file.read(128))
-                if info.type == ['audio'] or info.type == ['video']:
-                    subs_str = utils.use_whisper(input, self.whisper_model, self.whisper_device, self.whisper_refine)
-                    return pysubs2.SSAFile.from_string(subs_str)
-                else:
-                    return pysubs2.SSAFile.from_string(input)
-
-    def interpret_output(self, output, output_file:pysubs2.SSAFile):
-        if type(output) is str:
-            file_extension = output.split('.')[-1]
-            if file_extension == 'ass':
-                output_file.save(output)
-            elif self.input_video is not None:
-                with open(self.input_video, "rb") as file:
-                    info = fleep.get(file.read(128))
-                if info.type == ['video']:
-                    utils.add_subtitles_with_ffmpeg(self.input_video, output, output_file)
-            else:
-                raise ValueError('Output format has to be a either ".ass" or a video type')
-        elif output is None:
-            return output_file
+        return self.Handler.handle_output(sub_file)
 
     def add_subtitle(self, cur_word:str, index:int, start, end, all_subs:list, highlight_words:bool=False, sub_list:list=()):
         if highlight_words is True:
@@ -309,8 +267,8 @@ class Subtitle_Edit:
         if not self.fill_sub_times:
             return subs[0].start, subs[-1].end
         else:
-            if self.end_time is not None:
-                return pysubs2.make_time(s=0), pysubs2.make_time(s=self.end_time)
+            if self.Handler.duration is not None:
+                return pysubs2.make_time(s=0), pysubs2.make_time(s=self.Handler.duration)
             else:
                 raise ValueError('For the argument "fill_sub_times" an video has to be inputted via input_video or the subtitles have to generated from a audio/video.')
 
@@ -333,19 +291,6 @@ class Subtitle_Edit:
             else:
                 sub.shift(s=add_time)
         return subs
-
-    def set_info(self):
-        with open(self.input, "rb") as file:
-            info = fleep.get(file.read(128))
-        # if video or audio, then set endtime and resolution
-        if info.type == ['video'] or info.type == ['audio']:
-            return utils.get_duration_resolution(self.input)
-        elif self.input_video is not None:
-            # else get the endtime and resolutions from the input video
-            return utils.get_duration_resolution(self.input_video)
-        else:
-            # return None, if nothing was found
-            return None, None
 
 
 def generate_subs_simple(
