@@ -7,50 +7,54 @@ import tempfile
 import os
 import json
 
+
+def get_duration_resolution(file_path):
+    cmd = [
+        'ffprobe', '-v', 'error', '-print_format', 'json',
+        '-show_format', '-show_streams', file_path
+    ]
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        data = json.loads(result.stdout)
+    except (subprocess.CalledProcessError, json.JSONDecodeError):
+        return 0.0, None
+
+    # 1. Handle Duration
+    # Try getting duration from format first, fallback to 0.0
+    duration_str = data.get('format', {}).get('duration', 0)
+    duration = float(duration_str)
+
+    # 2. Handle Resolution (Video Only)
+    resolution = None
+    streams = data.get('streams', [])
+    for stream in streams:
+        if stream.get('codec_type') == 'video':
+            width = stream.get('width')
+            height = stream.get('height')
+            if width and height:
+                resolution = (width, height)
+            break
+
+    return duration, resolution
+
 def dprint(txt):
     if os.environ['debug'] == 'True':
         print(txt)
 
-def get_duration_resolution(file_path):
-    cmd = [
-        'ffprobe', '-v', 'quiet', '-print_format', 'json',
-        '-show_format', '-show_streams', file_path
-    ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    data = json.loads(result.stdout)
-
-    # Get resolution from the first video stream
-    resolution = None
-    for stream in data['streams']:
-        if stream['codec_type'] == 'video':
-            width = stream['width']
-            height = stream['height']
-            resolution = (width, height)
-            break
-    return float(data['format']['duration']), resolution
-
 def exec_command(command:list):
     try:
-        result = subprocess.run(command, text=True, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-        #print(result)
+        result = subprocess.run(command, text=True, stdout=subprocess.PIPE)
+        if result.returncode != 0:
+            raise RuntimeError(result.stdout)
     except Exception as e:
-        print(e)
+        pass
 
 def add_subtitles_with_ffmpeg(video_path, output_path, sub_file:pysubs2.SSAFile):
     with tempfile.NamedTemporaryFile(mode='w', suffix='.ass', delete=False) as temp_file:
         temp_file.write(sub_file.to_string(format_='ass'))
         temp_filename = temp_file.name
-    command = [
-        "ffmpeg",
-        "-y",
-        "-i", video_path,
-        "-vf",
-        f"ass={temp_filename}",
-        "-c:a", "copy",
-        "-loglevel", "error",
-        output_path
-    ]
-    exec_command(command)
+    add_subtitles_with_ffmpeg_with_given_ass(video_path, output_path, temp_filename)
     os.unlink(temp_filename)
 
 def add_subtitles_with_ffmpeg_with_given_ass(video_path, output_path, ass_file):
@@ -65,6 +69,7 @@ def add_subtitles_with_ffmpeg_with_given_ass(video_path, output_path, ass_file):
         output_path
     ]
     exec_command(command)
+
 
 def hex_to_pysub2_color(hex_color, alpha=0):
     """
@@ -97,90 +102,6 @@ def import_color(color:pysubs2.Color | str | None):
         return color
     else:
         return hex_to_pysub2_color(color)
-
-
-def return_script_info(subtitleFile:pysubs2.SSAFile):
-    string_subtitles = subtitleFile.to_string('ass')
-    return string_subtitles[string_subtitles.find('[Script Info]'):string_subtitles.find('[V4+ Styles]')]
-
-def check_for_PlayRes(subtitleFile:pysubs2.SSAFile):
-    script_info = return_script_info(subtitleFile)
-    if script_info.__contains__('PlayResX:') and script_info.__contains__('PlayResY:'):
-        return True
-    else:
-        return False
-
-def set_play_res(subtitleFile:pysubs2.SSAFile, resolution:tuple[int, int]):
-    string_subtitles = subtitleFile.to_string('ass')
-    script_info = return_script_info(subtitleFile)
-
-    # check if playres is set
-    if check_for_PlayRes(subtitleFile):
-        # if playres is set, confirm it is the right one
-        playresx = script_info[script_info.find('PlayResX:') + len('PlayResX:'):]
-        playresx = int(playresx[:playresx.find('\n')])
-        playresy = script_info[script_info.find('PlayResY:') + len('PlayResY:'):]
-        playresy = int(playresy[:playresy.find('\n')])
-        if (playresx, playresy) == resolution:
-            return subtitleFile
-        else:
-            script_info = update_playres(script_info, resolution[0], resolution[1])
-            return build_full_sub_file(string_subtitles, script_info)
-    else:
-        # if it is not set, just add them to the file
-        script_info = update_playres(script_info, resolution[0], resolution[1])
-        return build_full_sub_file(string_subtitles, script_info)
-
-
-def update_playres(ass_content, playres_x, playres_y):
-    """
-    Update or add PlayResX and PlayResY values in ASS subtitle file content.
-
-    Args:
-        ass_content (str): The content of the ASS file as a string
-        playres_x (int): The new PlayResX value
-        playres_y (int): The new PlayResY value
-
-    Returns:
-        str: Updated ASS file content
-    """
-    lines = ass_content.split('\n')
-    playres_x_found = False
-    playres_y_found = False
-    script_info_idx = -1
-
-    # Find [Script Info] section and existing PlayRes values
-    for i, line in enumerate(lines):
-        stripped = line.strip()
-
-        if stripped == '[Script Info]':
-            script_info_idx = i
-        elif stripped.startswith('PlayResX:'):
-            lines[i] = f'PlayResX: {playres_x}'
-            playres_x_found = True
-        elif stripped.startswith('PlayResY:'):
-            lines[i] = f'PlayResY: {playres_y}'
-            playres_y_found = True
-        elif stripped.startswith('[') and script_info_idx != -1 and i > script_info_idx:
-            # We've reached the next section
-            break
-
-    # If PlayRes values weren't found, add them after [Script Info]
-    if script_info_idx != -1:
-        insert_idx = script_info_idx + 1
-
-        if not playres_y_found:
-            lines.insert(insert_idx, f'PlayResY: {playres_y}')
-        if not playres_x_found:
-            lines.insert(insert_idx, f'PlayResX: {playres_x}')
-
-    return '\n'.join(lines)
-
-def build_full_sub_file(string_subs:str, script_info:str):
-    segments = string_subs.split('[')
-    segments[1] = script_info[1:]
-    segments = '['.join(segments)
-    return pysubs2.SSAFile.from_string(segments)
 
 
 #@dataclasses.dataclass
