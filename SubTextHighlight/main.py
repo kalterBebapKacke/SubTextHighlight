@@ -11,8 +11,8 @@ import stable_whisper
 import dataclasses
 from . import handler
 
-# TODO: Better Input/Output Control by using separate class
-# TODO: Make Whisper Import Optional
+# TODO: Update Example Video
+# TODO: Package and distribute package
 
 off_time = datetime.timedelta(seconds=0.025)
 
@@ -161,7 +161,7 @@ class Subtitle_Edit:
         # edit
 
         if self.effects is not None:
-            subs  = self.effects(subs, sub_file)
+            subs  = self.effects(subs, sub_file, self.Handler)
 
         # build and save
         subs = self.builder(subs)
