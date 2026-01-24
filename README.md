@@ -53,6 +53,8 @@ This is the script to generate the shown subtitles:
         input='./media/plain_video.mp4', # set the input to a video, which will generate the subtitles for me
         output='./media/output_video.mp4', # set the output to a .mp4, so that the subtitles will be burned in
         subtitle_type='separate_on_period', # styling option
+        alignment=2,
+        fill_sub_times=False,
         # more styling options like size or font
     )
     highlight_args = SubTextHighlight.highlight_args(
@@ -70,7 +72,7 @@ This is the script to generate the shown subtitles:
         sub_args,
         highlight_args,
         effects_args,
-    )
+    )()
 ```
 The package uses three main configuration classes to control the output. You initialize these classes and pass them to `Subtitle_Edit`:
 
