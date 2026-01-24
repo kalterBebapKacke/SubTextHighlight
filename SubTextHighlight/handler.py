@@ -1,8 +1,8 @@
 import pysubs2
 import fleep
 from . import utils
-import subprocess
-import json
+import pathlib
+import os
 
 class Input_Output_Handler:
 
@@ -33,6 +33,9 @@ class Input_Output_Handler:
 
         # 3. Handle Strings (Paths or Raw Text)
         if isinstance(self.data_input, str):
+            if not os.path.isfile(self.data_input):
+                raise FileNotFoundError(f'{self.data_input} is not a file')
+
             if self.data_input.endswith(('.srt', '.ass')):
                 sub_file = pysubs2.load(self.data_input)
 
@@ -58,7 +61,7 @@ class Input_Output_Handler:
                 sub_file.save(self.data_output)
                 return None
 
-            if self.is_video_file(self.data_output) and self.video is not None:
+            if self.video is not None and self.is_output_video_file(self.video):
                 utils.add_subtitles_with_ffmpeg(self.video, self.data_output, sub_file)
                 return None
 
@@ -94,6 +97,13 @@ class Input_Output_Handler:
         except (FileNotFoundError, IsADirectoryError):
             return False
 
+    def is_output_video_file(self, file_path):
+        # Define a set of common video extensions
+        video_extensions = ('.mp4', '.mkv', '.avi', '.mov', '.wmv', '.flv', '.webm', '.m4v', '.m4p', '.ogv')
+        extension = pathlib.Path(file_path).suffix.lower()
+
+        return extension in video_extensions
+
     def whisper_transcribe(self, path):
         model = self.whisper.load_model(self.model, device=self.device)
         result = model.transcribe(audio=path, verbose=None)
@@ -108,8 +118,9 @@ class Input_Output_Handler:
             return utils.get_duration_resolution(self.data_input)
 
         # 2. Resolution and duration from extra input video
-        if self.is_video_file(self.video):
-            return utils.get_duration_resolution(self.video)
+        if self.video is not None:
+            if self.is_video_file(self.video):
+                return utils.get_duration_resolution(self.video)
 
         return None, None
 
@@ -182,7 +193,3 @@ class Input_Output_Handler:
                 lines.insert(insert_idx, f'PlayResX: {playres_x}')
 
         return '\n'.join(lines)
-
-
-
-
