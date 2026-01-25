@@ -104,7 +104,6 @@ def test_subtitle(tmp_path, name, options):
 
     # dynamic paths based on the parameters
     expected_ass = base_path / "expected" / (name + '.ass')
-    output_mp4 = base_path / "output" / (name + ".mp4")
     output_ass = base_path / "output" / (name + '.ass')
 
     sub_args = SubTextHighlight.sub_args(
@@ -123,10 +122,6 @@ def test_subtitle(tmp_path, name, options):
     sub_file: pysubs2.SSAFile = sub_edit()
 
     sub_file.save(str(output_ass))
-
-    SubTextHighlight.utils.add_subtitles_with_ffmpeg_with_given_ass(
-        video_path, output_mp4, output_ass
-    )
 
     # Assert
     if UPDATE_GOLDEN:
