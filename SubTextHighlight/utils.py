@@ -38,6 +38,14 @@ def get_duration_resolution(file_path):
 
     return duration, resolution
 
+def is_subfile_resolution_set(sub_file:pysubs2.SSAFile):
+    info = sub_file.info
+    keys = info.keys()
+    if 'PlayResX' in keys and 'PlayResY' in keys:
+        return True
+    else:
+        return False
+
 def dprint(txt):
     if os.environ['debug'] == 'True':
         print(txt)

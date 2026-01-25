@@ -1,4 +1,3 @@
-from . import handler
 from . import Highlight
 from . import docker_wrapper
 from . import utils
@@ -53,7 +52,7 @@ class Effects:
         else:
             return highlighter
 
-    def __call__(self, subs:list, sub_file:pysubs2.SSAFile, handler_:handler.Input_Output_Handler):
+    def __call__(self, subs:list, sub_file:pysubs2.SSAFile):
         if self.args.fade_out_duration != 0 and self.args.fade_in_duration != 0:
             subs = self.fade(subs)
         if self.args.appear:
@@ -61,7 +60,7 @@ class Effects:
 
         if self.args.args_border is not None:
             # Implement rounded borders
-            subs = self.rounded_borders(subs, sub_file, handler_)
+            subs = self.rounded_borders(subs, sub_file)
         return subs
 
     def fade(self, subs):
@@ -76,11 +75,11 @@ class Effects:
             sub.appear_style = styles
         return subs
 
-    def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile, handler_:handler.Input_Output_Handler):
+    def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
         builder = utils.subs_builder()
 
         # check whether res is set, else raise error
-        if handler_.resolution is None:
+        if not utils.is_subfile_resolution_set(sub_file):
             raise RuntimeError('The subtitle file does not contain a Resolution. For the right scaling of the subtitles a input with a video resolution has to be set.')
 
         # Check if appear is active and if so throw an expectation
