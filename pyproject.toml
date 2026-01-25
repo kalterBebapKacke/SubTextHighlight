@@ -1,3 +1,27 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "SubTextHighlight"
+version = "2.0"
+requires-python = ">=3.13"
+description = "This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features."
+readme = "README.md"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+keywords = ["subtitles"]
+dependencies = [
+    "pysubs2>=1.8.0",
+    "Cython>=3.1.1",
+    "openai-whisper>=20240930",
+    "stable-ts-whisperless>=2.19.0",
+    "fleep>=1.0.1",
+    "docker>=7.1.0"
+]
+
+[tool.setuptools.packages]
+find = {}  # Scan the project directory with the default parameters
+
+[project.urls]
+Repository = "https://github.com/kalterBebapKacke/SubTextHighlight.git"
