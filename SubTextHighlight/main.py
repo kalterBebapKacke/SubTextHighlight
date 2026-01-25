@@ -161,7 +161,7 @@ class Subtitle_Edit:
         # edit
 
         if self.effects is not None:
-            subs  = self.effects(subs, sub_file, self.Handler)
+            subs  = self.effects(subs, sub_file)
 
         # build and save
         subs = self.builder(subs)

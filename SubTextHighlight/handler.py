@@ -124,72 +124,22 @@ class Input_Output_Handler:
 
         return None, None
 
-    def handle_subfile_resolution(self, subfile):
-        #Convert to string and find the right section
-        string_subtitles = subfile.to_string('ass')
-        script_info = string_subtitles[string_subtitles.find('[Script Info]'):string_subtitles.find('[V4+ Styles]')]
+    def handle_subfile_resolution(self, subfile:pysubs2.SSAFile):
+        info = subfile.info
 
-
-        # check if playres is set
-        if script_info.__contains__('PlayResX:') and script_info.__contains__('PlayResY:'):
-            # if playres is set, confirm it is the right one
-            playresx = script_info[script_info.find('PlayResX:') + len('PlayResX:'):]
-            playresx = int(playresx[:playresx.find('\n')])
-            playresy = script_info[script_info.find('PlayResY:') + len('PlayResY:'):]
-            playresy = int(playresy[:playresy.find('\n')])
-            if (playresx, playresy) == self.resolution:
+        # check if resolution is set
+        if utils.is_subfile_resolution_set(subfile):
+            # check if resolution matches
+            if self.resolution == (info['PlayResX'], info['PlayResY']):
                 return subfile
 
         # if it is not or wrongly set, just add them to the file
-        script_info = self.update_playres(script_info, self.resolution[0], self.resolution[1])
-        return self.build_full_sub_file(string_subtitles, script_info)
+        subfile.info['PlayResX'] = self.resolution[0]
+        subfile.info['PlayResY'] = self.resolution[1]
+        return subfile
 
     def build_full_sub_file(self, string_subs: str, script_info: str):
         segments = string_subs.split('[')
         segments[1] = script_info[1:]
         segments = '['.join(segments)
         return pysubs2.SSAFile.from_string(segments)
-
-    def update_playres(self, ass_content, playres_x, playres_y):
-        """
-        Update or add PlayResX and PlayResY values in ASS subtitle file content.
-
-        Args:
-            ass_content (str): The content of the ASS file as a string
-            playres_x (int): The new PlayResX value
-            playres_y (int): The new PlayResY value
-
-        Returns:
-            str: Updated ASS file content
-        """
-        lines = ass_content.split('\n')
-        playres_x_found = False
-        playres_y_found = False
-        script_info_idx = -1
-
-        # Find [Script Info] section and existing PlayRes values
-        for i, line in enumerate(lines):
-            stripped = line.strip()
-
-            if stripped == '[Script Info]':
-                script_info_idx = i
-            elif stripped.startswith('PlayResX:'):
-                lines[i] = f'PlayResX: {playres_x}'
-                playres_x_found = True
-            elif stripped.startswith('PlayResY:'):
-                lines[i] = f'PlayResY: {playres_y}'
-                playres_y_found = True
-            elif stripped.startswith('[') and script_info_idx != -1 and i > script_info_idx:
-                # We've reached the next section
-                break
-
-        # If PlayRes values weren't found, add them after [Script Info]
-        if script_info_idx != -1:
-            insert_idx = script_info_idx + 1
-
-            if not playres_y_found:
-                lines.insert(insert_idx, f'PlayResY: {playres_y}')
-            if not playres_x_found:
-                lines.insert(insert_idx, f'PlayResX: {playres_x}')
-
-        return '\n'.join(lines)
