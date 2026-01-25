@@ -11,8 +11,7 @@
 
 Below is a clip from *1984*, styled using SubTextHighlight as an example:
 
-https://github.com/user-attachments/assets/8e74f775-3661-4421-a75b-01f688e04c86
-
+https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
 
 ## Table of Contents
 
