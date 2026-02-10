@@ -11,8 +11,6 @@ import stable_whisper
 import dataclasses
 from . import handler
 
-# TODO: Update Example Video
-# TODO: Package and distribute package
 
 off_time = datetime.timedelta(seconds=0.025)
 

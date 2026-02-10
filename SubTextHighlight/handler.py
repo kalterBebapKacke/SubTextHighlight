@@ -3,19 +3,27 @@ import fleep
 from . import utils
 import pathlib
 import os
+import stable_whisper
 
 class Input_Output_Handler:
 
-    def __init__(self, args_sub_edit):
+    def __init__(self,
+            input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult,
+            output: str | None,
+            input_video: str | None = None,
+            whisper_model: str = 'medium.en',
+            whisper_device: str = 'cpu',
+            whisper_refine: bool = False,
+        ):
         self.whisper = self.handle_whisper_import()
 
-        self.model = args_sub_edit.whisper_model
-        self.device = args_sub_edit.whisper_device
-        self.refine = args_sub_edit.whisper_refine
+        self.model = whisper_model
+        self.device = whisper_device
+        self.refine = whisper_refine
 
-        self.data_input = args_sub_edit.input
-        self.data_output = args_sub_edit.output
-        self.video = args_sub_edit.input_video
+        self.data_input = input
+        self.data_output = output
+        self.video = input_video
 
         self.duration, self.resolution = self.handle_duration_resolution()
 
