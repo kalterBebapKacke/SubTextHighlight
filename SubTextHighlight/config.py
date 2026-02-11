@@ -54,6 +54,21 @@ class SubtitleConfig:
     input_handler: handler.Input_Output_Handler = field(init=False)
     highlighter: Highlight.Highlighter = field(init=False)
 
+    @property
+    def is_effect_needed(self):
+        if self.highlight_as_borders:
+            return False
+        if self.fade != (0.0, 0.0):
+            return False
+        if self.appear:
+            return False
+        return True
+
+    @property
+    def is_highlighter_needed(self):
+        # TODO: implement logic
+        return None
+
     def __post_init__(self):
         self.args_border = docker_wrapper.base.args_border(
             offset=self.offset,
@@ -78,3 +93,25 @@ class SubtitleConfig:
         )
 
         #self.highlighter = Highlight.Highlighter()
+
+    def render(self):
+        # get subfile
+        sub_file = self.input_handler.handle_input()
+
+        # set main style
+        main_style = self.subtitle_style.return_style()
+        sub_file.styles["MainStyle"] = main_style
+
+        # set highlighter
+        self.highlighter = self.highlighter_logic(main_style)
+
+    def highlighter_logic(self, main_style:pysubs2.SSAStyle):
+        # TODO: Rework highlighter to work
+        highlighter = Highlight.Highlighter()
+
+        if not self.is_highlighter_needed:
+            if not self.is_effect_needed:
+                return None
+
+        return highlighter
+
