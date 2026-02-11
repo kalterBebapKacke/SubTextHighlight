@@ -2,6 +2,8 @@ import dataclasses
 import pysubs2
 from .utils import hex_to_pysub2_color
 
+UNSET = object()
+
 def manage_color_input(color_input):
     if isinstance(color_input, str):
         return hex_to_pysub2_color(color_input)
@@ -86,33 +88,44 @@ class StyleConfig:
             """
 
 
-    fontname: str = 'Arial'
-    fontsize: float | int = 24
-    primarycolor: pysubs2.Color | str = dataclasses.field(
-        default_factory=lambda: pysubs2.Color(255, 255, 255)
-    )
-    backcolor: pysubs2.Color | str = dataclasses.field(
-        default_factory=lambda: pysubs2.Color(0, 0, 0)
-    )
-    secondarycolor: pysubs2.Color | str = dataclasses.field(
-        default_factory=lambda: pysubs2.Color(0, 0, 0)
-    ) # Black for border/shadow
-    outlinecolor: pysubs2.Color | str = dataclasses.field(
-        default_factory=lambda: pysubs2.Color(0, 0, 0)
-    )
-    tertiarycolor: pysubs2.Color | str = dataclasses.field(
-        default_factory=lambda: pysubs2.Color(0, 0, 0)
-    )
-    outline: float | int = 1
-    spacing: float | int = 0.75
-    shadow: float | int = 0
-    alignment: int = 5
-    bold: bool = True
-    angle: float = 0.0
-    borderstyle: int = 1
-    italic: bool = False
-    underline: bool = False
+    fontname: str = dataclasses.field(default=UNSET, metadata={"real_default": "Arial"})
+    fontsize: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 24})
 
+    primarycolor: pysubs2.Color | str =  dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(255, 255, 255)})
+    backcolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)})
+    secondarycolor: pysubs2.Color | str =  dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)}) # Black for border/shadow
+    outlinecolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)})
+    tertiarycolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)})
+
+    outline: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 1})
+    spacing: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 0.75})
+    shadow: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 0})
+    alignment: int = dataclasses.field(default=UNSET, metadata={"real_default": 5})
+    bold: bool = dataclasses.field(default=UNSET, metadata={"real_default": True})
+    angle: float = dataclasses.field(default=UNSET, metadata={"real_default": 0.0})
+    borderstyle: int = dataclasses.field(default=UNSET, metadata={"real_default": 1})
+    italic: bool = dataclasses.field(default=UNSET, metadata={"real_default": False})
+    underline: bool = dataclasses.field(default=UNSET, metadata={"real_default": False})
+
+    def __post_init__(self):
+        self._explicit_fields = set()
+
+        for f in dataclasses.fields(self):
+            if not f.init:
+                continue
+
+            value = getattr(self, f.name)
+
+            if value is UNSET:
+                # Replace with real default
+                real_default = f.metadata.get("real_default")
+                setattr(self, f.name, real_default)
+            else:
+                # Track explicitly provided fields
+                self._explicit_fields.add(f.name)
+
+    def was_explicit(self, name: str) -> bool:
+        return name in self._explicit_fields
 
     def return_style(self):
         # convert Colors to pysub2.Color if in string format
@@ -140,3 +153,28 @@ class StyleConfig:
             italic=self.italic,
             underline=self.underline
         )
+
+
+    def compare_style(self, other_style:pysubs2.SSAStyle):
+
+        # Merge other_style with any fields that were explicitly provided on this StyleConfig.
+        # Start from the incoming style and override attributes where this config specified values.
+        # Use return_style() to ensure color strings are converted to pysubs2.Color.
+        base_style = self.return_style()
+
+        # Get a style built from this config (colors converted etc.)
+        self_style = self.return_style()
+
+        # List of fields on this config we want to consider (mapping is 1:1 with SSAStyle fields)
+        field_names = [
+            "fontname", "fontsize", "primarycolor", "backcolor", "secondarycolor",
+            "outlinecolor", "tertiarycolor", "outline", "spacing", "shadow",
+            "alignment", "bold", "angle", "borderstyle", "italic", "underline",
+        ]
+
+        for name in field_names:
+            if self.was_explicit(name):
+                # override corresponding attribute on the base style with the explicitly provided value
+                setattr(base_style, name, getattr(self_style, name))
+
+        return base_style
