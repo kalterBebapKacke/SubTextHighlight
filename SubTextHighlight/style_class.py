@@ -163,7 +163,7 @@ class StyleConfig:
         base_style = self.return_style()
 
         # Get a style built from this config (colors converted etc.)
-        self_style = self.return_style()
+        self_style = other_style
 
         # List of fields on this config we want to consider (mapping is 1:1 with SSAStyle fields)
         field_names = [

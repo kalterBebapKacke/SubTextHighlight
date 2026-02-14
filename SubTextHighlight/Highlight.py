@@ -3,48 +3,14 @@ import pysubs2
 from . import utils
 from .utils import dprint, advanced_SAA_Events
 import dataclasses
-
-@dataclasses.dataclass(kw_only=True)
-class highlight_args(utils.args_styles):
-    """
-        Configuration arguments for subtitle text highlighting.
-
-        Inherits visual styling properties from `utils.args_styles` and adds
-        specific constraints for the highlighting engine.
-
-        Attributes:
-            highlight_word_max (int | None): The maximum number of words to be
-                highlighted simultaneously in a single subtitle event.
-                Defaults to 0 (no limit or disabled).
-        """
-    highlight_word_max: int | None = 0
-
-    def replace_main_style(self, main_style: pysubs2.SSAStyle):
-        self.fontname = self.fontname if self.fontname is not None else main_style.fontname
-        self.fontsize = self.fontsize if self.fontsize is not None else main_style.fontsize
-        self.primarycolor = self.primarycolor if self.primarycolor is not None else main_style.primarycolor
-        self.backcolor = self.backcolor if self.backcolor is not None else main_style.backcolor
-        self.secondarycolor = self.secondarycolor  if self.secondarycolor is not None else main_style.secondarycolor
-        self.outlinecolor = self.outlinecolor if self.outlinecolor is not None else main_style.outlinecolor
-        self.tertiarycolor = self.tertiarycolor if self.tertiarycolor is not None else main_style.tertiarycolor
-        self.outline = self.outline if self.outline is not None else main_style.outline
-        self.spacing = self.spacing if self.spacing is not None else main_style.spacing
-        self.shadow = self.shadow if self.shadow is not None else main_style.shadow
-        self.alignment = self.alignment if self.alignment is not None else main_style.alignment
-        self.bold = self.bold if self.bold is not None else main_style.bold
-        self.angle = self.angle if self.angle is not None else main_style.angle
-        self.borderstyle = self.borderstyle if self.borderstyle is not None else main_style.borderstyle
-        self.italic = self.italic  if self.italic is not None else main_style.italic
-        self.underline = self.underline if self.underline is not None else main_style.underline
+from . import style_class
 
 
 class Highlighter:
 
-    def __init__(self, args:highlight_args, main_style: pysubs2.SSAStyle, subtitle_type:str):
-        self.args = args
-        self.args.replace_main_style(main_style)
+    def __init__(self, highlight_word_max: int, subtitle_type:str):
 
-        self.highlight_word_min = args.highlight_word_max
+        self.highlight_word_min = highlight_word_max
 
         # color, background, are possible values
 
@@ -96,9 +62,6 @@ class Highlighter:
         #all_subs.append(return_subs)
         all_subs.append(sub_event)
         return all_subs
-
-    def return_highlighted_style(self, style:pysubs2.SSAStyle):
-        return self.args.return_style()
 
     def background_back(self):
         # return [r'{\3c&H000000&\4c&H0000FF&\4a&H40&\bord5\shad0\be1}', r'{\r}']
