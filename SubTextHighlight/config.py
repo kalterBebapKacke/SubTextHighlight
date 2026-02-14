@@ -3,6 +3,7 @@ from .style_class import StyleConfig
 import pysubs2
 import docker_wrapper
 from . import handler, Highlight
+from .main import Subtitle_Edit
 
 from dataclasses import dataclass, field
 from typing import Any
@@ -53,6 +54,8 @@ class SubtitleConfig:
     args_border: docker_wrapper.base.args_border = field(init=False)
     input_handler: handler.Input_Output_Handler = field(init=False)
     highlighter: Highlight.Highlighter = field(init=False)
+    sub_file: pysubs2.SSAFile = field(init=False)
+
 
     @property
     def is_effect_needed(self):
@@ -116,6 +119,15 @@ class SubtitleConfig:
         # set highlighter and style
         self.highlighter = self.highlighter_logic(main_style)
         sub_file.styles["Highlight"] = self.highlight_style.compare_style(main_style)
+
+        # edit subs
+        self.sub_file = Subtitle_Edit(
+            args=self,
+            highlighter=self.highlighter,
+            effects=None,
+        )(sub_file)
+
+
 
 
 

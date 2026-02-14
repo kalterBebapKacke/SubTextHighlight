@@ -1,65 +1,8 @@
-import os
-import datetime
 import pysubs2
-from Cython.Build.Dependencies import join_path
 from .utils import dprint, advanced_SAA_Events
-from .Highlight import Highlighter, highlight_args
+from .Highlight import Highlighter
 from .Effects import Effects, effects_args
 from . import utils
-import fleep
-import stable_whisper
-import dataclasses
-from . import handler
-
-
-off_time = datetime.timedelta(seconds=0.025)
-
-@dataclasses.dataclass(kw_only=True)
-class sub_args(utils.args_styles):
-    """
-    Configuration for the core subtitle generation and transcription process.
-
-    This class defines the input/output paths, the transcription engine
-    settings (Whisper), and the logic for how text is segmented into
-    subtitle events.
-
-    Attributes:
-        input (str | dict | list | WhisperResult): The source to process. Can be
-            a file path, a pre-transcribed dictionary/list, or a
-            `stable_whisper.WhisperResult` object.
-        output (str | None): File path where the generated subtitle file will
-            be saved.
-        input_video (str | None): Path to the source video file. Used for
-            resolution detection and potential burning of subtitles.
-        subtitle_type (str): The segmentation strategy. Supported options:
-            - 'one_word_only': Displays exactly one word at a time.
-            - 'join': Groups words into segments up to `word_max`.
-            - 'separate_on_period': Splits segments at sentence boundaries.
-        word_max (int): Maximum word count per subtitle event.
-            Note: This is ignored if `subtitle_type` is 'one_word_only'.
-        add_time (float): Time offset (in seconds) to extend the duration
-            of each subtitle segment.
-        fill_sub_times (bool): If True, ensures there are no gaps between
-            consecutive subtitle segments.
-        whisper_model (str): The specific OpenAI Whisper model size or
-            language variant (e.g., 'medium.en', 'large-v3').
-        whisper_device (str): The hardware device for inference (e.g., 'cpu',
-            'cuda', or 'mps').
-        whisper_refine (bool): If True, uses `stable-whisper` refinement to
-            improve timestamp precision using audio frequencies.
-    """
-
-    input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult
-    output: str | None
-    input_video: str | None = None
-    subtitle_type: str = 'one_word_only'  # one_word_only, join, separate_on_period, appear
-    word_max: int = 11
-    add_time: float = 0
-    fill_sub_times: bool = True
-    whisper_model: str = 'medium.en'
-    whisper_device: str = 'cpu'
-    whisper_refine: bool = False
-
 
 
 class Subtitle_Edit:
@@ -84,62 +27,29 @@ class Subtitle_Edit:
         """
 
     def __init__(self,
-                 args_sub_edit:sub_args,
-                 args_highlight:highlight_args | None = None,
-                 args_effects: effects_args | None = None,
+                    args,
+                    highlighter:Highlighter | None,
+                    effects:Effects | None,
                 ):
-        """
-                Initializes the Subtitle_Edit class with configuration and styles.
-
-                Args:
-                    args_sub_edit (sub_args): Core configurations including input/output
-                        paths and model settings.
-                    args_highlight (highlight_args, optional): Settings for text
-                        highlighting. Defaults to None.
-                    args_effects (effects_args, optional): Settings for visual effects
-                        and animations. Defaults to None.
-        """
 
         # args
-        self.args = args_sub_edit
-
-        # Style
-        self.main_style = self.args.return_style()
+        self.args = args
+        self.highlighter = highlighter
+        self.effects = effects
 
         # Needed Variables for the formatting
         self.word_max = self.args.word_max
         self.subtitle_type = self.args.subtitle_type
         self.add_time = self.args.add_time
         self.fill_sub_times = self.args.fill_sub_times
+        self.duration = self.args.Handler.duration
 
-        # Set handler and builder
+        # Set builder
         self.builder = utils.subs_builder()
-        self.Handler = handler.Input_Output_Handler(args_sub_edit)
-
-        # Highlighters
-        #self.args_highlight = args_highlight
-
-        if args_highlight is None:
-            self.highlighter = None
-        else:
-            self.highlighter = Highlighter(args_highlight, self.main_style, self.subtitle_type)
-
-        # Effects
-        if args_effects is None:
-            self.effects = None
-        else:
-            sample_highlighter = Highlighter(highlight_args(), self.main_style, self.subtitle_type)
-            self.effects = Effects(args_effects)
-            self.highlighter = self.effects.logic_highlighter(self.highlighter, sample_highlighter)
 
 
-    def __call__(self):
-        sub_file = self.Handler.handle_input()
-        sub_file.styles["MainStyle"] = self.main_style
 
-        if self.highlighter is not None:
-            sub_file.styles["Highlight"] = self.highlighter.return_highlighted_style(self.main_style)
-
+    def __call__(self, sub_file:pysubs2.SSAFile=None):
         subs = sub_file.events
 
         # create subtitles
@@ -164,7 +74,7 @@ class Subtitle_Edit:
         # build and save
         subs = self.builder(subs)
         sub_file.events = subs
-        return self.Handler.handle_output(sub_file)
+        return sub_file
 
     def add_subtitle(self, cur_word:str, index:int, start, end, all_subs:list, highlight_words:bool=False, sub_list:list=()):
         if highlight_words is True:
@@ -265,8 +175,8 @@ class Subtitle_Edit:
         if not self.fill_sub_times:
             return subs[0].start, subs[-1].end
         else:
-            if self.Handler.duration is not None:
-                return pysubs2.make_time(s=0), pysubs2.make_time(s=self.Handler.duration)
+            if self.duration is not None:
+                return pysubs2.make_time(s=0), pysubs2.make_time(s=self.duration)
             else:
                 raise ValueError('For the argument "fill_sub_times" an video has to be inputted via input_video or the subtitles have to generated from a audio/video.')
 
@@ -290,41 +200,5 @@ class Subtitle_Edit:
                 sub.shift(s=add_time)
         return subs
 
-
-def generate_subs_simple(
-        input,
-        output,
-    ):
-    """
-        Generates one-word-only subtitles from a media file with refined timestamps.
-
-        This is a convenience wrapper that validates the input file type,
-        transcribes it using the 'one_word_only' strategy, applies Whisper
-        refinement for high precision, and saves the final result to disk.
-
-        Args:
-            input (str): Path to the source audio or video file.
-            output (str): Destination path where the subtitle file (e.g., .ass, .srt)
-                will be saved.
-
-        Raises:
-            ValueError: If the input file is not identified as a valid audio or
-                video format by the `fleep` library.
-        """
-    # check for right type
-    with open(input, "rb") as file:
-        info = fleep.get(file.read(128))
-    if not info.type == ['audio'] or info.type == ['video']:
-        raise ValueError('The subtitles have to be generated from a audio/video.')
-    else:
-        sub_arg = sub_args(
-            input=input,
-            output=None,
-            subtitle_type='one_word_only',
-            fill_sub_times=False,
-            whisper_refine=True
-        )
-        sub_file: pysubs2.SSAFile = Subtitle_Edit(sub_arg)()
-        sub_file.save(output)
 
 
