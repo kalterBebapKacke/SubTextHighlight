@@ -1,10 +1,10 @@
 import stable_whisper
 from .style_class import StyleConfig
 import pysubs2
-import docker_wrapper
+from . import docker_wrapper
 from . import handler, Highlight
 from .main import Subtitle_Edit
-
+from .Effects import Effects
 from dataclasses import dataclass, field
 from typing import Any
 import pysubs2
@@ -26,13 +26,14 @@ class SubtitleConfig:
     # highlight styles
     highlight_word_max: int | None = None
     highlight_style: StyleConfig | None = None
-    highlight_as_borders: bool | None = None
+    highlight_as_borders: bool = False
 
     # effect args
-    fade: tuple[float, float] | None = None #(0.0, 0.0)
-    appear: bool | None = None
+    fade: tuple[float, float] = (0.0, 0.0)
+    appear: bool  = False
 
     # border args
+    rounded_border: bool = False
     offset: int = 6
     radius: int = 6
     transformy: int = 1
@@ -51,39 +52,44 @@ class SubtitleConfig:
     whisper_refine: bool = False
 
     # internal (initialized later)
-    args_border: docker_wrapper.base.args_border = field(init=False)
-    input_handler: handler.Input_Output_Handler = field(init=False)
+    args_border: docker_wrapper.base.args_border | None = field(init=False)
+    Handler: handler.Input_Output_Handler = field(init=False)
     highlighter: Highlight.Highlighter = field(init=False)
+    effects: Effects | None = field(init=False)
     sub_file: pysubs2.SSAFile = field(init=False)
-
+    is_effect_needed : bool = field(init=False)
+    is_highlighter_needed: bool = field(init=False)
 
     @property
-    def is_effect_needed(self):
-        if self.highlight_as_borders is None and self.fade is None and self.appear is None:
+    def _is_effect_needed(self):
+        if not self.highlight_as_borders and self.fade == (0.0, 0.0) and not self.appear:
             return False
         return True
 
     @property
-    def is_highlighter_needed(self):
-        if self.highlight_as_borders is None and self.highlight_word_max is None and self.highlight_style is None:
+    def _is_highlighter_needed(self):
+        if not self.highlight_as_borders and self.highlight_word_max is None and self.highlight_style is None:
             return False
         return True
 
     def __post_init__(self):
-        self.args_border = docker_wrapper.base.args_border(
-            offset=self.offset,
-            radius=self.radius,
-            transformy=self.transformy,
-            height_scaling=self.height_scaling,
-            color=self.color,
-            use_borders_as_highlight=self.highlight_as_borders,
-            fonts_path=self.fonts_path,
-            packages=self.packages,
-            container_run_func=self.container_run_func,
-            force_install=self.force_install,
-        )
+        if self.rounded_border or self.highlight_as_borders:
+            self.args_border = docker_wrapper.base.args_border(
+                offset=self.offset,
+                radius=self.radius,
+                transformy=self.transformy,
+                height_scaling=self.height_scaling,
+                color=self.color,
+                use_borders_as_highlight=self.highlight_as_borders,
+                fonts_path=self.fonts_path,
+                packages=self.packages,
+                container_run_func=self.container_run_func,
+                force_install=self.force_install,
+            )
+        else:
+            self.args_border = None
 
-        self.input_handler = handler.Input_Output_Handler(
+        self.Handler = handler.Input_Output_Handler(
             input=self.input,
             output=self.output,
             input_video=self.input_video,
@@ -92,43 +98,67 @@ class SubtitleConfig:
             whisper_refine=self.whisper_refine,
         )
 
+        # Check if appear is active and if so throw an expectation
+        if self.highlight_as_borders and self.appear:
+            raise RuntimeError('Cant use borders as highlighted subtitles and the appear at the same time.')
 
-    def highlighter_logic(self, main_style: pysubs2.SSAStyle):
-        # TODO: Rework highlighter to work
+        self.is_effect_needed = self._is_effect_needed
+        self.is_highlighter_needed = self._is_highlighter_needed
+
         if self.highlight_word_max is None:
             self.highlight_word_max = 0
         if self.highlight_style is None:
             self.highlight_style = StyleConfig()
 
-        highlighter = Highlight.Highlighter(self.highlight_word_max, self.subtitle_type)
+        self.highlighter = Highlight.Highlighter(self.highlight_word_max, self.subtitle_type)
 
+        self.effects = Effects(
+            fade_in_duration=self.fade[0],
+            fade_out_duration=self.fade[1],
+            appear=self.appear,
+            rounded_border=self.rounded_border,
+            border_as_highlight=self.highlight_as_borders,
+            args_border=self.args_border,
+        )
+
+
+    def highlighter_logic(self):
         if not self.is_highlighter_needed:
-            if not self.is_effect_needed:
-                return None
+            if self.appear:
+                return self.highlighter
+            return None
+        return self.highlighter
 
-        return highlighter
+    def effects_logic(self):
+        if not self.is_effect_needed:
+            return None
+        return self.effects
 
     def render(self):
         # get subfile and set highlighter
-        sub_file = self.input_handler.handle_input()
+        sub_file = self.Handler.handle_input()
 
         # set main style
         main_style = self.subtitle_style.return_style()
         sub_file.styles["MainStyle"] = main_style
 
         # set highlighter and style
-        self.highlighter = self.highlighter_logic(main_style)
-        sub_file.styles["Highlight"] = self.highlight_style.compare_style(main_style)
+        highlighter = self.highlighter_logic()
+        if highlighter is not None:
+            sub_file.styles["Highlight"] = self.highlight_style.compare_style(main_style)
+
+        # set effects
+        effects = self.effects_logic()
 
         # edit subs
         self.sub_file = Subtitle_Edit(
             args=self,
-            highlighter=self.highlighter,
-            effects=None,
+            highlighter=highlighter,
+            effects=effects,
         )(sub_file)
 
-
-
-
-
-
+    def save(self):
+        output = self.Handler.handle_output(self.sub_file)
+        if output is not None:
+            return output
+        return None

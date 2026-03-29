@@ -1,7 +1,7 @@
 import pysubs2
 from .utils import dprint, advanced_SAA_Events
 from .Highlight import Highlighter
-from .Effects import Effects, effects_args
+from .Effects import Effects
 from . import utils
 
 
