@@ -13,8 +13,7 @@ TEST_CASES = [
             "subtitle_type": 'one_word_only',
             "fill_sub_times": True,
             "word_max": 0,
-            "highlight_args": None,
-            "effect_args": SubTextHighlight.effects_args(fade=(50, 50)),
+            "fade": (50, 50),
         }
     ),
     (
@@ -23,11 +22,7 @@ TEST_CASES = [
             "subtitle_type": 'separate_on_period',
             "fill_sub_times": False,
             "word_max": 11,
-            "highlight_args": SubTextHighlight.highlight_args(
-                highlight_word_max=0,
-                primarycolor='00AAFF'
-            ),
-            "effect_args": None,
+            "highlight_word_max": 0,
         }
     ),
     (
@@ -36,8 +31,6 @@ TEST_CASES = [
             "subtitle_type": 'join',
             "fill_sub_times": False,
             "word_max": 20,
-            "highlight_args": None,
-            "effect_args": None,
         }
     ),
     (
@@ -46,8 +39,8 @@ TEST_CASES = [
             "subtitle_type": 'join',
             "fill_sub_times": False,
             "word_max": 20,
-            "highlight_args": None,
-            "effect_args": SubTextHighlight.effects_args(fade=(50, 50), appear=True),
+            "fade": (50, 50),
+            "appear": True,
         }
     ),
     (
@@ -56,11 +49,8 @@ TEST_CASES = [
             "subtitle_type": 'join',
             "fill_sub_times": False,
             "word_max": 20,
-            "highlight_args": None,
-            "effect_args": SubTextHighlight.effects_args(
-                fade=(50, 50),
-                args_border=SubTextHighlight.args_border()
-            ),
+            "fade": (50, 50),
+            "rounded_border": True,
         }
     ),
     (
@@ -69,13 +59,10 @@ TEST_CASES = [
             "subtitle_type": 'separate_on_period',
             "fill_sub_times": False,
             "word_max": 11,
-            "highlight_args": SubTextHighlight.highlight_args(
-                highlight_word_max=0,
-            ),
-            "effect_args": SubTextHighlight.effects_args(
-                fade=(50, 50),
-                args_border=SubTextHighlight.args_border(use_borders_as_highlight=True, height_scaling=1.0)
-            )
+            "highlight_word_max":0,
+            "fade": (50, 50),
+            "highlight_as_borders": True,
+            "height_scaling":1.0,
         }
     ),
     (
@@ -84,12 +71,9 @@ TEST_CASES = [
             "subtitle_type": 'separate_on_period',
             "fill_sub_times": False,
             "word_max": 11,
-            "highlight_args": None,
-            "effect_args": SubTextHighlight.effects_args(
-                fade=(50, 50),
-                args_border=SubTextHighlight.args_border(),
-                appear=True
-            )
+            "rounded_border": True,
+            "appear": True,
+            "fade": (50, 50),
         }
     ),
 ]
@@ -106,20 +90,23 @@ def test_subtitle(tmp_path, name, options):
     expected_ass = base_path / "expected" / (name + '.ass')
     output_ass = base_path / "output" / (name + '.ass')
 
-    sub_args = SubTextHighlight.sub_args(
+    if name == 'separate_on_period_and_highlighting':
+        options["highlight_style"] = SubTextHighlight.StyleConfig(primarycolor='00AAFF')
+
+    print(options)
+
+    config = SubTextHighlight.SubtitleConfig(
         input=str(blank_srt_path),
         output=None,
-        subtitle_type=options["subtitle_type"],
-        fill_sub_times=options["fill_sub_times"],
-        alignment=2,
         input_video=str(video_path),
+        subtitle_style=SubTextHighlight.StyleConfig(alignment=2),
+        force_install=True,
+        **options
     )
 
-    if options['word_max'] is not None:
-        sub_args.word_max = options['word_max']
+    config.render()
 
-    sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, options['highlight_args'], options['effect_args'])
-    sub_file: pysubs2.SSAFile = sub_edit()
+    sub_file: pysubs2.SSAFile = config.save()
 
     sub_file.save(str(output_ass))
 
@@ -130,6 +117,9 @@ def test_subtitle(tmp_path, name, options):
     else:
         # Verify
         actual = sub_file.to_string('ass')
+
         expected = pysubs2.load(str(expected_ass)).to_string('ass')
+
+        print(expected)
 
         assert actual == expected

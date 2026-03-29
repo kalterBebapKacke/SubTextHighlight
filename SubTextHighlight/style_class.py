@@ -2,7 +2,12 @@ import dataclasses
 import pysubs2
 from .utils import hex_to_pysub2_color
 
-UNSET = object()
+import enum
+
+class _Sentinel(enum.Enum):
+    UNSET = "UNSET"
+
+UNSET = _Sentinel.UNSET
 
 def manage_color_input(color_input):
     if isinstance(color_input, str):
@@ -91,11 +96,11 @@ class StyleConfig:
     fontname: str = dataclasses.field(default=UNSET, metadata={"real_default": "Arial"})
     fontsize: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 24})
 
-    primarycolor: pysubs2.Color | str =  dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(255, 255, 255)})
-    backcolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)})
-    secondarycolor: pysubs2.Color | str =  dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)}) # Black for border/shadow
-    outlinecolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)})
-    tertiarycolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": lambda: pysubs2.Color(0, 0, 0)})
+    primarycolor: pysubs2.Color | str =  dataclasses.field(default=UNSET, metadata={"real_default": pysubs2.Color(255, 255, 255)})
+    backcolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": pysubs2.Color(0, 0, 0)})
+    secondarycolor: pysubs2.Color | str =  dataclasses.field(default=UNSET, metadata={"real_default": pysubs2.Color(0, 0, 0)}) # Black for border/shadow
+    outlinecolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": pysubs2.Color(0, 0, 0)})
+    tertiarycolor: pysubs2.Color | str = dataclasses.field(default=UNSET, metadata={"real_default": pysubs2.Color(0, 0, 0)})
 
     outline: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 1})
     spacing: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 0.75})
@@ -108,6 +113,7 @@ class StyleConfig:
     underline: bool = dataclasses.field(default=UNSET, metadata={"real_default": False})
 
     def __post_init__(self):
+
         self._explicit_fields = set()
 
         for f in dataclasses.fields(self):
@@ -123,6 +129,7 @@ class StyleConfig:
             else:
                 # Track explicitly provided fields
                 self._explicit_fields.add(f.name)
+
 
     def was_explicit(self, name: str) -> bool:
         return name in self._explicit_fields
@@ -171,9 +178,9 @@ class StyleConfig:
             "outlinecolor", "tertiarycolor", "outline", "spacing", "shadow",
             "alignment", "bold", "angle", "borderstyle", "italic", "underline",
         ]
-
         for name in field_names:
-            if self.was_explicit(name):
+            if not self.was_explicit(name):
+
                 # override corresponding attribute on the base style with the explicitly provided value
                 setattr(base_style, name, getattr(self_style, name))
 

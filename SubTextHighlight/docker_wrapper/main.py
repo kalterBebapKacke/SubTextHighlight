@@ -97,6 +97,7 @@ class DockerWrapper(base.BaseWrapper):
             # Convert to string if necessary
             if not return_pysubsSSAFile:
                 output = output.to_string()
+
             return output
         finally:
             # Stop and remove the container
