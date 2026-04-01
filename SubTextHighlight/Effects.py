@@ -15,6 +15,8 @@ class Effects:
                  rounded_border:bool = False,
                  border_as_highlight:bool = False,
                  args_border:docker_wrapper.base.args_border | None = None,
+                 verbose:bool = False,
+                 traceback:bool = False
                  ):
         self.fade_in_duration = fade_in_duration
         self.fade_out_duration = fade_out_duration
@@ -22,6 +24,8 @@ class Effects:
         self.rounded_border = rounded_border
         self.border_as_highlight = border_as_highlight
         self.args_border = args_border
+        self.verbose = verbose
+        self.traceback = traceback
 
     def __call__(self, subs:list, sub_file:pysubs2.SSAFile):
         if self.fade_out_duration != 0 and self.fade_in_duration != 0:
@@ -83,9 +87,9 @@ class Effects:
         output : pysubs2.SSAFile = dw(
             input_ass=sub_file_copy,
             args_border=self.args_border,
-            _traceback=True,
+            _traceback=self.traceback,
             cleanup=True,
-            verbose=False,
+            verbose=self.verbose,
         )
 
         events = output.events

@@ -93,8 +93,6 @@ def test_subtitle(tmp_path, name, options):
     if name == 'separate_on_period_and_highlighting':
         options["highlight_style"] = SubTextHighlight.StyleConfig(primarycolor='00AAFF')
 
-    print(options)
-
     config = SubTextHighlight.SubtitleConfig(
         input=str(blank_srt_path),
         output=None,

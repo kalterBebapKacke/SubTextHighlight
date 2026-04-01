@@ -7,23 +7,23 @@ import whisper
 def debug():
     os.environ['debug'] = 'True'
 
-def main1():
-    input = './media/plain_video.mp4'
-    output = './media/edited_video.mp4'
-    sub_args = SubTextHighlight.sub_args(input=input, output=output, input_video=input, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, fontname='Arial Rounded MT Bold', whisper_refine=True)
-    highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
-    effect_args = SubTextHighlight.effects_args((50, 50))
-    sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
-    sub_edit()
+def new_example_code():
+    from SubTextHighlight import SubtitleConfig, StyleConfig
+    input = './media/plain_video.mp4'  # set the input to a video, which will generate the subtitles for me
+    output = './media/output_video.mp4'  # set the output to a .mp4, so that the subtitles will be burned in
 
-def main2():
-    input = './media/plain_video.mp4'
-    output = './media/subtitles.ass'
-    sub_args = SubTextHighlight.sub_args(input=input, output=output, subtitle_type='separate_on_period', fill_sub_times=False, alignment=2, fontname='Arial Rounded MT Bold', whisper_refine=True)
-    highlight_args =  SubTextHighlight.highlight_args(primarycolor='00AAFF')
-    effect_args = SubTextHighlight.effects_args((50, 50))
-    sub_edit = SubTextHighlight.Subtitle_Edit(sub_args, highlight_args, effect_args)
-    sub_edit()
+    conf = SubtitleConfig(
+        input, output,
+        subtitle_type='separate_on_period',
+        fill_sub_times=False,
+        subtitle_style=StyleConfig(alignment=2),
+        highlight_style=StyleConfig(primarycolor='00AAFF'),
+        highlight_word_max=0,
+        highlight_as_borders=True,
+        fade=(50, 50),
+    )
+    conf.render()
+    conf.save()
 
 class Test_Class():
 

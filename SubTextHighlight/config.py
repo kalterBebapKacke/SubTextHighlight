@@ -18,7 +18,7 @@ class SubtitleConfig:
 
     # subtitle styles
     subtitle_style: StyleConfig = field(default_factory=StyleConfig)
-    subtitle_type: str = "one_word_only"
+    subtitle_type: str = "join"
     word_max: int = 11
     add_time: float = 0
     fill_sub_times: bool = True
@@ -45,6 +45,8 @@ class SubtitleConfig:
     packages: list[str] | None = None
     container_run_func: None = None
     force_install: bool = False
+    docker_verbose: bool = False
+    docker_traceback:bool = False
 
     # whisper args
     whisper_model: str = "medium.en"
@@ -119,6 +121,8 @@ class SubtitleConfig:
             rounded_border=self.rounded_border,
             border_as_highlight=self.highlight_as_borders,
             args_border=self.args_border,
+            verbose=self.docker_verbose,
+            traceback=self.docker_traceback,
         )
 
 
