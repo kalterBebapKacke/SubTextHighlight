@@ -8,3 +8,4 @@ from .docker_wrapper.base import args_border
 from . import handler
 from .config import SubtitleConfig
 from .style_class import StyleConfig
+from .shortcuts import *

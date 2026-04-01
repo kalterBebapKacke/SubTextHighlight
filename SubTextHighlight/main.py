@@ -189,7 +189,6 @@ class Subtitle_Edit:
             else:
                 return sub.end
 
-
     def shift_subs_time(self, subs:list):
         add_time = self.add_time
         for i, sub in enumerate(subs):
