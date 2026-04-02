@@ -50,6 +50,7 @@ class Input_Output_Handler:
             if self.is_media_file(self.data_input):
                 subs_str = self.whisper_transcribe(self.data_input)
                 sub_file = pysubs2.SSAFile.from_string(subs_str)
+                self.duration, self.resolution = self.handle_duration_resolution()
 
         # Handle video and resolution logic
         # for some parts of the effects the PlayResX and Y has to be set in the ass file

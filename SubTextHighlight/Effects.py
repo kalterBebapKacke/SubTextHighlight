@@ -34,7 +34,6 @@ class Effects:
             subs = self._appear(subs)
 
         if self._borders():
-            print(True)
             subs = self.rounded_borders(subs, sub_file)
         return subs
 
