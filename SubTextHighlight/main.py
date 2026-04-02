@@ -30,19 +30,23 @@ class Subtitle_Edit:
                     args,
                     highlighter:Highlighter | None,
                     effects:Effects | None,
+                    word_max:int,
+                    subtitle_type:str,
+                    add_time:float,
+                    fill_sub_times:bool,
+                    duration:float,
                 ):
 
         # args
-        self.args = args
         self.highlighter = highlighter
         self.effects = effects
 
         # Needed Variables for the formatting
-        self.word_max = self.args.word_max
-        self.subtitle_type = self.args.subtitle_type
-        self.add_time = self.args.add_time
-        self.fill_sub_times = self.args.fill_sub_times
-        self.duration = self.args.Handler.duration
+        self.word_max = word_max
+        self.subtitle_type = subtitle_type
+        self.add_time = add_time
+        self.fill_sub_times = fill_sub_times
+        self.duration = duration
 
         # Set builder
         self.builder = utils.subs_builder()
@@ -178,7 +182,7 @@ class Subtitle_Edit:
             if self.duration is not None:
                 return pysubs2.make_time(s=0), pysubs2.make_time(s=self.duration)
             else:
-                raise ValueError('For the argument "fill_sub_times" an video has to be inputted via input_video or the subtitles have to generated from a audio/video.')
+                raise ValueError('For the argument "fill_sub_times" an video has to be inputted via input_video or the subtitles have to be generated from a audio/video.')
 
     def return_end_time_logic(self, last_iteration:bool, end_time:int, subs:list, sub:pysubs2.SSAEvent, i:int):
         if last_iteration:

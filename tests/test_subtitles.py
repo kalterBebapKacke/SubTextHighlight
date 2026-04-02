@@ -118,6 +118,4 @@ def test_subtitle(tmp_path, name, options):
 
         expected = pysubs2.load(str(expected_ass)).to_string('ass')
 
-        print(expected)
-
         assert actual == expected

@@ -159,6 +159,11 @@ class SubtitleConfig:
             args=self,
             highlighter=highlighter,
             effects=effects,
+            word_max=self.word_max,
+            add_time=self.add_time,
+            fill_sub_times=self.fill_sub_times,
+            subtitle_type=self.subtitle_type,
+            duration=self.Handler.duration,
         )(sub_file)
 
     def save(self):

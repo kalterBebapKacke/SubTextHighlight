@@ -6,6 +6,7 @@ import stable_whisper
 def fast(
         input:str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
         output: str | None,
+        input_video: str | None = None
     ):
     conf = config.SubtitleConfig(
         input=input,
@@ -26,13 +27,15 @@ def fast_subtitle_file(
     return conf.save()
 
 def auto_highlight(
-    input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
-    output: str | None,
+        input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
+        output: str | None,
+        input_video: str | None = None
     ):
 
     conf = config.SubtitleConfig(
         input=input,
         output=output,
+        input_video=input_video,
         highlight_word_max=1,
         highlight_style=style_class.StyleConfig(primarycolor='00AAFF')
     )
@@ -42,9 +45,10 @@ def auto_highlight(
 def preset_tiktok(
         input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
         output: str | None,
+        input_video: str
     ):
     conf = config.SubtitleConfig(
-        input, output,
+        input, output, input_video,
         subtitle_type="one_word_only",
         rounded_border=True,
         fill_sub_times=True,
@@ -57,9 +61,11 @@ def preset_tiktok(
 def preset_youtube(
         input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
         output: str | None,
+        input_video: str
     ):
     conf = config.SubtitleConfig(
-        input, output,
+        input, output, input_video,
+        subtitle_type='separate_on_period',
         rounded_border=True,
         fade=(50, 50),
         word_max=15,
@@ -71,12 +77,17 @@ def preset_youtube(
 def multiple_edit(
         input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
         output: str | None,
-        options: list[dict]
+        options: list[dict],
+        input_video: str | None = None,
     ):
 
     results = list()
 
     for option in options:
+
+        if 'input_video' not in option and input_video is not None:
+            option['input_video'] = input_video
+
         conf = config.SubtitleConfig(
             input, output, **option
         )
