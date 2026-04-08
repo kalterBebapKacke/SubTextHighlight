@@ -105,12 +105,14 @@ class StyleConfig:
     outline: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 1})
     spacing: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 0.75})
     shadow: float | int = dataclasses.field(default=UNSET, metadata={"real_default": 0})
-    alignment: int = dataclasses.field(default=UNSET, metadata={"real_default": 5})
     bold: bool = dataclasses.field(default=UNSET, metadata={"real_default": True})
     angle: float = dataclasses.field(default=UNSET, metadata={"real_default": 0.0})
     borderstyle: int = dataclasses.field(default=UNSET, metadata={"real_default": 1})
     italic: bool = dataclasses.field(default=UNSET, metadata={"real_default": False})
     underline: bool = dataclasses.field(default=UNSET, metadata={"real_default": False})
+
+    # after init
+    alignment: int = dataclasses.field(init=False)
 
     def __post_init__(self):
 
