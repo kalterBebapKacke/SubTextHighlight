@@ -22,6 +22,7 @@ class SubtitleConfig:
     word_max: int = 11
     add_time: float = 0
     fill_sub_times: bool = True
+    alignment:int = 2
 
     # highlight styles
     highlight_word_max: int | None = None
@@ -113,6 +114,11 @@ class SubtitleConfig:
             self.highlight_style = StyleConfig()
 
         self.highlighter = Highlight.Highlighter(self.highlight_word_max, self.subtitle_type)
+
+        self.subtitle_style.alignment = self.alignment
+
+        if self.highlight_style is not None:
+            self.highlight_style.alignment = self.alignment
 
         self.effects = Effects(
             fade_in_duration=self.fade[0],

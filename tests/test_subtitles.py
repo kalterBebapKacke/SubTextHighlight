@@ -97,7 +97,8 @@ def test_subtitle(tmp_path, name, options):
         input=str(blank_srt_path),
         output=None,
         input_video=str(video_path),
-        subtitle_style=SubTextHighlight.StyleConfig(alignment=2),
+        alignment=2,
+        subtitle_style=SubTextHighlight.StyleConfig(),
         force_install=True,
         **options
     )
@@ -115,6 +116,7 @@ def test_subtitle(tmp_path, name, options):
     else:
         # Verify
         actual = sub_file.to_string('ass')
+        print(actual)
 
         expected = pysubs2.load(str(expected_ass)).to_string('ass')
 

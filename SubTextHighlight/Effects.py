@@ -105,7 +105,12 @@ class Effects:
         segment_index = 0
         for i, cur in enumerate(depth):
             for x in range(cur):
-                subs[i].add_background(segmented_subs[segment_index][1:])
+                new_backgrounds = segmented_subs[segment_index][1:]
+                subs[i].add_background(new_backgrounds)
                 segment_index += 1
 
+        for sub in subs:
+            print(sub.text)
+            print(sub.backgrounds)
+            print(sub())
         return subs

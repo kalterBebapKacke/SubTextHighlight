@@ -1,3 +1,4 @@
+import copy
 import dataclasses
 import re
 from copy import deepcopy
@@ -374,7 +375,10 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
 
     @property
     def text_list(self):
-        return self.text.split(' ')
+        return self.text.split()
+
+    def fade_needed(self):
+        return self.fade_in != 0 or self.fade_out != 0
 
     def add_highlight_entry(self, index_start:int, index_end:int, start:int, end:int):
         # replace the tuple
@@ -408,12 +412,26 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
         if self.highlighted_texts != () and self.highlighted_texts != []:
             # If appear is true, replace the highlight styles
             if self.appear_style != () and self.appear_style != []:
-                self.highlight_style = ['', self.appear_style[0]]
+                highlight_style = ['', self.appear_style[0]]
+            else:
+                highlight_style = self.highlight_style
 
             # Build the subs
+            max_iterations = len(self.highlighted_texts) - 1
+            print(self.highlighted_texts)
             for i, (index_start, index_end, start, end)  in enumerate(self.highlighted_texts):
                 # build the text with hightlighting marks
-                text = f'{' '.join(self.text_list[0:index_start])} {self.highlight_style[0]}{' '.join(self.text_list[index_start:index_end+1])}{self.highlight_style[1]} {' '.join(self.text_list[index_end+1:])}'
+                text = f'{' '.join(self.text_list[0:index_start])} {highlight_style[0]}{' '.join(self.text_list[index_start:index_end+1])}{highlight_style[1]} {' '.join(self.text_list[index_end+1:])}'
+                if self.fade_needed():
+                    print(self.fade_in, self.fade_out)
+                    print(self.fade_needed())
+                    fade = self.generate_fade(max_iterations)
+                    print(i)
+                    if i == 0:
+                        text = fade[0] + text
+                    if i == max_iterations:
+                        text = fade[1] + text
+
                 return_subs.append(pysubs2.SSAEvent(text=text.strip(), start=start, end=end, style="MainStyle", layer=self.layer))
 
                 # add backgrounds to the subs
@@ -421,14 +439,16 @@ class advanced_SAA_Events(pysubs2.SSAEvent):
                     return_subs.extend(self.backgrounds[i])
 
         else:
-            return_subs = [pysubs2.SSAEvent(text=self.text, start=self.start, end=self.end, style="MainStyle", layer=self.layer)]
+            text = copy.copy(self.text)
+            print(self.fade_needed)
+            if self.fade_needed():
+                fade = self.generate_fade(1)
+                text = fade[0] + text
 
-        # apply fade and return
-        if len(return_subs) == 1:
-            return_subs[0].text = self.generate_fade(len(return_subs))[0] + return_subs[0].text
-            return return_subs[0]
-        else:
-            fade = self.generate_fade(len(return_subs))
-            return_subs[0].text = fade[0] + return_subs[0].text
-            return_subs[-1].text = fade[1] + return_subs[-1].text
-            return return_subs
+            return_subs = [pysubs2.SSAEvent(text=text, start=self.start, end=self.end, style="MainStyle", layer=self.layer)]
+
+            if self.backgrounds != ():
+                for background in self.backgrounds:
+                    return_subs.extend(background)
+
+        return return_subs

@@ -50,7 +50,7 @@ def preset_tiktok(
     conf = config.SubtitleConfig(
         input, output, input_video,
         subtitle_type="one_word_only",
-        rounded_border=True,
+        rounded_border=False,
         fill_sub_times=True,
         fade=(20, 20),
         height_scaling=1.0,

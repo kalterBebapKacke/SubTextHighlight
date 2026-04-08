@@ -13,13 +13,13 @@ def new_example_code():
         ass, output, video,
         subtitle_type='separate_on_period',
         fill_sub_times=False,
-        subtitle_style=StyleConfig(alignment=2),
+        subtitle_style=StyleConfig(),
         highlight_word_max=0,
         highlight_as_borders=True,
         fade=(50, 50),
     )
-    conf.render()
-    conf.save()
+    #conf.render()
+    #conf.save()
 
     # Or use the youtube preset, that gives a similar result
     preset_youtube(ass, output, video)
