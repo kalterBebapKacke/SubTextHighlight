@@ -312,7 +312,6 @@ def fix_fad_issue(events:list):
                     # insert the new tags into the original text
                     segment[i+1].text = segment[i+1].text.replace(background_tag, background_tag + '\\'+ fad_tag)
 
-
             results.append(new_background_events)
     return segments
 

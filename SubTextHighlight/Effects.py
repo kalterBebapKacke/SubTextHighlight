@@ -2,7 +2,7 @@ from . import Highlight
 from . import docker_wrapper
 from . import utils
 import copy
-
+from . import subtitle_render
 import pysubs2
 
 
@@ -28,8 +28,6 @@ class Effects:
         self.traceback = traceback
 
     def __call__(self, subs:list, sub_file:pysubs2.SSAFile):
-        if self.fade_out_duration != 0 and self.fade_in_duration != 0:
-            subs = self.fade(subs)
         if self.appear:
             subs = self._appear(subs)
 
@@ -50,6 +48,11 @@ class Effects:
             sub.fade_out = self.fade_out_duration
         return subs
 
+    def set_fade(self, subs:list[subtitle_render.SAAEventBuilder]):
+        for sub in subs:
+            sub.set_fade(self.fade_in_duration, self.fade_out_duration)
+        return subs
+
     def _appear(self, subs:list):
         styles = (r'{\alpha&HFF}', '')
         for sub in subs:
@@ -57,14 +60,13 @@ class Effects:
         return subs
 
     def rounded_borders(self, subs:list, sub_file:pysubs2.SSAFile):
-        builder = utils.subs_builder()
-
         # check whether res is set, else raise error
         if not utils.is_subfile_resolution_set(sub_file):
             raise RuntimeError('The subtitle file does not contain a Resolution. For the right scaling of the subtitles a input with a video resolution has to be set.')
 
         # Check if Borders are used as highlight and build part of the background (if one is given)
-        use_subs, depth = builder(subs, return_depth=True)
+        with subtitle_render.SubtitlePipeline(subs) as pipeline:
+            use_subs, depth = pipeline.render_with_depth()
 
 
         # if borders as highlight, replace highlight with appear

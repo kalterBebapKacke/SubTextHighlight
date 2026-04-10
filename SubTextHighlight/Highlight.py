@@ -4,6 +4,7 @@ from . import utils
 from .utils import dprint, advanced_SAA_Events
 import dataclasses
 from . import style_class
+from . import subtitle_render
 
 
 class Highlighter:
@@ -25,7 +26,11 @@ class Highlighter:
         cur_word += ' '
         last_index = 0
 
-        sub_event = advanced_SAA_Events(text=cur_word, start=start, end=end, style="MainStyle", highlight_style=self.highlight_style)
+        #sub_event = advanced_SAA_Events(text=cur_word, start=start, end=end, style="MainStyle", highlight_style=self.highlight_style)
+        _event = pysubs2.SSAEvent(text=cur_word, start=start, end=end, style="MainStyle")
+        sub_event = subtitle_render.SAAEventBuilder(
+            _event
+        ).set_highlight_style(self.highlight_style[0], self.highlight_style[1])
 
         #dprint(sub_list)
 
@@ -47,7 +52,7 @@ class Highlighter:
                     start = sub.start
 
                 #return_subs.append(pysubs2.SSAEvent(start=start, end=end_time, text=new_cur_word.strip(), style="MainStyle"))
-                sub_event.add_highlight_entry(last_index, i, start, end_time)
+                sub_event.add_highlight(last_index, i, start, end_time)
 
                 last_index = i + 1
                 highlighted_words = ''
