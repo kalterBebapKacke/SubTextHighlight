@@ -3,27 +3,15 @@ from .utils import dprint, advanced_SAA_Events
 from .Highlight import Highlighter
 from .Effects import Effects
 from . import utils
+from . import subtitle_render
 
 
 class Subtitle_Edit:
     """
-        The central engine for subtitle generation and stylistic processing.
 
         This class handles the end-to-end workflow of subtitle creation, including
         input interpretation, style application, formatting logic (e.g., word-level
         splitting), visual effects, and final file building.
-
-        Attributes:
-            args (sub_args): Configuration object for subtitle editing and paths.
-            main_style (ass.Style): The base visual style for the subtitles.
-            word_max (int): Maximum number of words allowed per subtitle event.
-            subtitle_type (str): The formatting strategy ('one_word_only',
-                'separate_on_period', or 'join').
-            highlighter (Highlighter, optional): Instance responsible for text
-                highlighting logic.
-            effects (Effects, optional): Instance responsible for visual animations
-                and advanced styling.
-            builder (utils.subs_builder): Utility to compile final subtitle events.
         """
 
     def __init__(self,
@@ -71,20 +59,22 @@ class Subtitle_Edit:
             subs = self.shift_subs_time(subs)
 
         # edit
-
+        subs = self.effects.set_fade(subs)
         if self.effects is not None:
             subs  = self.effects(subs, sub_file)
 
         # build and save
-        subs = self.builder(subs)
-        sub_file.events = subs
+        with subtitle_render.SubtitlePipeline(subs) as pipeline:
+            subs = pipeline.render()
+            sub_file.events = subs
         return sub_file
 
     def add_subtitle(self, cur_word:str, index:int, start, end, all_subs:list, highlight_words:bool=False, sub_list:list=()):
         if highlight_words is True:
             return self.highlighter(cur_word, start, end, all_subs, sub_list)
         else:
-            all_subs.append(advanced_SAA_Events(start=start, end=end, text=cur_word.strip(), style="MainStyle"))
+            _event = pysubs2.SSAEvent(text=cur_word, start=start, end=end, style="MainStyle")
+            all_subs.append(subtitle_render.SAAEventBuilder(_event))
             return all_subs
 
     def short_subtitles(self, subs:list):
