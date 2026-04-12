@@ -24,6 +24,29 @@ def new_example_code():
     # Or use the youtube preset, that gives a similar result
     preset_youtube(ass, output, video)
 
+def new_example_code2():
+    from SubTextHighlight import SubtitleConfig, StyleConfig, preset_youtube
+    video = './tests/input/plain_video.mp4'  # set the input to a video, which will generate the subtitles for me
+    ass = './tests/input/blank.srt'
+    output = './media/output_video.mp4'  # set the output to a .mp4, so that the subtitles will be burned in
+
+    conf = SubtitleConfig(
+        ass, None, video,
+        subtitle_type="one_word",
+        fill_sub_times=False,
+        #subtitle_style=StyleConfig(),
+        #highlight_word_max=0,
+        #highlight_as_borders=True,
+        #fade=(50, 50),
+    )
+    conf.render2()
+
+    file = conf.save2()
+
+    actual = file.to_string('ass')
+    print(actual)
+
+
 
 if __name__ == '__main__':
     #debug()
@@ -38,4 +61,4 @@ if __name__ == '__main__':
     #t.rounded_background_highlight()
     #t.rounded_background_appear()
     #t.appear()
-    new_example_code()
+    new_example_code2()

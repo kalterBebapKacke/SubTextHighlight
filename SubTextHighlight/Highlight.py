@@ -1,10 +1,5 @@
-import os
 import pysubs2
-from . import utils
-from .utils import dprint, advanced_SAA_Events
-import dataclasses
-from . import style_class
-from . import subtitle_render
+from .subtitles import subtitle_render
 
 
 class Highlighter:

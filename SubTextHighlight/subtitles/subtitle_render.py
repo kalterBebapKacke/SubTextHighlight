@@ -187,7 +187,6 @@ class SubtitlePipeline:
             result.extend(built)
         return result
 
-
     def __enter__(self):
         return self
 
