@@ -1,6 +1,7 @@
 import stable_whisper
 from .style_class import StyleConfig
-import pysubs2
+from . import pipeline
+from .handling import Output
 from . import docker_wrapper
 from . import handler, Highlight
 from .main import Subtitle_Edit
@@ -56,7 +57,7 @@ class SubtitleConfig:
 
     # internal (initialized later)
     args_border: docker_wrapper.base.args_border | None = field(init=False)
-    Handler: handler.Input_Output_Handler = field(init=False)
+    Handler: None = field(init=False)
     highlighter: Highlight.Highlighter = field(init=False)
     effects: Effects | None = field(init=False)
     sub_file: pysubs2.SSAFile = field(init=False)
@@ -92,14 +93,6 @@ class SubtitleConfig:
         else:
             self.args_border = None
 
-        self.Handler = handler.Input_Output_Handler(
-            input=self.input,
-            output=self.output,
-            input_video=self.input_video,
-            whisper_model=self.whisper_model,
-            whisper_device=self.whisper_device,
-            whisper_refine=self.whisper_refine,
-        )
 
         # Check if appear is active and if so throw an expectation
         if self.highlight_as_borders and self.appear:
@@ -172,8 +165,23 @@ class SubtitleConfig:
             duration=self.Handler.duration,
         )(sub_file)
 
+    def render2(self):
+
+        with pipeline.BuildPipeline(self) as build_pipeline:
+            _pipeline = build_pipeline.build()
+
+        self.sub_file = _pipeline.run()
+
     def save(self):
         output = self.Handler.handle_output(self.sub_file)
         if output is not None:
             return output
+        return None
+
+    def save2(self):
+        output_obj = Output.Output(self.output, self.input_video)
+        _output = output_obj.handle_output(self.sub_file)
+
+        if _output is not None:
+            return _output
         return None

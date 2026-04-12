@@ -1,9 +1,8 @@
 import pysubs2
-from .utils import dprint, advanced_SAA_Events
 from .Highlight import Highlighter
 from .Effects import Effects
 from . import utils
-from . import subtitle_render
+from .subtitles import subtitle_render
 
 
 class Subtitle_Edit:

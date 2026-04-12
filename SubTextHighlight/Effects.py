@@ -1,8 +1,7 @@
-from . import Highlight
 from . import docker_wrapper
 from . import utils
 import copy
-from . import subtitle_render
+from .subtitles import subtitle_render
 import pysubs2
 
 
