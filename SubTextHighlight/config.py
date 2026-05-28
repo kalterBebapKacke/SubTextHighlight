@@ -19,7 +19,7 @@ class SubtitleConfig:
 
     # subtitle styles
     subtitle_style: StyleConfig = field(default_factory=StyleConfig)
-    subtitle_type: base.BaseFormatter = register.Formatters.joined
+    subtitle_type: type[base.BaseFormatter] = register.Formatters.joined
     word_max: int = 11
     add_time: float = 0
     fill_sub_times: bool = True
