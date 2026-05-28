@@ -1,8 +1,11 @@
+from .effects.appear import Appear
 from .formatters import base, register
 from .subtitles import event_factory, time_utils
 from .handling import Input
-from .subtitles import subtitles_file
-from .effects import fade
+from .styles import setup
+from .subtitles import subtitles_file, Highlight
+from .effects import fade, appear, border, docker_wrapper
+import traceback
 import logging
 logger = logging.getLogger(__name__)
 
@@ -18,8 +21,11 @@ class Pipeline:
 
     def run(self):
         sub_file = None
+        max_iterations = len(self.steps)
 
         for i, key in enumerate(self.steps.keys()):
+            logger.debug(f'\n============================================================================')
+            logger.info('Step {}/{} starting: {} '.format(i+1,max_iterations,key))
             try:
                 step = self.steps[key]
                 if i == 0:
@@ -28,8 +34,11 @@ class Pipeline:
                     sub_file = step(sub_file)
 
             except Exception as e:
-                logger.error('Error in step {}: {}'.format(key, e))
+                logger.error('Error in step {}: {} \n {}'.format(key, e, traceback.format_exc()))
                 raise e
+            finally:
+                logger.info('Step {} finished'.format(key))
+                logger.debug('Sub File after Step: \n{}'.format(str(sub_file)))
         return sub_file
 
 class BuildPipeline:
@@ -37,6 +46,10 @@ class BuildPipeline:
     def __init__(self, config):
         self.config = config
         self.pipeline = Pipeline()
+
+    @property
+    def highlighter_needed(self):
+        return  self.config.highlight_as_borders or self.config.highlight_word_max is not None or self.config.highlight_style is not None
 
     def build(self) -> Pipeline:
         # add input to steps
@@ -46,11 +59,16 @@ class BuildPipeline:
         # add Duration resolver step to the pipeline
         self._duration_resolution()
 
+        # setup styles
+        self._styles()
+
         # Add formatter step to the pipeline
         self.formatter()
 
         # effects
         self.pipeline.add_step(Fade=fade.Fade(self.config.fade[0], self.config.fade[1]).render)
+        self._appear()
+        self._border()
 
         # Output
         self.pipeline.add_step(Render=subtitles_file.render)
@@ -58,17 +76,15 @@ class BuildPipeline:
         return self.pipeline
 
     def formatter(self):
-        formatter_type = self.config.subtitle_type
-        if not formatter_type in register.FormatterRegister.keys():
-            raise KeyError(f"Unknown formatter type: {formatter_type}")
+        formatter = self.config.subtitle_type
 
-        # TODO: Add hightlighter
-        _event_factory = event_factory.EventFactory()
+        _event_factory = event_factory.EventFactory(self._highlighter_logic())
         _time_resolver = time_utils.TimeResolver(self.config.fill_sub_times)
 
-        formatter_class = register.FormatterRegister[formatter_type](_event_factory, _time_resolver, self.config.word_max)
+        formatter_class = formatter(_event_factory, _time_resolver, self.config.word_max)
 
         self.pipeline.add_step(Formatter=formatter_class.format)
+
 
     def _input(self):
         # add input to steps
@@ -87,6 +103,59 @@ class BuildPipeline:
             self.config.input_video,
         )
         self.pipeline.add_step(DurationResolution=_DurationResolution.handle)
+
+    def _styles(self):
+        self.pipeline.add_step(Styles=
+                               setup.style_setup(
+                                   self.config.subtitle_style,
+                                   self.config.highlight_style,
+                                   self.config.alignment,
+                                   self.highlighter_needed
+                               ).render
+        )
+
+    def _highlighter_logic(self):
+
+        if self.config.highlight_word_max is None:
+            highlight_word_max = 0
+        else:
+            highlight_word_max = self.config.highlight_word_max
+
+        logger.debug("Build Step: Highlighter needed = {}".format(self.highlighter_needed))
+
+        if not self.highlighter_needed:
+            if self.config.appear:
+                return Highlight.Highlighter(highlight_word_max)
+            return None
+        return Highlight.Highlighter(highlight_word_max)
+
+    def _appear(self):
+        if self.config.appear:
+            self.pipeline.add_step(Appear=appear.Appear().render)
+
+    def _border(self):
+        if self.config.rounded_border or self.config.highlight_as_borders:
+            self.pipeline.add_step(Border=border.Border(
+                border_as_highlight=self.config.highlight_as_borders,
+                force_install=self.config.docker_force_install,
+                args_border=self._args_border(),
+                traceback=self.config.docker_traceback,
+                verbose=self.config.docker_verbose,
+            ).render)
+
+    def _args_border(self):
+        return docker_wrapper.base.args_border(
+                offset=self.config.offset,
+                radius=self.config.radius,
+                transformy=self.config.transformy,
+                height_scaling=self.config.height_scaling,
+                color=self.config.color,
+                use_borders_as_highlight=self.config.highlight_as_borders,
+                fonts_path=self.config.fonts_path,
+                packages=self.config.packages,
+                container_run_func=self.config.container_run_func,
+                force_install=self.config.docker_force_install,
+            )
 
     def __enter__(self):
         return self

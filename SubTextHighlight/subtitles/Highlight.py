@@ -1,6 +1,9 @@
 from .subtitle_render import SAAEventBuilder
+import logging
+logger = logging.getLogger(__name__)
 
 class Highlighter:
+
     def __init__(self, highlight_word_max: int):
         self.highlight_word_min = highlight_word_max
         self.highlight_style = [r'{\rHighlight}', r'{\r}']
@@ -35,3 +38,6 @@ class Highlighter:
                 start_time = None
 
         return builder
+
+def base_highlighter():
+    return Highlighter(highlight_word_max=0)

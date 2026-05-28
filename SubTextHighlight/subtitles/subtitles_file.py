@@ -41,6 +41,19 @@ class SubtitleFile:
     def return_render_object(self):
         return subtitle_render.SubtitlePipeline(self.events)
 
+    def __str__(self):
+        msg = list()
+        msg.append(f'---------------------Subtitle File------------------------------')
+        msg.append('Duration: ' + str(self.duration))
+        msg.append('Resolution: ' + str(self.resolution))
+        msg.append('Key Info: ' + str(self.sub_file.info))
+        msg.append('Styles: ' + str(self.sub_file.styles))
+        msg.append('Events:')
+        for i, event in enumerate(self.events):
+            msg.append(f'Event{i}:' + str(event))
+        msg.append(f'----------------------------------------------------------------')
+        return '\n'.join(msg)
+
 def convert(sub_file:pysubs2.SSAFile):
     return SubtitleFile(sub_file=sub_file)
 

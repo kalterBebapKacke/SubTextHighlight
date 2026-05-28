@@ -1,4 +1,5 @@
 import os
+import logging
 
 def debug():
     os.environ['debug'] = 'True'
@@ -35,7 +36,7 @@ def new_example_code2():
         subtitle_type="one_word",
         fill_sub_times=False,
         #subtitle_style=StyleConfig(),
-        #highlight_word_max=0,
+        highlight_word_max=5,
         #highlight_as_borders=True,
         #fade=(50, 50),
     )
@@ -61,4 +62,5 @@ if __name__ == '__main__':
     #t.rounded_background_highlight()
     #t.rounded_background_appear()
     #t.appear()
+    logging.basicConfig(filename='subtitles.log', filemode='w',  encoding='utf-8', level=logging.DEBUG)
     new_example_code2()

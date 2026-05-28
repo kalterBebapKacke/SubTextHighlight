@@ -1,14 +1,14 @@
 import stable_whisper
-from .style_class import StyleConfig
 from . import pipeline
 from .handling import Output
-from . import docker_wrapper
-from . import handler, Highlight
-from .main import Subtitle_Edit
-from .Effects import Effects
+from .formatters import base, register
+from .styles.style_class import StyleConfig
 from dataclasses import dataclass, field
 from typing import Any
+import sys
 import pysubs2
+import logging
+logger = logging.getLogger(__name__)
 
 @dataclass
 class SubtitleConfig:
@@ -19,7 +19,7 @@ class SubtitleConfig:
 
     # subtitle styles
     subtitle_style: StyleConfig = field(default_factory=StyleConfig)
-    subtitle_type: str = "join"
+    subtitle_type: base.BaseFormatter = register.Formatters.joined
     word_max: int = 11
     add_time: float = 0
     fill_sub_times: bool = True
@@ -46,7 +46,7 @@ class SubtitleConfig:
     fonts_path: list | str | None = None
     packages: list[str] | None = None
     container_run_func: None = None
-    force_install: bool = False
+    docker_force_install: bool = False
     docker_verbose: bool = False
     docker_traceback:bool = False
 
@@ -56,116 +56,9 @@ class SubtitleConfig:
     whisper_refine: bool = False
 
     # internal (initialized later)
-    args_border: docker_wrapper.base.args_border | None = field(init=False)
-    Handler: None = field(init=False)
-    highlighter: Highlight.Highlighter = field(init=False)
-    effects: Effects | None = field(init=False)
     sub_file: pysubs2.SSAFile = field(init=False)
-    is_effect_needed : bool = field(init=False)
-    is_highlighter_needed: bool = field(init=False)
-
-    @property
-    def _is_effect_needed(self):
-        if not self.highlight_as_borders and self.fade == (0.0, 0.0) and not self.appear:
-            return False
-        return True
-
-    @property
-    def _is_highlighter_needed(self):
-        if not self.highlight_as_borders and self.highlight_word_max is None and self.highlight_style is None:
-            return False
-        return True
-
-    def __post_init__(self):
-        if self.rounded_border or self.highlight_as_borders:
-            self.args_border = docker_wrapper.base.args_border(
-                offset=self.offset,
-                radius=self.radius,
-                transformy=self.transformy,
-                height_scaling=self.height_scaling,
-                color=self.color,
-                use_borders_as_highlight=self.highlight_as_borders,
-                fonts_path=self.fonts_path,
-                packages=self.packages,
-                container_run_func=self.container_run_func,
-                force_install=self.force_install,
-            )
-        else:
-            self.args_border = None
-
-
-        # Check if appear is active and if so throw an expectation
-        if self.highlight_as_borders and self.appear:
-            raise RuntimeError('Cant use borders as highlighted subtitles and the appear at the same time.')
-
-        self.is_effect_needed = self._is_effect_needed
-        self.is_highlighter_needed = self._is_highlighter_needed
-
-        if self.highlight_word_max is None:
-            self.highlight_word_max = 0
-        if self.highlight_style is None:
-            self.highlight_style = StyleConfig()
-
-        self.highlighter = Highlight.Highlighter(self.highlight_word_max, self.subtitle_type)
-
-        self.subtitle_style.alignment = self.alignment
-
-        if self.highlight_style is not None:
-            self.highlight_style.alignment = self.alignment
-
-        self.effects = Effects(
-            fade_in_duration=self.fade[0],
-            fade_out_duration=self.fade[1],
-            appear=self.appear,
-            rounded_border=self.rounded_border,
-            border_as_highlight=self.highlight_as_borders,
-            args_border=self.args_border,
-            verbose=self.docker_verbose,
-            traceback=self.docker_traceback,
-        )
-
-
-    def highlighter_logic(self):
-        if not self.is_highlighter_needed:
-            if self.appear:
-                return self.highlighter
-            return None
-        return self.highlighter
-
-    def effects_logic(self):
-        if not self.is_effect_needed:
-            return None
-        return self.effects
 
     def render(self):
-        # get subfile and set highlighter
-        sub_file = self.Handler.handle_input()
-
-        # set main style
-        main_style = self.subtitle_style.return_style()
-        sub_file.styles["MainStyle"] = main_style
-
-        # set highlighter and style
-        highlighter = self.highlighter_logic()
-        if highlighter is not None:
-            sub_file.styles["Highlight"] = self.highlight_style.compare_style(main_style)
-
-        # set effects
-        effects = self.effects_logic()
-
-        # edit subs
-        self.sub_file = Subtitle_Edit(
-            args=self,
-            highlighter=highlighter,
-            effects=effects,
-            word_max=self.word_max,
-            add_time=self.add_time,
-            fill_sub_times=self.fill_sub_times,
-            subtitle_type=self.subtitle_type,
-            duration=self.Handler.duration,
-        )(sub_file)
-
-    def render2(self):
 
         with pipeline.BuildPipeline(self) as build_pipeline:
             _pipeline = build_pipeline.build()
@@ -173,15 +66,15 @@ class SubtitleConfig:
         self.sub_file = _pipeline.run()
 
     def save(self):
-        output = self.Handler.handle_output(self.sub_file)
-        if output is not None:
-            return output
-        return None
-
-    def save2(self):
         output_obj = Output.Output(self.output, self.input_video)
         _output = output_obj.handle_output(self.sub_file)
 
         if _output is not None:
             return _output
         return None
+
+    def debug(self, file_location='subtitles.log'):
+        logging.basicConfig(filename=file_location, filemode='w', encoding='utf-8', level=logging.DEBUG)
+
+    def debug_no_file(self):
+        logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)

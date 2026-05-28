@@ -3,6 +3,8 @@ import pytest
 import SubTextHighlight
 import pysubs2
 import os
+import logging
+import sys
 
 UPDATE_GOLDEN = os.environ.get("UPDATE_GOLDEN", "false").lower() == "true"
 # Define test cases
@@ -10,7 +12,7 @@ TEST_CASES = [
     (
         "one_word_only_and_fade",
         {
-            "subtitle_type": 'one_word_only',
+            "subtitle_type": SubTextHighlight.Formatters.one_word,
             "fill_sub_times": True,
             "word_max": 0,
             "fade": (50, 50),
@@ -19,7 +21,7 @@ TEST_CASES = [
     (
         "separate_on_period_and_highlighting",
         {
-            "subtitle_type": 'separate_on_period',
+            "subtitle_type": SubTextHighlight.Formatters.sentence,
             "fill_sub_times": False,
             "word_max": 11,
             "highlight_word_max": 0,
@@ -28,7 +30,7 @@ TEST_CASES = [
     (
         "join_and_word_max",
         {
-            "subtitle_type": 'join',
+            "subtitle_type": SubTextHighlight.Formatters.joined,
             "fill_sub_times": False,
             "word_max": 20,
         }
@@ -36,7 +38,7 @@ TEST_CASES = [
     (
         "appear",
         {
-            "subtitle_type": 'join',
+            "subtitle_type": SubTextHighlight.Formatters.joined,
             "fill_sub_times": False,
             "word_max": 20,
             "fade": (50, 50),
@@ -46,7 +48,7 @@ TEST_CASES = [
     (
         "rounded_borders",
         {
-            "subtitle_type": 'join',
+            "subtitle_type": SubTextHighlight.Formatters.joined,
             "fill_sub_times": False,
             "word_max": 20,
             "fade": (50, 50),
@@ -56,7 +58,7 @@ TEST_CASES = [
     (
         "rounded_background_highlight",
         {
-            "subtitle_type": 'separate_on_period',
+            "subtitle_type": SubTextHighlight.Formatters.sentence,
             "fill_sub_times": False,
             "word_max": 11,
             "highlight_word_max":0,
@@ -68,7 +70,7 @@ TEST_CASES = [
     (
         "rounded_background_appear",
         {
-            "subtitle_type": 'separate_on_period',
+            "subtitle_type": SubTextHighlight.Formatters.sentence,
             "fill_sub_times": False,
             "word_max": 11,
             "rounded_border": True,
@@ -99,10 +101,11 @@ def test_subtitle(tmp_path, name, options):
         input_video=str(video_path),
         alignment=2,
         subtitle_style=SubTextHighlight.StyleConfig(),
-        force_install=True,
+        docker_force_install=True,
         **options
     )
 
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     config.render()
 
     sub_file: pysubs2.SSAFile = config.save()
