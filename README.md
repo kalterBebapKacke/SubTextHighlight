@@ -204,7 +204,19 @@ When `input` is a video or audio file, SubTextHighlight will transcribe it autom
 
 ---
 
+### 6. Shortcuts & Presets
+The `presets` module contains pre-configured styles and settings for common use cases. For example, `preset_youtube()` applies a popular YouTube-style subtitle format with a single function call.
+
+The presets here include:
+1. `preset_youtube` — A modern, clean style inspired by YouTube's default captions.
+2. `preset_tiktok` — A clean style with a rounded border, inspired by TikTok's captions.
+3. `fast` — Create a subtitle file/render it with minimal processing and default styling, for quick results.
+4. `fast_subtitle_file` — Generate a subtitle file with minimal processing and default styling, without rendering a video, just returning the `pysubs2.SSA_File` object.
+5. `fast_highlight` — Create a simple subtitle file or video with simple word-level highlighting, without advanced effects or styling.
+
+---
 
 ## Feedback & Contributions
 
-Feedback is always welcome! Please feel free to open issues or submit pull requests on GitHub.
+Feedback is always welcome! Please feel free to open issues on GitHub.
+I am not finished with this project and there are many features I want to add, so if you have any suggestions or want to contribute, please do not hesitate to reach out.

@@ -28,7 +28,7 @@ def fast_subtitle_file(
     conf.render()
     return conf.save()
 
-def auto_highlight(
+def fast_highlight(
         input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
         output: str | None,
         input_video: str | None = None
@@ -47,12 +47,12 @@ def auto_highlight(
 def preset_tiktok(
         input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
         output: str | None,
-        input_video: str
+        input_video: str | None = None
     ):
     conf = config.SubtitleConfig(
         input, output, input_video,
         subtitle_type=register.Formatters.one_word,
-        rounded_border=False,
+        rounded_border=True,
         fill_sub_times=True,
         fade=(20, 20),
         height_scaling=1.0,
@@ -63,7 +63,7 @@ def preset_tiktok(
 def preset_youtube(
         input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
         output: str | None,
-        input_video: str
+        input_video: str | None = None
     ):
     conf = config.SubtitleConfig(
         input, output, input_video,
