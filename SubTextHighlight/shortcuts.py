@@ -2,6 +2,7 @@ from . import config
 from .styles.style_class import StyleConfig
 from typing import Any
 import stable_whisper
+from .formatters import register
 
 def fast(
         input:str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult,
@@ -11,6 +12,7 @@ def fast(
     conf = config.SubtitleConfig(
         input=input,
         output=output,
+        input_video=input_video,
     )
     conf.render()
     return conf.save()
@@ -49,7 +51,7 @@ def preset_tiktok(
     ):
     conf = config.SubtitleConfig(
         input, output, input_video,
-        subtitle_type="one_word_only",
+        subtitle_type=register.Formatters.one_word,
         rounded_border=False,
         fill_sub_times=True,
         fade=(20, 20),
@@ -65,7 +67,7 @@ def preset_youtube(
     ):
     conf = config.SubtitleConfig(
         input, output, input_video,
-        subtitle_type='separate_on_period',
+        subtitle_type=register.Formatters.sentence,
         rounded_border=True,
         fade=(50, 50),
         word_max=15,
