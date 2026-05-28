@@ -26,14 +26,14 @@ def new_example_code():
     preset_youtube(ass, output, video)
 
 def new_example_code2():
-    from SubTextHighlight import SubtitleConfig, StyleConfig, preset_youtube
+    from SubTextHighlight import SubtitleConfig, StyleConfig, preset_youtube, Formatters
     video = './tests/input/plain_video.mp4'  # set the input to a video, which will generate the subtitles for me
     ass = './tests/input/blank.srt'
     output = './media/output_video.mp4'  # set the output to a .mp4, so that the subtitles will be burned in
 
     conf = SubtitleConfig(
         ass, None, video,
-        subtitle_type="one_word",
+        subtitle_type=Formatters.one_word,
         fill_sub_times=False,
         #subtitle_style=StyleConfig(),
         highlight_word_max=5,

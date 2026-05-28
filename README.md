@@ -22,6 +22,7 @@ https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
   - [3. Highlight Options](#3-highlight-options)
   - [4. Effects & Borders](#4-effects--borders)
   - [5. Whisper / Transcription](#5-whisper--transcription)
+  - [6. Shortcuts & Presets](#6-shortcuts--presets)
 - [Example Usage](#-example-usage)
 - [Feedback & Contributions](#feedback--contributions)
 
@@ -51,15 +52,15 @@ pip install git+https://github.com/kalterBebapKacke/SubTextHighlight@main
 The API has been consolidated into a single configuration class: **`SubtitleConfig`**. Instead of instantiating and passing multiple separate argument classes, you now configure everything in one place and call `.render()` followed by `.save()`.
 
 ```python
-from SubTextHighlight import SubtitleConfig, StyleConfig, preset_youtube
+    from SubTextHighlight import SubtitleConfig, StyleConfig, preset_youtube, Formatters
     input = './tests/input/plain_video.mp4'  # set the input to a video, which will generate the subtitles for me
     output = './media/output_video.mp4'  # set the output to a .mp4, so that the subtitles will be burned in
 
     conf = SubtitleConfig(
         input, output,
-        subtitle_type='separate_on_period',
+        subtitle_type=Formatters.sentence,
         fill_sub_times=False,
-        subtitle_style=StyleConfig(alignment=2),
+        alignment = 2,
         highlight_style=StyleConfig(primarycolor='00AAFF'),
         highlight_word_max=0,
         highlight_as_borders=True,
@@ -90,10 +91,12 @@ from SubTextHighlight import SubtitleConfig, StyleConfig, preset_youtube
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `subtitle_type` | `str` | `'join'` | `'one_word_only'`, `'join'` (group by `word_max`), or `'separate_on_period'` (split at sentence ends). |
+| `subtitle_type` | `type[BaseFormatter]` | `Formatters.joined` | `Formatters.one_word`, `Formatters.joined` (group by `word_max`), or `Formatters.sentence ` (split at sentence ends). |
 | `word_max` | `int` | `11` | Maximum words per subtitle line when using `'join'` mode. |
 | `add_time` | `float` | `0.0` | Time offset (seconds) added to all subtitle timestamps. |
 | `fill_sub_times` | `bool` | `True` | Automatically fill gaps between subtitle lines. |
+
+The layout and timing of the generated subtitles is controlled by the selected formatter, which determines the `subtitle_type` parameter. It is imported via `from SubTextHighlight import Formatters`. The available options are:
 
 ---
 
