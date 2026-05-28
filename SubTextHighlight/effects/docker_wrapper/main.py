@@ -97,13 +97,14 @@ class DockerWrapper(base.BaseWrapper):
             # Convert to string if necessary
             if not return_pysubsSSAFile:
                 output = output.to_string()
+
             return output
         finally:
             # Stop and remove the container
             if container is not None:
                 if container.status == 'running':
                     container.stop()
-                container.remove()
+                container.remove(force=True)
 
             # stop and remove all other containers from the image if needed
             if cleanup:
@@ -184,7 +185,7 @@ class DockerWrapper(base.BaseWrapper):
                     container.stop()
                 except Exception:
                     pass
-                container.remove()
+                container.remove(force=True)
 
     def cleanup_old_images(self):
         images = self.client.images.list(self.rep_name)

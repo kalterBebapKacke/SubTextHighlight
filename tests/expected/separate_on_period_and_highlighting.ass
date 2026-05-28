@@ -12,48 +12,48 @@ ScriptType: v4.00+
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
 Style: MainStyle,Arial,24,&H00FFFFFF,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0.75,0,1,1,0,2,10,10,10,1
-Style: Highlight,Arial,24,&H00FFAA00,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0.75,0,1,1,0,5,10,10,10,1
+Style: Highlight,Arial,24,&H00FFAA00,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0.75,0,1,1,0,2,10,10,10,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:03.60,0:00:03.72,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Can{\r} I help you?
+Dialogue: 0,0:00:03.60,0:00:03.72,MainStyle,,0,0,0,,{\rHighlight}Can{\r} I help you?
 Dialogue: 0,0:00:03.72,0:00:03.92,MainStyle,,0,0,0,,Can {\rHighlight}I{\r} help you?
 Dialogue: 0,0:00:03.92,0:00:04.14,MainStyle,,0,0,0,,Can I {\rHighlight}help{\r} you?
-Dialogue: 0,0:00:04.14,0:00:04.46,MainStyle,,0,0,0,,{\fad(0,0)}Can I help {\rHighlight}you?{\r}
-Dialogue: 0,0:00:08.38,0:00:08.58,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Hmm?{\r}
-Dialogue: 0,0:00:10.29,0:00:10.95,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Anything{\r} special?
-Dialogue: 0,0:00:10.95,0:00:11.06,MainStyle,,0,0,0,,{\fad(0,0)}Anything {\rHighlight}special?{\r}
-Dialogue: 0,0:00:13.14,0:00:13.32,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}I{\r} was here before.
+Dialogue: 0,0:00:04.14,0:00:04.46,MainStyle,,0,0,0,,Can I help {\rHighlight}you?{\r}
+Dialogue: 0,0:00:08.38,0:00:08.58,MainStyle,,0,0,0,,{\rHighlight}Hmm?{\r}
+Dialogue: 0,0:00:10.29,0:00:10.95,MainStyle,,0,0,0,,{\rHighlight}Anything{\r} special?
+Dialogue: 0,0:00:10.95,0:00:11.06,MainStyle,,0,0,0,,Anything {\rHighlight}special?{\r}
+Dialogue: 0,0:00:13.14,0:00:13.32,MainStyle,,0,0,0,,{\rHighlight}I{\r} was here before.
 Dialogue: 0,0:00:13.32,0:00:13.54,MainStyle,,0,0,0,,I {\rHighlight}was{\r} here before.
 Dialogue: 0,0:00:13.54,0:00:13.72,MainStyle,,0,0,0,,I was {\rHighlight}here{\r} before.
-Dialogue: 0,0:00:13.72,0:00:14.13,MainStyle,,0,0,0,,{\fad(0,0)}I was here {\rHighlight}before.{\r}
-Dialogue: 0,0:00:15.96,0:00:16.48,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Razorblades.{\r}
-Dialogue: 0,0:00:19.86,0:00:19.96,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}You{\r} sold me the notebook.
+Dialogue: 0,0:00:13.72,0:00:14.13,MainStyle,,0,0,0,,I was here {\rHighlight}before.{\r}
+Dialogue: 0,0:00:15.96,0:00:16.48,MainStyle,,0,0,0,,{\rHighlight}Razorblades.{\r}
+Dialogue: 0,0:00:19.86,0:00:19.96,MainStyle,,0,0,0,,{\rHighlight}You{\r} sold me the notebook.
 Dialogue: 0,0:00:19.96,0:00:20.20,MainStyle,,0,0,0,,You {\rHighlight}sold{\r} me the notebook.
 Dialogue: 0,0:00:20.20,0:00:20.34,MainStyle,,0,0,0,,You sold {\rHighlight}me{\r} the notebook.
 Dialogue: 0,0:00:20.34,0:00:20.46,MainStyle,,0,0,0,,You sold me {\rHighlight}the{\r} notebook.
-Dialogue: 0,0:00:20.46,0:00:20.84,MainStyle,,0,0,0,,{\fad(0,0)}You sold me the {\rHighlight}notebook.{\r}
-Dialogue: 0,0:00:22.10,0:00:22.22,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Yes.{\r}
-Dialogue: 0,0:00:23.72,0:00:23.88,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Yes.{\r}
-Dialogue: 0,0:00:25.98,0:00:26.18,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Please{\r} look around.
+Dialogue: 0,0:00:20.46,0:00:20.84,MainStyle,,0,0,0,,You sold me the {\rHighlight}notebook.{\r}
+Dialogue: 0,0:00:22.10,0:00:22.22,MainStyle,,0,0,0,,{\rHighlight}Yes.{\r}
+Dialogue: 0,0:00:23.72,0:00:23.88,MainStyle,,0,0,0,,{\rHighlight}Yes.{\r}
+Dialogue: 0,0:00:25.98,0:00:26.18,MainStyle,,0,0,0,,{\rHighlight}Please{\r} look around.
 Dialogue: 0,0:00:26.18,0:00:26.42,MainStyle,,0,0,0,,Please {\rHighlight}look{\r} around.
-Dialogue: 0,0:00:26.42,0:00:26.68,MainStyle,,0,0,0,,{\fad(0,0)}Please look {\rHighlight}around.{\r}
-Dialogue: 0,0:00:52.79,0:00:54.04,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}What's{\r} this?
-Dialogue: 0,0:00:54.04,0:00:54.22,MainStyle,,0,0,0,,{\fad(0,0)}What's {\rHighlight}this?{\r}
-Dialogue: 0,0:00:56.61,0:00:56.76,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Oh,{\r}
-Dialogue: 0,0:00:56.78,0:00:57.06,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}it's{\r} a beautiful thing.
+Dialogue: 0,0:00:26.42,0:00:26.68,MainStyle,,0,0,0,,Please look {\rHighlight}around.{\r}
+Dialogue: 0,0:00:52.79,0:00:54.04,MainStyle,,0,0,0,,{\rHighlight}What's{\r} this?
+Dialogue: 0,0:00:54.04,0:00:54.22,MainStyle,,0,0,0,,What's {\rHighlight}this?{\r}
+Dialogue: 0,0:00:56.61,0:00:56.76,MainStyle,,0,0,0,,{\rHighlight}Oh,{\r}
+Dialogue: 0,0:00:56.78,0:00:57.06,MainStyle,,0,0,0,,{\rHighlight}it's{\r} a beautiful thing.
 Dialogue: 0,0:00:57.06,0:00:57.27,MainStyle,,0,0,0,,it's {\rHighlight}a{\r} beautiful thing.
 Dialogue: 0,0:00:57.27,0:00:57.58,MainStyle,,0,0,0,,it's a {\rHighlight}beautiful{\r} thing.
-Dialogue: 0,0:00:57.58,0:00:58.01,MainStyle,,0,0,0,,{\fad(0,0)}it's a beautiful {\rHighlight}thing.{\r}
-Dialogue: 0,0:00:59.46,0:00:59.56,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}It's{\r} over 100 years old.
+Dialogue: 0,0:00:57.58,0:00:58.01,MainStyle,,0,0,0,,it's a beautiful {\rHighlight}thing.{\r}
+Dialogue: 0,0:00:59.46,0:00:59.56,MainStyle,,0,0,0,,{\rHighlight}It's{\r} over 100 years old.
 Dialogue: 0,0:00:59.56,0:00:59.70,MainStyle,,0,0,0,,It's {\rHighlight}over{\r} 100 years old.
 Dialogue: 0,0:00:59.70,0:01:00.06,MainStyle,,0,0,0,,It's over {\rHighlight}100{\r} years old.
 Dialogue: 0,0:01:00.06,0:01:00.38,MainStyle,,0,0,0,,It's over 100 {\rHighlight}years{\r} old.
-Dialogue: 0,0:01:00.38,0:01:00.60,MainStyle,,0,0,0,,{\fad(0,0)}It's over 100 years {\rHighlight}old.{\r}
-Dialogue: 0,0:01:04.02,0:01:05.16,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}It{\r} cost you $4.
+Dialogue: 0,0:01:00.38,0:01:00.60,MainStyle,,0,0,0,,It's over 100 years {\rHighlight}old.{\r}
+Dialogue: 0,0:01:04.02,0:01:05.16,MainStyle,,0,0,0,,{\rHighlight}It{\r} cost you $4.
 Dialogue: 0,0:01:05.16,0:01:05.26,MainStyle,,0,0,0,,It {\rHighlight}cost{\r} you $4.
-Dialogue: 0,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,{\fad(0,0)}It cost {\rHighlight}you{\r} $4.
-Dialogue: 0,0:01:24.70,0:01:24.84,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}There's{\r} another room upstairs you might like to see.
+Dialogue: 0,0:01:05.26,0:01:05.48,MainStyle,,0,0,0,,It cost {\rHighlight}you{\r} $4.
+Dialogue: 0,0:01:24.70,0:01:24.84,MainStyle,,0,0,0,,{\rHighlight}There's{\r} another room upstairs you might like to see.
 Dialogue: 0,0:01:24.84,0:01:25.08,MainStyle,,0,0,0,,There's {\rHighlight}another{\r} room upstairs you might like to see.
 Dialogue: 0,0:01:25.08,0:01:25.30,MainStyle,,0,0,0,,There's another {\rHighlight}room{\r} upstairs you might like to see.
 Dialogue: 0,0:01:25.30,0:01:26.16,MainStyle,,0,0,0,,There's another room {\rHighlight}upstairs{\r} you might like to see.
@@ -61,10 +61,10 @@ Dialogue: 0,0:01:26.16,0:01:26.26,MainStyle,,0,0,0,,There's another room upstair
 Dialogue: 0,0:01:26.26,0:01:26.56,MainStyle,,0,0,0,,There's another room upstairs you {\rHighlight}might{\r} like to see.
 Dialogue: 0,0:01:26.56,0:01:26.82,MainStyle,,0,0,0,,There's another room upstairs you might {\rHighlight}like{\r} to see.
 Dialogue: 0,0:01:26.82,0:01:27.02,MainStyle,,0,0,0,,There's another room upstairs you might like {\rHighlight}to{\r} see.
-Dialogue: 0,0:01:27.02,0:01:27.38,MainStyle,,0,0,0,,{\fad(0,0)}There's another room upstairs you might like to {\rHighlight}see.{\r}
-Dialogue: 0,0:01:28.66,0:01:28.78,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}Yes,{\r}
-Dialogue: 0,0:01:29.02,0:01:29.68,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}it's,{\r} uh,
-Dialogue: 0,0:01:29.86,0:01:30.06,MainStyle,,0,0,0,,{\fad(0,0)}{\rHighlight}not{\r} much in it.
+Dialogue: 0,0:01:27.02,0:01:27.38,MainStyle,,0,0,0,,There's another room upstairs you might like to {\rHighlight}see.{\r}
+Dialogue: 0,0:01:28.66,0:01:28.78,MainStyle,,0,0,0,,{\rHighlight}Yes,{\r}
+Dialogue: 0,0:01:29.02,0:01:29.68,MainStyle,,0,0,0,,{\rHighlight}it's,{\r} uh,
+Dialogue: 0,0:01:29.86,0:01:30.06,MainStyle,,0,0,0,,{\rHighlight}not{\r} much in it.
 Dialogue: 0,0:01:30.06,0:01:30.24,MainStyle,,0,0,0,,not {\rHighlight}much{\r} in it.
 Dialogue: 0,0:01:30.24,0:01:30.38,MainStyle,,0,0,0,,not much {\rHighlight}in{\r} it.
-Dialogue: 0,0:01:30.38,0:01:30.50,MainStyle,,0,0,0,,{\fad(0,0)}not much in {\rHighlight}it.{\r}
+Dialogue: 0,0:01:30.38,0:01:30.50,MainStyle,,0,0,0,,not much in {\rHighlight}it.{\r}
