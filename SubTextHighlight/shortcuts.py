@@ -1,5 +1,5 @@
 from . import config
-from . import style_class
+from .styles.style_class import StyleConfig
 from typing import Any
 import stable_whisper
 
@@ -37,7 +37,7 @@ def auto_highlight(
         output=output,
         input_video=input_video,
         highlight_word_max=1,
-        highlight_style=style_class.StyleConfig(primarycolor='00AAFF')
+        highlight_style=StyleConfig(primarycolor='00AAFF')
     )
     conf.render()
     return conf.save()

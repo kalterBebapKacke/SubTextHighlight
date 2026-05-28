@@ -8,5 +8,5 @@ class OneWordFormatter(BaseFormatter):
             last = i == len(subs) - 1
             start = self.time_resolver.start(subs, i)
             end   = self.time_resolver.end(subs, i, last)
-            new_subs.extend(self.event_factory.build(sub.text, start, end))
+            new_subs.extend(self.event_factory.build(sub.text, start, end, [sub]))
         return new_subs
