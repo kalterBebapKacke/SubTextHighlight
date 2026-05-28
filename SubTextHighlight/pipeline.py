@@ -1,5 +1,4 @@
-from .effects.appear import Appear
-from .formatters import base, register
+from . import conflicts
 from .subtitles import event_factory, time_utils
 from .handling import Input
 from .styles import setup
@@ -46,33 +45,37 @@ class BuildPipeline:
     def __init__(self, config):
         self.config = config
         self.pipeline = Pipeline()
+        self.steps = {
+            "Input": self._input,
+            "Convert": self._convert,
+            "DurationResolution": self._duration_resolution,
+            "Styles": self._styles,
+            "Formatter": self.formatter,
+            "Fade": self._fade,
+            "Appear": self._appear,
+            "Border": self._border,
+            "Render": self._render
+        }
 
     @property
     def highlighter_needed(self):
         return  self.config.highlight_as_borders or self.config.highlight_word_max is not None or self.config.highlight_style is not None
 
     def build(self) -> Pipeline:
-        # add input to steps
-        self._input()
-        self.pipeline.add_step(Convert=subtitles_file.convert)
+        logger.debug('Checking for conflicts')
+        conflicts.build_pipeline_check_conflicts(self.config)
 
-        # add Duration resolver step to the pipeline
-        self._duration_resolution()
 
-        # setup styles
-        self._styles()
+        logger.debug('Building pipeline')
+        for step in self.steps:
+            logger.debug('Step {}'.format(step))
+            self.steps[step]()
 
-        # Add formatter step to the pipeline
-        self.formatter()
+            if step == "DurationResolution":
+                logger.debug('Adding conflict check after DurationResolution')
+                self.pipeline.add_step(ConflictCheck=conflicts.PipelineConflictChecker(self.config).check_conflicts)
 
-        # effects
-        self.pipeline.add_step(Fade=fade.Fade(self.config.fade[0], self.config.fade[1]).render)
-        self._appear()
-        self._border()
-
-        # Output
-        self.pipeline.add_step(Render=subtitles_file.render)
-
+        logger.debug('Finished building pipeline')
         return self.pipeline
 
     def formatter(self):
@@ -96,6 +99,9 @@ class BuildPipeline:
             whisper_refine=self.config.whisper_refine
         )
         self.pipeline.add_step(Input=input.handle_input)
+
+    def _convert(self):
+        self.pipeline.add_step(Convert=subtitles_file.convert)
 
     def _duration_resolution(self):
         _DurationResolution = Input.DurationResolution(
@@ -143,6 +149,9 @@ class BuildPipeline:
                 verbose=self.config.docker_verbose,
             ).render)
 
+    def _fade(self):
+        self.pipeline.add_step(Fade=fade.Fade(self.config.fade[0], self.config.fade[1]).render)
+
     def _args_border(self):
         return docker_wrapper.base.args_border(
                 offset=self.config.offset,
@@ -156,6 +165,9 @@ class BuildPipeline:
                 container_run_func=self.config.container_run_func,
                 force_install=self.config.docker_force_install,
             )
+
+    def _render(self):
+        self.pipeline.add_step(Render=subtitles_file.render)
 
     def __enter__(self):
         return self
