@@ -30,6 +30,7 @@ def test_docker():
         assert True
     else:
         expected_sub_file = pysubs2.load(str(expected_file))
+        print(output_file.to_string('ass'))
         assert expected_sub_file.to_string('ass') == output_file.to_string('ass')
 
 
