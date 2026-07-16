@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "SubTextHighlight"
+name = "SubtitleHighlight"
 version = "3.0"
 requires-python = ">=3.11"
 description = "This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features."

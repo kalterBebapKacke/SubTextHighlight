@@ -4,3 +4,5 @@ openai-whisper>=20240930
 stable-ts-whisperless>=2.19.0
 setuptools>=80.9.0
 fleep>=1.0.1
+pydantic
+annotated_types
