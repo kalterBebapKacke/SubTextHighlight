@@ -1,5 +1,6 @@
-from .base import BaseFormatter
+from .base import BaseFormatter, register
 
+@register
 class OneWordFormatter(BaseFormatter):
     
     def _format(self, subs: list) -> list:

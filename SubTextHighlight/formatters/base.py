@@ -1,5 +1,11 @@
 from abc import ABC, abstractmethod
 
+FORMATTER_REGISTER = {}
+
+def register(cls):
+    FORMATTER_REGISTER[cls.__name__.lower()] = cls
+    return cls
+
 class BaseFormatter(ABC):
     def __init__(self, event_factory, time_resolver, word_max):
         self.event_factory = event_factory

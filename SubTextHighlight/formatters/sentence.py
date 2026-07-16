@@ -1,6 +1,7 @@
-from .base import BaseFormatter
+from .base import BaseFormatter, register
 from .joined import JoinedFormatter
 
+@register
 class SentenceFormatter(JoinedFormatter):
 
     def _format(self, subs: list) -> list:
