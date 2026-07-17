@@ -4,9 +4,11 @@ from .handling import Input
 from .styles import setup
 from .subtitles import subtitles_file, Highlight
 from .effects import fade, appear, border, docker_wrapper
+from . import formatters
 import traceback
 import logging
 logger = logging.getLogger(__name__)
+from . import config
 
 
 class Pipeline:
@@ -42,8 +44,8 @@ class Pipeline:
 
 class BuildPipeline:
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, _config):
+        self.config:config.Config = _config
         self.pipeline = Pipeline()
         self.steps = {
             "Input": self._input,
@@ -84,7 +86,7 @@ class BuildPipeline:
         _event_factory = event_factory.EventFactory(self._highlighter_logic())
         _time_resolver = time_utils.TimeResolver(self.config.fill_sub_times)
 
-        formatter_class = formatter(_event_factory, _time_resolver, self.config.word_max)
+        formatter_class = formatters.FORMATTER_REGISTER.get(formatter)
 
         self.pipeline.add_step(Formatter=formatter_class.format)
 
@@ -94,9 +96,7 @@ class BuildPipeline:
         input = Input.Input(
             input=self.config.input,
             input_video=self.config.input_video,
-            whisper_model=self.config.whisper_model,
-            whisper_device=self.config.whisper_device,
-            whisper_refine=self.config.whisper_refine
+            WhisperConfig=self.config.WhisperConfig
         )
         self.pipeline.add_step(Input=input.handle_input)
 
@@ -107,6 +107,7 @@ class BuildPipeline:
         _DurationResolution = Input.DurationResolution(
             self.config.input,
             self.config.input_video,
+            self.config.resolution,
         )
         self.pipeline.add_step(DurationResolution=_DurationResolution.handle)
 
@@ -141,12 +142,13 @@ class BuildPipeline:
 
     def _border(self):
         if self.config.rounded_border or self.config.highlight_as_borders:
+
             self.pipeline.add_step(Border=border.Border(
                 border_as_highlight=self.config.highlight_as_borders,
-                force_install=self.config.docker_force_install,
+                force_install=self.config.DockerConfig.force_install,
                 args_border=self._args_border(),
-                traceback=self.config.docker_traceback,
-                verbose=self.config.docker_verbose,
+                traceback=self.config.DockerConfig.traceback,
+                verbose=self.config.DockerConfig.verbose,
             ).render)
 
     def _fade(self):
@@ -154,16 +156,16 @@ class BuildPipeline:
 
     def _args_border(self):
         return docker_wrapper.base.args_border(
-                offset=self.config.offset,
-                radius=self.config.radius,
-                transformy=self.config.transformy,
-                height_scaling=self.config.height_scaling,
-                color=self.config.color,
+                offset=self.config.BorderConfig.offset,
+                radius=self.config.BorderConfig.radius,
+                transformy=self.config.BorderConfig.transformy,
+                height_scaling=self.config.BorderConfig.height_scaling,
+                color=self.config.BorderConfig.color.to_pysubs2(),
                 use_borders_as_highlight=self.config.highlight_as_borders,
-                fonts_path=self.config.fonts_path,
-                packages=self.config.packages,
-                container_run_func=self.config.container_run_func,
-                force_install=self.config.docker_force_install,
+                fonts_path=self.config.DockerConfig.fonts_path,
+                packages=self.config.DockerConfig.packages,
+                container_run_func=self.config.DockerConfig.container_run_func,
+                force_install=self.config.DockerConfig.force_install,
             )
 
     def _render(self):

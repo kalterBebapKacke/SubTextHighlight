@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict, field_validator, Field
 import pysubs2
 from .custom_types import *
+import dataclasses
 
 
 class Style(BaseModel):
@@ -42,3 +43,24 @@ class Style(BaseModel):
             if name not in self.model_fields_set:      # not explicitly set -> inherit from base
                 setattr(merged, name, getattr(base_style, name))
         return merged
+
+@dataclasses.dataclass
+class StyleSetup:
+
+    main_style:Style
+    highlight_style:Style
+    alignment:int
+    highlighter_needed: bool
+
+    def render(self, subs_file):
+        _sub_file : pysubs2.SSAFile = subs_file.sub_file
+
+        self.main_style.alignment = self.alignment
+        _sub_file.styles["MainStyle"] = self.main_style.return_style()
+
+        if self.highlighter_needed:
+            self.highlight_style = self.highlight_style if self.highlight_style is not None else self.main_style
+            self.highlight_style.alignment = self.alignment
+            _sub_file.styles["Highlight"] = self.highlight_style.merge_onto(self.main_style.return_style())
+
+        return subs_file

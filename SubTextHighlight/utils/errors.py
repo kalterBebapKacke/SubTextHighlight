@@ -1,4 +1,8 @@
 
+class WhisperError(Exception):
+
+    def __init__(self):
+        super().__init__("Whisper has not been configured to transcribe the Input")
 
 class FormatterError(Exception):
 

@@ -4,8 +4,9 @@ from pydantic import Field
 import re
 from typing import Any
 import pysubs2
-from pydantic import GetCoreSchemaHandler
+from pydantic import GetCoreSchemaHandler, BeforeValidator
 from pydantic_core import core_schema
+from pathlib import Path
 
 PositiveInt = Annotated[int, Field(gt=0)]
 PositiveIntFloat = Annotated[Union[int, float], Field(gt=0)]
@@ -71,5 +72,17 @@ class Color:
             ),
         )
 
+def coerce_path(value: Any) -> Any:
+    if isinstance(value, (str, Path)):
+        return value  # let Pydantic's built-in Path validation handle it
+    if hasattr(value, "read"):  # file-like object (TextIO, BinaryIO, etc.)
+        name = getattr(value, "name", None)
+        if name is None:
+            raise ValueError(
+                "Cannot derive a path from an in-memory file object (no .name "
+                "attribute) — pass a string or pathlib.Path instead."
+            )
+        return name
+    raise TypeError(f"Cannot convert {type(value)!r} to a path")
 
-
+AnyPath = Annotated[Path, BeforeValidator(coerce_path)]

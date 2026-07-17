@@ -1,26 +1,30 @@
 import pysubs2
+from spacy.lang import sr
+
 from .video import *
 import os
 import stable_whisper
 from dataclasses import dataclass, field
+from typing import Any, Optional
+from .. import utils
+from .. import subtitles
+from pysubs2 import SSAFile
 
 import logging
 logger = logging.getLogger(__name__)
 
 @dataclass
 class Input:
-    input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult
+    input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult | pysubs2.SSAFile
     input_video: str | None = None
-    whisper_model: str = 'medium.en'
-    whisper_device: str = 'cpu'
-    whisper_refine: bool = False
+    WhisperConfig:Optional[utils.WhisperConfig] = None
 
     def __post_init__(self):
         self.whisper = self.handle_whisper_import()
 
     def handle_input(self):
         sub_file = None
-        logger.debug(f"Handling input {self.input}")
+        logger.debug(f"Handling input")
         # 1. Handle Whisper Objects
         if isinstance(self.input, self.whisper.result.WhisperResult):
             subs_str = self.input.to_srt_vtt(None, segment_level=False, word_level=True)
@@ -43,6 +47,10 @@ class Input:
                 sub_file = pysubs2.SSAFile.from_string(subs_str)
                 #self.duration, self.resolution = self.handle_duration_resolution()
 
+        # 4. pysubs2-SSAFile
+        if isinstance(self.input, pysubs2.SSAFile):
+            sub_file = self.input
+
         # Handle video and resolution logic
         # for some parts of the effects the PlayResX and Y has to be set in the ass file
         #if self.input_video is not None:
@@ -54,7 +62,8 @@ class Input:
         else:
             raise TypeError('Invalid input type')
 
-    def handle_whisper_import(self):
+    @staticmethod
+    def handle_whisper_import():
         try:
             import stable_whisper
             return stable_whisper
@@ -63,9 +72,12 @@ class Input:
             return None
 
     def whisper_transcribe(self, path):
-        model = self.whisper.load_model(self.whisper_model, device=self.whisper_device)
+        if not self.WhisperConfig:
+            raise utils.WhisperError()
+
+        model = self.whisper.load_model(self.WhisperConfig.model, device=self.WhisperConfig.device)
         result = model.transcribe(audio=path, verbose=None)
-        if self.whisper_refine:
+        if self.WhisperConfig.refine:
             model.refine(path, result, word_level=False, only_voice_freq=True, precision=0.05)
         r = result.to_srt_vtt(None, segment_level=False, word_level=True)
         return r
@@ -73,34 +85,43 @@ class Input:
 
 @dataclass
 class DurationResolution:
-    input: str | dict[str, any] | list[dict[str, any]] | stable_whisper.result.WhisperResult
+    input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult | pysubs2.SSAFile
     input_video: str | None = None
+    resolution: Optional[utils.Resolution] = None
 
-    def handle(self, sub_file):
+    def handle(self, sub_file:subtitles.SubtitleFile):
         duration, resolution = self.handle_duration_resolution()
 
         # set duration
         sub_file.set_duration(duration)
 
         # set resolution
-        sub_file = self.handle_subfile_resolution(sub_file, resolution)
-        sub_file.set_resolution(resolution)
+        if resolution:
+            sub_file = self.handle_subfile_resolution(sub_file, resolution)
+            sub_file.set_resolution(resolution)
+        else:
+            logger.warn('No Resolution is set, this can cause trouble in the project, if `rounded_borders` is used.')
 
         return sub_file
 
     def handle_duration_resolution(self):
+        duration, resolution = None, None
         # 1. Audio or Video from input
         if is_media_file(self.input):
-            return self.get_duration_resolution(self.input)
+            duration, resolution = self.get_duration_resolution(self.input)
 
         # 2. Resolution and duration from extra input video
         if self.input_video is not None:
             if is_video_file(self.input_video):
-                return self.get_duration_resolution(self.input_video)
+                duration, resolution = self.get_duration_resolution(self.input_video)
 
-        return None, None
+        if self.resolution:
+            resolution = self.resolution
 
-    def get_duration_resolution(self, file_path):
+        return duration, resolution
+
+    @staticmethod
+    def get_duration_resolution(file_path):
         cmd = [
             'ffprobe', '-v', 'error', '-print_format', 'json',
             '-show_format', '-show_streams', file_path
@@ -130,7 +151,8 @@ class DurationResolution:
 
         return duration, resolution
 
-    def handle_subfile_resolution(self, subfile, resolution):
+    @staticmethod
+    def handle_subfile_resolution(subfile, resolution):
         info = subfile.sub_file.info
 
         # check if resolution is set
