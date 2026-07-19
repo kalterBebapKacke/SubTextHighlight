@@ -17,13 +17,12 @@ https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
 - [Requirements](#-requirements)
 - [Installation](#-installation)
 - [How to Use](#-how-to-use)
-  - [1. SubtitleConfig — The Single Entry Point](#1-subtitleconfig--the-single-entry-point)
-  - [2. StyleConfig — Text Appearance](#2-styleconfig--text-appearance)
+  - [1. Config & SubtitleBuild — The Single Entry Point](#1-config--subtitlebuild--the-single-entry-point)
+  - [2. Style — Text Appearance](#2-style--text-appearance)
   - [3. Highlight Options](#3-highlight-options)
   - [4. Effects & Borders](#4-effects--borders)
   - [5. Whisper / Transcription](#5-whisper--transcription)
   - [6. Shortcuts & Presets](#6-shortcuts--presets)
-- [Example Usage](#-example-usage)
 - [Feedback & Contributions](#feedback--contributions)
 
 ---
@@ -32,6 +31,7 @@ https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
 
 * **FFmpeg**: Must be installed and added to your system PATH.
     * [Download FFmpeg](https://ffmpeg.org/)
+* **Docker**: Only required if you use `rounded_border` or `highlight_as_borders` — these effects render through a containerised backend.
 
 ## 📦 Installation
 
@@ -47,33 +47,46 @@ pip install git+https://github.com/moonlitmarigold/SubTextHighlight@main
 
 ## 🚀 How to Use
 
-### 1. `SubtitleConfig` — The Single Entry Point
+### 1. `Config` & `SubtitleBuild` — The Single Entry Point
 
-The API has been consolidated into a single configuration class: **`SubtitleConfig`**. Instead of instantiating and passing multiple separate argument classes, you now configure everything in one place and call `.render()` followed by `.save()`.
+All settings live on a single **`Config`** object (a Pydantic model). To actually build subtitles, pass it to **`SubtitleBuild`**, used as a context manager: `run()` executes the pipeline, `save()` writes the output (or returns the `pysubs2.SSAFile` object directly if `output=None`).
 
 ```python
-    from SubtitleFX import SubtitleConfig, StyleConfig, preset_youtube, Formatters
+    from SubtitleFX import Config, SubtitleBuild, Style, Formatters, preset_youtube
+
     input = './tests/input/plain_video.mp4'  # set the input to a video, which will generate the subtitles for me
     output = './media/output_video.mp4'  # set the output to a .mp4, so that the subtitles will be burned in
 
-    conf = SubtitleConfig(
-        input, output,
+    conf = Config(
+        input=input,
+        output=output,
         subtitle_type=Formatters.sentence,
         fill_sub_times=False,
-        alignment = 2,
-        highlight_style=StyleConfig(primarycolor='00AAFF'),
-        highlight_word_max=0,
+        alignment=2,
+        highlight_style=Style(primarycolor='00AAFF'),
+        highlight_char_max=0,
         highlight_as_borders=True,
         fade=(50, 50),
     )
-    conf.render()
-    conf.save()
+
+    with SubtitleBuild(conf) as build:
+        build.run()
+        build.save()
 
     # Or use the youtube preset, that gives a similar result
     preset_youtube(input, output)
 ```
 
-`render()` processes the input and generates the subtitle data. `save()` writes the output and returns the output path (or `None` if no file was written).
+`run()` processes the input and generates the subtitle data (`SubtitleBuild` also returns `self`, so `build.run().save()` chains fine). `save()` writes the output and returns the output path, or the `pysubs2.SSAFile` object if `output=None`.
+
+Need to change a setting after the fact? `SubtitleBuild.change(**kwargs)` updates the `Config` in place and rebuilds the pipeline if it's already been entered, so the new value actually takes effect on the next `run()`:
+
+```python
+with SubtitleBuild(conf) as build:
+    build.change(input='another_file.srt', fade=(20, 20))
+    build.run()
+    build.save()
+```
 
 ---
 
@@ -83,35 +96,36 @@ The API has been consolidated into a single configuration class: **`SubtitleConf
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `input` | `str \| dict \| list[dict] \| WhisperResult` | **required** | Path to a video/audio/srt file, a raw transcript dict, or a stable-whisper result. |
-| `output` | `str \| None` | **required** | Output path (`.ass`, `.mp4`). Pass `None` to return the `pysubs2.SSAFile` object directly from `save()`. |
+| `input` | `str \| dict \| list[dict] \| WhisperResult \| pysubs2.SSAFile` | **required** | Path to a video/audio/srt file, a raw transcript dict, a stable-whisper result, or an existing `SSAFile`. |
+| `output` | `str \| None` | **required** | Output path (`.ass`, or a video file to burn subtitles into). Pass `None` to get the `pysubs2.SSAFile` object back from `save()` instead of writing a file. |
 | `input_video` | `str \| None` | `None` | Separate video file path, if the subtitle input differs from the video to burn into. |
+| `resolution` | `tuple[int, int] \| None` | `None` | Explicit `(width, height)`. Inferred from `input`/`input_video` when possible; only required if neither is a video and `rounded_border` is used. |
 
 ##### Subtitle Layout
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `subtitle_type` | `type[BaseFormatter]` | `Formatters.joined` | `Formatters.one_word`, `Formatters.joined` (group by `word_max`), or `Formatters.sentence ` (split at sentence ends). |
-| `word_max` | `int` | `11` | Maximum words per subtitle line when using `'join'` mode. |
-| `add_time` | `float` | `0.0` | Time offset (seconds) added to all subtitle timestamps. |
-| `fill_sub_times` | `bool` | `True` | Automatically fill gaps between subtitle lines. |
+| `subtitle_type` | `str` (use the `Formatters` enum) | **required** | `Formatters.one_word`, `Formatters.joined` (group by `char_max`), or `Formatters.sentence` (split at sentence-ending punctuation). |
+| `char_max` | `int` | `11` | Maximum characters per subtitle line when using `Formatters.joined`. |
+| `add_time_seconds` | `float` | `0.0` | Time offset (seconds) added to all subtitle timestamps. |
+| `fill_sub_times` | `bool` | `True` | Automatically fill gaps between subtitle lines up to the next line / end of video. Requires a known video duration — pair with `input_video`, or an `input` that's itself a video/audio file. |
+| `alignment` | `int` | `2` | Numpad positioning (`2` = bottom center, `5` = center). |
 
-The layout and timing of the generated subtitles is controlled by the selected formatter, which determines the `subtitle_type` parameter. It is imported via `from SubtitleFX import Formatters`. The available options are:
+`subtitle_type` is imported via `from SubtitleFX import Formatters`. The available options are `Formatters.one_word`, `Formatters.joined`, and `Formatters.sentence`.
 
 ---
 
-### 2. `StyleConfig` — Text Appearance
+### 2. `Style` — Text Appearance
 
-Visual styling is now handled by **`StyleConfig`** objects. Pass one to `subtitle_style` for the main text and optionally another to `highlight_style` for highlighted words.
+Visual styling is handled by **`Style`** objects. Pass one to `subtitle_style` for the main text and optionally another to `highlight_style` for highlighted words — any attribute you don't explicitly set on `highlight_style` inherits from `subtitle_style` at render time.
 
 ```python
-from SubtitleFX import StyleConfig
+from SubtitleFX import Style
 
-main_style = StyleConfig(
+main_style = Style(
     fontname='Arial Rounded MT Bold',
     fontsize=28,
     primarycolor='FFFFFF',
-    borderstyle=3,
 )
 ```
 
@@ -124,10 +138,11 @@ main_style = StyleConfig(
 | `bold` | `bool` | `True` | Bold text. |
 | `italic` | `bool` | `False` | Italic text. |
 | `underline` | `bool` | `False` | Underlined text. |
+| `angle` | `float` | `0.0` | Rotation angle in degrees. |
 
 #### Colors
 
-*Accepts `pysubs2.Color` objects or HEX strings (e.g. `'FF0000'`).*
+*Accepts hex strings (e.g. `'FF0000'`), `pysubs2.Color` objects, `(r, g, b)`/`(r, g, b, a)` tuples, or dicts.*
 
 | Attribute | Default | Description |
 |---|---|---|
@@ -135,6 +150,7 @@ main_style = StyleConfig(
 | `secondarycolor` | Black | Used for karaoke/transitional effects. |
 | `backcolor` | Black | Background color for boxed styles. |
 | `outlinecolor` | Black | Text outline color. |
+| `tertiarycolor` | Black | Secondary outline color. |
 
 #### Layout & Visuals
 
@@ -142,9 +158,9 @@ main_style = StyleConfig(
 |---|---|---|
 | `outline` | `1` | Outline thickness in pixels. |
 | `shadow` | `0` | Drop shadow offset in pixels. |
-| `alignment` | `5` | Numpad positioning (`2` = bottom center, `5` = center). |
-| `borderstyle` | `1` | `1`: Outline only, `3`: Opaque box. |
 | `spacing` | `0.75` | Line spacing multiplier. |
+
+Note: `alignment` is not set through `Style(...)` directly — it's driven by `Config.alignment` and applied automatically by the rendering pipeline.
 
 ---
 
@@ -152,8 +168,8 @@ main_style = StyleConfig(
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `highlight_style` | `StyleConfig \| None` | `None` | Style for highlighted words. Attributes left at `None` inherit from `subtitle_style`. |
-| `highlight_word_max` | `int \| None` | `None` | Number of words highlighted at once. `0` = single word. `None` disables highlighting. |
+| `highlight_style` | `Style \| None` | `None` | Style for highlighted words. Attributes left unset inherit from `subtitle_style`. |
+| `highlight_char_max` | `int \| None` | `None` | Number of characters highlighted together at once. `0` = single word. `None` disables highlighting. |
 | `highlight_as_borders` | `bool` | `False` | Use the rounded border effect as the highlight indicator instead of a text color change. Cannot be combined with `appear=True`. |
 
 ---
@@ -169,53 +185,82 @@ main_style = StyleConfig(
 
 #### Rounded Borders
 
-Set `rounded_border=True` to enable custom background box rendering. The border parameters below control its appearance.
+Set `rounded_border=True` to enable custom background box rendering. Its appearance is controlled by a nested `border_config`:
 
-| Parameter | Type | Default | Description |
+```python
+from SubtitleFX import Config, BorderConfig
+
+conf = Config(
+    ...,
+    rounded_border=True,
+    border_config=BorderConfig(height_scaling=1.0, radius=10),
+)
+```
+
+| `border_config` field | Type | Default | Description |
 |---|---|---|---|
-| `rounded_border` | `bool` | `False` | Enable rounded background border rendering. |
 | `offset` | `int` | `6` | Padding between text and border edge. |
 | `radius` | `int` | `6` | Corner radius. |
 | `transformy` | `int` | `1` | Vertical shift/correction for the border. |
 | `height_scaling` | `float` | `1.2` | Border height multiplier relative to text height. |
-| `color` | `pysubs2.Color \| None` | `None` | Border fill color. Defaults to white if `None`. |
+| `color` | `Color` | White | Border fill color. Accepts the same values as `Style` colors. |
 
 #### Docker / Rendering Backend
 
-These parameters control the containerised rendering pipeline used for advanced border effects.
+Rounded borders render through a containerised backend, configured via a nested `docker_config`:
 
-| Parameter | Type | Default | Description |
+```python
+from SubtitleFX import Config, DockerConfig
+
+conf = Config(
+    ...,
+    rounded_border=True,
+    docker_config=DockerConfig(force_install=True, verbose=True),
+)
+```
+
+| `docker_config` field | Type | Default | Description |
 |---|---|---|---|
 | `fonts_path` | `list \| str \| None` | `None` | Path(s) to custom font directories to mount. |
 | `packages` | `list[str] \| None` | `None` | Extra system packages to install inside the container. |
 | `container_run_func` | `callable \| None` | `None` | Custom function for containerised rendering. |
 | `force_install` | `bool` | `False` | Force reinstallation of container dependencies. |
-| `docker_verbose` | `bool` | `False` | Print verbose Docker output. |
-| `docker_traceback` | `bool` | `False` | Show full tracebacks from inside the container. |
+| `verbose` | `bool` | `False` | Print verbose Docker output. |
+| `traceback` | `bool` | `False` | Show full tracebacks from inside the container. |
 
 ---
 
 ### 5. Whisper / Transcription
 
-When `input` is a video or audio file, SubtitleFX will transcribe it automatically using [stable-whisper](https://github.com/jianfch/stable-ts).
+When `input` is a video or audio file, SubtitleFX will transcribe it automatically using [stable-whisper](https://github.com/jianfch/stable-ts). Whisper behavior is configured via a nested `whisper_config`:
 
-| Parameter | Type | Default | Description |
+```python
+from SubtitleFX import Config, WhisperConfig
+
+conf = Config(
+    ...,
+    whisper_config=WhisperConfig(model='large-v3', device='cuda'),
+)
+```
+
+| `whisper_config` field | Type | Default | Description |
 |---|---|---|---|
-| `whisper_model` | `str` | `'medium.en'` | Whisper model name (e.g. `'base'`, `'large-v3'`). |
-| `whisper_device` | `str` | `'cpu'` | Device for inference (`'cpu'` or `'cuda'`). |
-| `whisper_refine` | `bool` | `False` | Refine word-level timestamps (English only). |
+| `model` | `str` | `'medium.en'` | Whisper model name (e.g. `'base'`, `'large-v3'`). |
+| `device` | `str` | `'cpu'` | Device for inference (`'cpu'` or `'cuda'`). |
+| `refine` | `bool` | `False` | Refine word-level timestamps (English only). |
 
 ---
 
 ### 6. Shortcuts & Presets
-The `presets` module contains pre-configured styles and settings for common use cases. For example, `preset_youtube()` applies a popular YouTube-style subtitle format with a single function call.
 
-The presets here include:
+For common cases, `SubtitleFX` ships ready-made functions that build the `Config`, run the pipeline, and save the result in one call:
+
 1. `preset_youtube` — A modern, clean style inspired by YouTube's default captions.
 2. `preset_tiktok` — A clean style with a rounded border, inspired by TikTok's captions.
 3. `fast` — Create a subtitle file/render it with minimal processing and default styling, for quick results.
-4. `fast_subtitle_file` — Generate a subtitle file with minimal processing and default styling, without rendering a video, just returning the `pysubs2.SSA_File` object.
+4. `fast_subtitle_file` — Generate a subtitle file with minimal processing and default styling, without rendering a video, just returning the `pysubs2.SSAFile` object.
 5. `fast_highlight` — Create a simple subtitle file or video with simple word-level highlighting, without advanced effects or styling.
+6. `multiple_edit(input, output, options, input_video=None)` — Render the same input multiple times with different `Config` overrides. `options` is a list of kwarg dicts, one per variant; returns a list of results in the same order.
 
 ---
 

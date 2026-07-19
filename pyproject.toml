@@ -17,7 +17,9 @@ dependencies = [
     "openai-whisper>=20240930",
     "stable-ts-whisperless>=2.19.0",
     "fleep>=1.0.1",
-    "docker>=7.1.0"
+    "docker>=7.1.0",
+    "pydantic>=2.0",
+    "annotated-types>=0.6.0"
 ]
 
 [tool.setuptools.packages]
