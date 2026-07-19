@@ -1,14 +1,6 @@
 import stable_whisper
 from . import formatters
-from .styles.style_class import StyleConfig
-from dataclasses import dataclass, field
-from typing import Any
-import sys
-import pysubs2
 from pydantic import BaseModel, ConfigDict, field_validator, model_validator, Field
-from typing import Annotated, Any, Union, Optional
-from annotated_types import Gt, Len, Interval
-import pysubs2
 from .utils import *
 import logging
 logger = logging.getLogger(__name__)
@@ -25,7 +17,7 @@ class Config(BaseModel):
 
     # subtitle styles
     # need to import both style and type
-    subtitle_style: StyleConfig = Field(default_factory=StyleConfig)
+    subtitle_style: Style = Field(default_factory=Style)
     subtitle_type: str
     char_max:PositiveInt = 11
     add_time_seconds:PositiveIntFloat = 0
@@ -39,7 +31,7 @@ class Config(BaseModel):
 
     # highlight styles
     highlight_word_max: Optional[PositiveInt]  = None
-    highlight_style: StyleConfig = Field(default_factory=StyleConfig)
+    highlight_style: Style = Field(default_factory=Style)
     highlight_as_borders: bool = False
 
     # borders

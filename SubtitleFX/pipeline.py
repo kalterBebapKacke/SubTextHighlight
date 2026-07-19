@@ -1,14 +1,12 @@
-from . import conflicts
 from .subtitles import event_factory, time_utils
 from .handling import Input
-from .styles import setup
 from .subtitles import subtitles_file, Highlight
 from .effects import fade, appear, border, docker_wrapper
 from . import formatters
 import traceback
 import logging
 logger = logging.getLogger(__name__)
-from . import config
+from . import config, utils
 
 
 class Pipeline:
@@ -64,16 +62,10 @@ class BuildPipeline:
         return  self.config.highlight_as_borders or self.config.highlight_word_max is not None or self.config.highlight_style is not None
 
     def build(self) -> Pipeline:
-        logger.debug('Checking for conflicts')
-
         logger.debug('Building pipeline')
         for step in self.steps:
             logger.debug('Step {}'.format(step))
             self.steps[step]()
-
-            if step == "DurationResolution":
-                logger.debug('Adding conflict check after DurationResolution')
-                self.pipeline.add_step(ConflictCheck=conflicts.PipelineConflictChecker(self.config).check_conflicts)
 
         logger.debug('Finished building pipeline')
         return self.pipeline
@@ -85,8 +77,9 @@ class BuildPipeline:
         _time_resolver = time_utils.TimeResolver(self.config.fill_sub_times)
 
         formatter_class = formatters.FORMATTER_REGISTER.get(formatter)
+        formatter_instance = formatter_class(_event_factory, _time_resolver, self.config.char_max)
 
-        self.pipeline.add_step(Formatter=formatter_class.format)
+        self.pipeline.add_step(Formatter=formatter_instance.format)
 
 
     def _input(self):
@@ -111,7 +104,7 @@ class BuildPipeline:
 
     def _styles(self):
         self.pipeline.add_step(Styles=
-                               setup.style_setup(
+                               utils.StyleSetup(
                                    self.config.subtitle_style,
                                    self.config.highlight_style,
                                    self.config.alignment,
