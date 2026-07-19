@@ -37,10 +37,10 @@ https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
 
 ```bash
 # Via pip
-pip install SubtitleFX # currently not working
+pip install SubtitleFX
 
 # Via GitHub (latest)
-pip install git+https://github.com/moonlitmarigold/SubTextHighlight@main
+https://github.com/moonlitmarigold/SubtitleFX.git@main
 ```
 
 ---
