@@ -1,6 +1,6 @@
 from pathlib import Path
 import pytest
-import SubTextHighlight
+import SubtitleFX
 import pysubs2
 import os
 import logging
@@ -12,7 +12,7 @@ TEST_CASES = [
     (
         "one_word_only_and_fade",
         {
-            "subtitle_type": SubTextHighlight.Formatters.one_word,
+            "subtitle_type": SubtitleFX.Formatters.one_word,
             "fill_sub_times": True,
             "word_max": 0,
             "fade": (50, 50),
@@ -21,7 +21,7 @@ TEST_CASES = [
     (
         "separate_on_period_and_highlighting",
         {
-            "subtitle_type": SubTextHighlight.Formatters.sentence,
+            "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
             "word_max": 11,
             "highlight_word_max": 0,
@@ -30,7 +30,7 @@ TEST_CASES = [
     (
         "join_and_word_max",
         {
-            "subtitle_type": SubTextHighlight.Formatters.joined,
+            "subtitle_type": SubtitleFX.Formatters.joined,
             "fill_sub_times": False,
             "word_max": 20,
         }
@@ -38,7 +38,7 @@ TEST_CASES = [
     (
         "appear",
         {
-            "subtitle_type": SubTextHighlight.Formatters.joined,
+            "subtitle_type": SubtitleFX.Formatters.joined,
             "fill_sub_times": False,
             "word_max": 20,
             "fade": (50, 50),
@@ -48,7 +48,7 @@ TEST_CASES = [
     (
         "rounded_borders",
         {
-            "subtitle_type": SubTextHighlight.Formatters.joined,
+            "subtitle_type": SubtitleFX.Formatters.joined,
             "fill_sub_times": False,
             "word_max": 20,
             "fade": (50, 50),
@@ -58,7 +58,7 @@ TEST_CASES = [
     (
         "rounded_background_highlight",
         {
-            "subtitle_type": SubTextHighlight.Formatters.sentence,
+            "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
             "word_max": 11,
             "highlight_word_max":0,
@@ -70,7 +70,7 @@ TEST_CASES = [
     (
         "rounded_background_appear",
         {
-            "subtitle_type": SubTextHighlight.Formatters.sentence,
+            "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
             "word_max": 11,
             "rounded_border": True,
@@ -93,14 +93,14 @@ def test_subtitle(tmp_path, name, options):
     output_ass = base_path / "output" / (name + '.ass')
 
     if name == 'separate_on_period_and_highlighting':
-        options["highlight_style"] = SubTextHighlight.StyleConfig(primarycolor='00AAFF')
+        options["highlight_style"] = SubtitleFX.StyleConfig(primarycolor='00AAFF')
 
-    config = SubTextHighlight.SubtitleConfig(
+    config = SubtitleFX.SubtitleConfig(
         input=str(blank_srt_path),
         output=None,
         input_video=str(video_path),
         alignment=2,
-        subtitle_style=SubTextHighlight.StyleConfig(),
+        subtitle_style=SubtitleFX.StyleConfig(),
         docker_force_install=True,
         **options
     )

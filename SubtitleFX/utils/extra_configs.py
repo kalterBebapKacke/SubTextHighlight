@@ -24,3 +24,5 @@ class WhisperConfig(BaseModel):
     model: str = "medium.en"
     device: str = "cpu"
     refine: bool = False
+
+    # TODO: Valid type checking

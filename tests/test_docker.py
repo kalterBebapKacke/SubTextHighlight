@@ -1,4 +1,4 @@
-from SubTextHighlight import docker_wrapper
+from SubtitleFX import docker_wrapper
 import pysubs2
 from pathlib import Path
 import os

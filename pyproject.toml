@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "SubtitleHighlight"
+name = "SubtitleFX"
 version = "3.0"
 requires-python = ">=3.11"
 description = "This is a Package for generating and formatting subtitles while focusing on user-friendliness and providing many features."
@@ -24,4 +24,4 @@ dependencies = [
 find = {}  # Scan the project directory with the default parameters
 
 [project.urls]
-Repository = "https://github.com/kalterBebapKacke/SubTextHighlight.git"
+Repository = "https://github.com/moonlitmarigold/SubTextHighlight.git"

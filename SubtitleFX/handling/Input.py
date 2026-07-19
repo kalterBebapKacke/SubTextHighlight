@@ -1,14 +1,17 @@
+from __future__ import annotations
+
 import pysubs2
-from spacy.lang import sr
 
 from .video import *
 import os
-import stable_whisper
-from dataclasses import dataclass, field
+try:
+    import stable_whisper
+except ImportError:
+    stable_whisper = None
+from dataclasses import dataclass
 from typing import Any, Optional
 from .. import utils
 from .. import subtitles
-from pysubs2 import SSAFile
 
 import logging
 logger = logging.getLogger(__name__)
@@ -26,41 +29,39 @@ class Input:
         sub_file = None
         logger.debug(f"Handling input")
         # 1. Handle Whisper Objects
-        if isinstance(self.input, self.whisper.result.WhisperResult):
+        if self.whisper is not None and isinstance(self.input, self.whisper.result.WhisperResult):
             subs_str = self.input.to_srt_vtt(None, segment_level=False, word_level=True)
             sub_file = pysubs2.SSAFile.from_string(subs_str)
 
         # 2. Handle Dictionaries/Lists (Whisper JSON)
-        if isinstance(self.input, (dict, list)):
+        elif isinstance(self.input, (dict, list)):
             sub_file = pysubs2.load_from_whisper(self.input)
 
-        # 3. Handle Strings (Paths or Raw Text)
-        if isinstance(self.input, str):
+        # 3. Handle Strings (Paths)
+        elif isinstance(self.input, str):
             if not os.path.isfile(self.input):
                 raise FileNotFoundError(f'{self.input} is not a file')
 
             if self.input.endswith(('.srt', '.ass')):
                 sub_file = pysubs2.load(self.input)
-
-            if is_media_file(self.input):
+            elif is_media_file(self.input):
                 subs_str = self.whisper_transcribe(self.input)
                 sub_file = pysubs2.SSAFile.from_string(subs_str)
-                #self.duration, self.resolution = self.handle_duration_resolution()
+            else:
+                raise TypeError(
+                    f"Cannot determine input type for '{self.input}': not a .srt/.ass "
+                    f"subtitle file and not a recognized audio/video file"
+                )
 
-        # 4. pysubs2-SSAFile
-        if isinstance(self.input, pysubs2.SSAFile):
+        # 4. pysubs2 SSAFile
+        elif isinstance(self.input, pysubs2.SSAFile):
             sub_file = self.input
-
-        # Handle video and resolution logic
-        # for some parts of the effects the PlayResX and Y has to be set in the ass file
-        #if self.input_video is not None:
-            #sub_file = self.handle_subfile_resolution(sub_file)
 
         logger.debug(f"Exporting input {self.input}")
         if sub_file is not None:
             return sub_file
         else:
-            raise TypeError('Invalid input type')
+            raise TypeError(f'Invalid input type: {type(self.input)!r}')
 
     @staticmethod
     def handle_whisper_import():
@@ -74,6 +75,11 @@ class Input:
     def whisper_transcribe(self, path):
         if not self.WhisperConfig:
             raise utils.WhisperError()
+        if self.whisper is None:
+            raise ImportError(
+                "stable_whisper is not installed; install it to transcribe audio/video input "
+                "(e.g. `pip install stable-ts-whisperless`)."
+            )
 
         model = self.whisper.load_model(self.WhisperConfig.model, device=self.WhisperConfig.device)
         result = model.transcribe(audio=path, verbose=None)
@@ -107,7 +113,7 @@ class DurationResolution:
     def handle_duration_resolution(self):
         duration, resolution = None, None
         # 1. Audio or Video from input
-        if is_media_file(self.input):
+        if isinstance(self.input, str) and is_media_file(self.input):
             duration, resolution = self.get_duration_resolution(self.input)
 
         # 2. Resolution and duration from extra input video
@@ -130,7 +136,7 @@ class DurationResolution:
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, check=True)
             data = json.loads(result.stdout)
-        except (subprocess.CalledProcessError, json.JSONDecodeError):
+        except (subprocess.CalledProcessError, json.JSONDecodeError, FileNotFoundError):
             return 0.0, None
 
         # 1. Handle Duration

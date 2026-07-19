@@ -1,14 +1,14 @@
-# SubTextHighlight
-**SubTextHighlight** is a comprehensive Python package for generating, formatting, and styling subtitles. It focuses on user-friendliness while providing high-end visual features for video editing and automation.
+# SubtitleFX
+**SubtitleFX** is a comprehensive Python package for generating, formatting, and styling subtitles. It focuses on user-friendliness while providing high-end visual features for video editing and automation.
 
 
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/kalterBebapKacke/SubTextHighlight?include_prereleases)](https://img.shields.io/github/v/release/kalterBebapKacke/SubTextHighlight?include_prereleases) \
-[![GitHub last commit](https://img.shields.io/github/last-commit/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/last-commit/kalterBebapKacke/SubTextHighlight) \
-[![GitHub issues](https://img.shields.io/github/issues-raw/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/issues-raw/kalterBebapKacke/SubTextHighlight) \
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/issues-pr/kalterBebapKacke/SubTextHighlight) \
-[![GitHub](https://img.shields.io/github/license/kalterBebapKacke/SubTextHighlight)](https://img.shields.io/github/license/kalterBebapKacke/SubTextHighlight)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/moonlitmarigold/SubTextHighlight?include_prereleases)](https://img.shields.io/github/v/release/moonlitmarigold/SubTextHighlight?include_prereleases) \
+[![GitHub last commit](https://img.shields.io/github/last-commit/moonlitmarigold/SubTextHighlight)](https://img.shields.io/github/last-commit/moonlitmarigold/SubTextHighlight) \
+[![GitHub issues](https://img.shields.io/github/issues-raw/moonlitmarigold/SubTextHighlight)](https://img.shields.io/github/issues-raw/moonlitmarigold/SubTextHighlight) \
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/moonlitmarigold/SubTextHighlight)](https://img.shields.io/github/issues-pr/moonlitmarigold/SubTextHighlight) \
+[![GitHub](https://img.shields.io/github/license/moonlitmarigold/SubTextHighlight)](https://img.shields.io/github/license/moonlitmarigold/SubTextHighlight)
 
-Below is a clip from *1984*, styled using SubTextHighlight as an example:
+Below is a clip from *1984*, styled using SubtitleFX as an example:
 
 https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
 
@@ -37,7 +37,7 @@ https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
 
 ```bash
 # Via pip
-pip install SubTextHighlight # currently not working
+pip install SubtitleFX # currently not working
 
 # Via GitHub (latest)
 pip install git+https://github.com/moonlitmarigold/SubTextHighlight@main
@@ -52,7 +52,7 @@ pip install git+https://github.com/moonlitmarigold/SubTextHighlight@main
 The API has been consolidated into a single configuration class: **`SubtitleConfig`**. Instead of instantiating and passing multiple separate argument classes, you now configure everything in one place and call `.render()` followed by `.save()`.
 
 ```python
-    from SubTextHighlight import SubtitleConfig, StyleConfig, preset_youtube, Formatters
+    from SubtitleFX import SubtitleConfig, StyleConfig, preset_youtube, Formatters
     input = './tests/input/plain_video.mp4'  # set the input to a video, which will generate the subtitles for me
     output = './media/output_video.mp4'  # set the output to a .mp4, so that the subtitles will be burned in
 
@@ -96,7 +96,7 @@ The API has been consolidated into a single configuration class: **`SubtitleConf
 | `add_time` | `float` | `0.0` | Time offset (seconds) added to all subtitle timestamps. |
 | `fill_sub_times` | `bool` | `True` | Automatically fill gaps between subtitle lines. |
 
-The layout and timing of the generated subtitles is controlled by the selected formatter, which determines the `subtitle_type` parameter. It is imported via `from SubTextHighlight import Formatters`. The available options are:
+The layout and timing of the generated subtitles is controlled by the selected formatter, which determines the `subtitle_type` parameter. It is imported via `from SubtitleFX import Formatters`. The available options are:
 
 ---
 
@@ -105,7 +105,7 @@ The layout and timing of the generated subtitles is controlled by the selected f
 Visual styling is now handled by **`StyleConfig`** objects. Pass one to `subtitle_style` for the main text and optionally another to `highlight_style` for highlighted words.
 
 ```python
-from SubTextHighlight import StyleConfig
+from SubtitleFX import StyleConfig
 
 main_style = StyleConfig(
     fontname='Arial Rounded MT Bold',
@@ -197,7 +197,7 @@ These parameters control the containerised rendering pipeline used for advanced 
 
 ### 5. Whisper / Transcription
 
-When `input` is a video or audio file, SubTextHighlight will transcribe it automatically using [stable-whisper](https://github.com/jianfch/stable-ts).
+When `input` is a video or audio file, SubtitleFX will transcribe it automatically using [stable-whisper](https://github.com/jianfch/stable-ts).
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
