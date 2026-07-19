@@ -65,8 +65,6 @@ class BuildPipeline:
 
     def build(self) -> Pipeline:
         logger.debug('Checking for conflicts')
-        conflicts.build_pipeline_check_conflicts(self.config)
-
 
         logger.debug('Building pipeline')
         for step in self.steps:
@@ -96,7 +94,7 @@ class BuildPipeline:
         input = Input.Input(
             input=self.config.input,
             input_video=self.config.input_video,
-            WhisperConfig=self.config.WhisperConfig
+            WhisperConfig=self.config.whisper_config
         )
         self.pipeline.add_step(Input=input.handle_input)
 
@@ -145,10 +143,10 @@ class BuildPipeline:
 
             self.pipeline.add_step(Border=border.Border(
                 border_as_highlight=self.config.highlight_as_borders,
-                force_install=self.config.DockerConfig.force_install,
+                force_install=self.config.docker_config.force_install,
                 args_border=self._args_border(),
-                traceback=self.config.DockerConfig.traceback,
-                verbose=self.config.DockerConfig.verbose,
+                traceback=self.config.docker_config.traceback,
+                verbose=self.config.docker_config.verbose,
             ).render)
 
     def _fade(self):
@@ -156,16 +154,16 @@ class BuildPipeline:
 
     def _args_border(self):
         return docker_wrapper.base.args_border(
-                offset=self.config.BorderConfig.offset,
-                radius=self.config.BorderConfig.radius,
-                transformy=self.config.BorderConfig.transformy,
-                height_scaling=self.config.BorderConfig.height_scaling,
-                color=self.config.BorderConfig.color.to_pysubs2(),
+                offset=self.config.border_config.offset,
+                radius=self.config.border_config.radius,
+                transformy=self.config.border_config.transformy,
+                height_scaling=self.config.border_config.height_scaling,
+                color=self.config.border_config.color.to_pysubs2(),
                 use_borders_as_highlight=self.config.highlight_as_borders,
-                fonts_path=self.config.DockerConfig.fonts_path,
-                packages=self.config.DockerConfig.packages,
-                container_run_func=self.config.DockerConfig.container_run_func,
-                force_install=self.config.DockerConfig.force_install,
+                fonts_path=self.config.docker_config.fonts_path,
+                packages=self.config.docker_config.packages,
+                container_run_func=self.config.docker_config.container_run_func,
+                force_install=self.config.docker_config.force_install,
             )
 
     def _render(self):

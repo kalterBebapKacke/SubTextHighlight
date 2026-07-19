@@ -10,3 +10,8 @@ class FormatterError(Exception):
         self.formatter_name = formatter_name
         self.formatters = formatters
         super().__init__(f"Formatter {formatter_name} not found. Supported Formatters are {formatters}")
+        
+class SubtitleFileNotExisting(Exception):
+    
+    def __init__(self):
+        super().__init__("The subtitle file has not been build. Run '.run()' first.")

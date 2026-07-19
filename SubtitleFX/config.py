@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from typing import Any
 import sys
 import pysubs2
-from pydantic import BaseModel, field_validator, model_validator, Field3
+from pydantic import BaseModel, ConfigDict, field_validator, model_validator, Field
 from typing import Annotated, Any, Union, Optional
 from annotated_types import Gt, Len, Interval
 import pysubs2
@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class Config(BaseModel):
+    model_config = ConfigDict(validate_assignment=True, arbitrary_types_allowed=True)
 
     # input args
     input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult | pysubs2.SSAFile
@@ -42,11 +43,11 @@ class Config(BaseModel):
     highlight_as_borders: bool = False
 
     # borders
-    BorderConfig:BorderConfig = Field(default_factory=BorderConfig)
+    border_config:BorderConfig = Field(default_factory=BorderConfig)
     # docker
-    DockerConfig:DockerConfig = Field(default_factory=DockerConfig)
+    docker_config:DockerConfig = Field(default_factory=DockerConfig)
     # whisper
-    WhisperConfig:Optional[WhisperConfig] = None
+    whisper_config:Optional[WhisperConfig] = None
     # internal
 
 
