@@ -7,6 +7,6 @@ from .sentence import SentenceFormatter
 
 # putting formatter here as a string to have better support
 class Formatters(str, Enum):
-    one_word = 'JoinedFormatter'
-    sentence = 'SentenceFormatter'
-    joined   = 'OneWordFormatter'
+    one_word = 'onewordformatter'
+    sentence = 'sentenceformatter'
+    joined   = 'joinedformatter'

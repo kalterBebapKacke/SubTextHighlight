@@ -44,8 +44,4 @@ class SubtitleBuild:
         if not self._sub_file:
             raise utils.SubtitleFileNotExisting
         _obj = Output.Output(self.config.output, self.config.input_video)
-        _output = _obj.handle_output(self._sub_file)
-
-        if not _output:
-            return _output
-        return None
+        return _obj.handle_output(self._sub_file)

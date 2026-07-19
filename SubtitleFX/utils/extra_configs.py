@@ -1,6 +1,5 @@
 from .custom_types import *
-from pydantic import BaseModel
-from pysubs2 import Color as pysub2_Color
+from pydantic import BaseModel, Field
 
 class BorderConfig(BaseModel):
 
@@ -8,7 +7,7 @@ class BorderConfig(BaseModel):
     radius:PositiveInt = 6
     transformy: PositiveInt = 1
     height_scaling: PositiveIntFloat = 1.2
-    color: Color = pysub2_Color(255, 255, 255)
+    color: Color = Field(default_factory=lambda: Color(255, 255, 255))
 
 class DockerConfig(BaseModel):
 

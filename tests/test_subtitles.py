@@ -14,7 +14,7 @@ TEST_CASES = [
         {
             "subtitle_type": SubtitleFX.Formatters.one_word,
             "fill_sub_times": True,
-            "word_max": 0,
+            "char_max": 0,
             "fade": (50, 50),
         }
     ),
@@ -23,7 +23,7 @@ TEST_CASES = [
         {
             "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
-            "word_max": 11,
+            "char_max": 11,
             "highlight_word_max": 0,
         }
     ),
@@ -32,7 +32,7 @@ TEST_CASES = [
         {
             "subtitle_type": SubtitleFX.Formatters.joined,
             "fill_sub_times": False,
-            "word_max": 20,
+            "char_max": 20,
         }
     ),
     (
@@ -40,7 +40,7 @@ TEST_CASES = [
         {
             "subtitle_type": SubtitleFX.Formatters.joined,
             "fill_sub_times": False,
-            "word_max": 20,
+            "char_max": 20,
             "fade": (50, 50),
             "appear": True,
         }
@@ -50,7 +50,7 @@ TEST_CASES = [
         {
             "subtitle_type": SubtitleFX.Formatters.joined,
             "fill_sub_times": False,
-            "word_max": 20,
+            "char_max": 20,
             "fade": (50, 50),
             "rounded_border": True,
         }
@@ -60,11 +60,11 @@ TEST_CASES = [
         {
             "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
-            "word_max": 11,
+            "char_max": 11,
             "highlight_word_max":0,
             "fade": (50, 50),
             "highlight_as_borders": True,
-            "height_scaling":1.0,
+            "docker_config":SubtitleFX.BorderConfig(height_scaling=1.0),
         }
     ),
     (
@@ -72,8 +72,9 @@ TEST_CASES = [
         {
             "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
-            "word_max": 11,
+            "char_max": 11,
             "rounded_border": True,
+            "docker_config":SubtitleFX.BorderConfig(height_scaling=1.0),
             "appear": True,
             "fade": (50, 50),
         }
@@ -93,24 +94,24 @@ def test_subtitle(tmp_path, name, options):
     output_ass = base_path / "output" / (name + '.ass')
 
     if name == 'separate_on_period_and_highlighting':
-        options["highlight_style"] = SubtitleFX.StyleConfig(primarycolor='00AAFF')
+        options["highlight_style"] = SubtitleFX.Style(primarycolor='00AAFF')
 
-    config = SubtitleFX.SubtitleConfig(
+    config = SubtitleFX.Config(
         input=str(blank_srt_path),
         output=None,
         input_video=str(video_path),
         alignment=2,
-        subtitle_style=SubtitleFX.StyleConfig(),
-        docker_force_install=True,
+        subtitle_style=SubtitleFX.Style(),
         **options
     )
 
+    config.docker_config.force_install = True
+
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-    config.render()
 
-    sub_file: pysubs2.SSAFile = config.save()
-
-    sub_file.save(str(output_ass))
+    with SubtitleFX.SubtitleBuild(config) as Builder:
+        Builder.run()
+        sub_file = Builder.save()
 
     # Assert
     if UPDATE_GOLDEN:
