@@ -24,7 +24,7 @@ TEST_CASES = [
             "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
             "char_max": 30,
-            "highlight_word_max": 0,
+            "highlight_char_max": 0,
         }
     ),
     (
@@ -61,7 +61,7 @@ TEST_CASES = [
             "subtitle_type": SubtitleFX.Formatters.sentence,
             "fill_sub_times": False,
             "char_max": 11,
-            "highlight_word_max":0,
+            "highlight_char_max":0,
             "fade": (50, 50),
             "highlight_as_borders": True,
             "border_config":SubtitleFX.BorderConfig(height_scaling=1.0),
