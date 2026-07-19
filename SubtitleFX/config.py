@@ -19,7 +19,7 @@ class Config(BaseModel):
     # need to import both style and type
     subtitle_style: Style = Field(default_factory=Style)
     subtitle_type: str
-    char_max:PositiveInt = 11
+    char_max:PositiveIntOrZero = 11
     add_time_seconds:PositiveIntFloat = 0
     fill_sub_times: bool = True
     alignment: Alignment = 2
@@ -30,8 +30,8 @@ class Config(BaseModel):
     rounded_border: bool = False
 
     # highlight styles
-    highlight_word_max: Optional[PositiveInt]  = None
-    highlight_style: Style = Field(default_factory=Style)
+    highlight_word_max: Optional[PositiveIntOrZero] = None
+    highlight_style: Optional[Style] = None
     highlight_as_borders: bool = False
 
     # borders

@@ -14,7 +14,7 @@ class SentenceFormatter(JoinedFormatter):
             last = i == len(subs) - 1
             cur_sentence, cur_subs = self.add(cur_sentence, cur_subs, sub)
 
-            if last or self.if_split(cur_sentence):
+            if last or self.if_split(cur_sentence) or self.if_word_split(cur_sentence):
                 start = self.time_resolver.start(cur_subs, i)
                 end   = self.time_resolver.end(subs, i, last)
                 new_subs.extend(self.event_factory.build(cur_sentence, start, end, cur_subs))

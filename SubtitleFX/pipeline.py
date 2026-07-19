@@ -59,7 +59,7 @@ class BuildPipeline:
 
     @property
     def highlighter_needed(self):
-        return  self.config.highlight_as_borders or self.config.highlight_word_max is not None or self.config.highlight_style is not None
+        return self.config.highlight_as_borders or self.config.highlight_word_max is not None or self.config.highlight_style is not None
 
     def build(self) -> Pipeline:
         logger.debug('Building pipeline')
@@ -123,6 +123,7 @@ class BuildPipeline:
 
         if not self.highlighter_needed:
             if self.config.appear:
+                logger.debug('Build Step: Still using Highlighter, because "appear" is set to true')
                 return Highlight.Highlighter(highlight_word_max)
             return None
         return Highlight.Highlighter(highlight_word_max)

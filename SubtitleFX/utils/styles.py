@@ -9,11 +9,11 @@ class Style(BaseModel):
 
     fontname: str = "Arial"
     fontsize: PositiveIntFloat = 24
-    primarycolor: Color = pysubs2.Color(255, 255, 255)
-    backcolor: Color = pysubs2.Color(0, 0, 0)
-    secondarycolor: Color = pysubs2.Color(0, 0, 0)
-    outlinecolor: Color = pysubs2.Color(0, 0, 0)
-    tertiarycolor: Color = pysubs2.Color(0, 0, 0)
+    primarycolor: Color = Field(default_factory=lambda: Color(255, 255, 255))
+    backcolor: Color = Field(default_factory=lambda: Color(0, 0, 0))
+    secondarycolor: Color = Field(default_factory=lambda: Color(0, 0, 0))
+    outlinecolor: Color = Field(default_factory=lambda: Color(0, 0, 0))
+    tertiarycolor: Color = Field(default_factory=lambda: Color(0, 0, 0))
     outline: NonNegativeIntFloat = 1
     spacing: NonNegativeIntFloat = 0.75
     shadow: NonNegativeIntFloat = 0        # <- see note below
@@ -28,9 +28,9 @@ class Style(BaseModel):
     def return_style(self) -> pysubs2.SSAStyle:
         return pysubs2.SSAStyle(
             fontname=self.fontname, fontsize=self.fontsize,
-            primarycolor=self.primarycolor, backcolor=self.backcolor,
-            secondarycolor=self.secondarycolor, outlinecolor=self.outlinecolor,
-            tertiarycolor=self.tertiarycolor, outline=self.outline,
+            primarycolor=self.primarycolor.to_pysubs2(), backcolor=self.backcolor.to_pysubs2(),
+            secondarycolor=self.secondarycolor.to_pysubs2(), outlinecolor=self.outlinecolor.to_pysubs2(),
+            tertiarycolor=self.tertiarycolor.to_pysubs2(), outline=self.outline,
             spacing=self.spacing, shadow=self.shadow,
             alignment=pysubs2.Alignment(self.alignment), bold=self.bold,
             angle=self.angle,

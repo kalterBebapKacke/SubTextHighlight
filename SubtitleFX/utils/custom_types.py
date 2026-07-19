@@ -14,6 +14,7 @@ NonNegativeIntFloat = Annotated[Union[int, float], Field(ge=0)]
 Fade = Annotated[tuple[PositiveIntFloat, PositiveIntFloat], Len(max_length=2)]
 Alignment = Annotated[int, Interval(gt=0, lt=10)]
 Resolution = Annotated[tuple[PositiveInt, PositiveInt], Len(max_length=2)]
+PositiveIntOrZero = Annotated[int, Field(ge=0)]
 
 class Color:
     __slots__ = ("r", "g", "b", "a")
