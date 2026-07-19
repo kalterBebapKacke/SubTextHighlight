@@ -40,6 +40,6 @@ class JoinedFormatter(BaseFormatter):
         return new_sentence
 
     def if_word_split(self, next_sentence:str):
-        if len(next_sentence) > self.word_max:
+        if len(next_sentence) > self.char_max:
             return True
         return False

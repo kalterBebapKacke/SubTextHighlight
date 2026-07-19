@@ -39,7 +39,7 @@ class Style(BaseModel):
 
     def merge_onto(self, base_style: pysubs2.SSAStyle) -> pysubs2.SSAStyle:
         merged = self.return_style()
-        for name in self.model_fields:
+        for name in type(self).model_fields:
             if name not in self.model_fields_set:      # not explicitly set -> inherit from base
                 setattr(merged, name, getattr(base_style, name))
         return merged

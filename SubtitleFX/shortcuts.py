@@ -45,7 +45,7 @@ def fast_highlight(
         output=output,
         input_video=input_video,
         subtitle_type=Formatters.joined,
-        highlight_word_max=1,
+        highlight_char_max=1,
         highlight_style=Style(primarycolor='00AAFF')
     )
     with SubtitleBuild(conf) as build:

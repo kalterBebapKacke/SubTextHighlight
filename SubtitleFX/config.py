@@ -30,7 +30,7 @@ class Config(BaseModel):
     rounded_border: bool = False
 
     # highlight styles
-    highlight_word_max: Optional[PositiveIntOrZero] = None
+    highlight_char_max: Optional[PositiveIntOrZero] = None
     highlight_style: Optional[Style] = None
     highlight_as_borders: bool = False
 

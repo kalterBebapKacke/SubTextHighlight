@@ -7,10 +7,10 @@ def register(cls):
     return cls
 
 class BaseFormatter(ABC):
-    def __init__(self, event_factory, time_resolver, word_max):
+    def __init__(self, event_factory, time_resolver, char_max):
         self.event_factory = event_factory
         self.time_resolver = time_resolver
-        self.word_max = word_max
+        self.char_max = char_max
 
     def format(self, subs_file):
         events = subs_file.return_events()
