@@ -15,3 +15,8 @@ class SubtitleFileNotExisting(Exception):
     
     def __init__(self):
         super().__init__("The subtitle file has not been build. Run '.run()' first.")
+
+class DockerNotInstalled(Exception):
+
+    def __init__(self):
+        super().__init__("For subtitles backgrounds to work the docker package has to be installed")

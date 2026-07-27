@@ -6,3 +6,4 @@ setuptools>=80.9.0
 fleep>=1.0.1
 pydantic
 annotated_types
+questionary
