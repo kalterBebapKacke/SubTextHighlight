@@ -9,12 +9,22 @@ class BorderConfig(BaseModel):
     height_scaling: PositiveIntFloat = 1.2
     color: Color = Field(default_factory=lambda: Color(255, 255, 255))
 
+    def json_info(self):
+        return {
+            "offset": self.offset,
+            "radius": self.radius,
+            "transformY": self.transformy,
+            "heightscaling": self.height_scaling,
+            "borderColor": self.color.to_hex(),
+            "borderAlpha": self.color.to_pysubs2().a,
+        }
+
+
 class DockerConfig(BaseModel):
 
-    fonts_path: list | str | None = None
-    packages: list[str] | None = None
+    fonts_path: Optional[list | str] = None
+    packages:  Optional[list[str]] = None
     force_install: bool = False
-    verbose: bool = False
     traceback:bool = False
 
 class WhisperConfig(BaseModel):
