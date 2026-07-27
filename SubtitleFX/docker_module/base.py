@@ -11,6 +11,7 @@ class BaseWrapper:
     config:utils.DockerConfig
 
     _docker:None = dataclasses.field(init=False)
+    _client:None = dataclasses.field(init=False)
 
     def __post_init__(self):
         # Check if docker is installed
@@ -23,6 +24,13 @@ class BaseWrapper:
             else:
                 logger.debug('Asking User for confirmation to install')
                 self.ask_installation()
+
+    @property
+    def client(self):
+        if self._client:
+            return self._client
+        self._client = self.docker.from_env()
+        return self._client
 
     @property
     def docker(self):

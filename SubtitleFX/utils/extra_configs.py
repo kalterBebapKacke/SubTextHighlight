@@ -13,7 +13,6 @@ class DockerConfig(BaseModel):
 
     fonts_path: list | str | None = None
     packages: list[str] | None = None
-    container_run_func: None = None
     force_install: bool = False
     verbose: bool = False
     traceback:bool = False
