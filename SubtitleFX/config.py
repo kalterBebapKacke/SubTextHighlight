@@ -14,6 +14,7 @@ class Config(BaseModel):
     output: str | None
     input_video: Optional[str] = None
     resolution: Optional[Resolution] = None
+    duration: Optional[PositiveIntFloat] = None
 
     # subtitle styles
     # need to import both style and type
@@ -41,8 +42,6 @@ class Config(BaseModel):
     # whisper
     whisper_config:Optional[WhisperConfig] = None
     # internal
-
-
 
 
     @field_validator('subtitle_type', mode='after')

@@ -94,6 +94,7 @@ class DurationResolution:
     input: str | dict[str, Any] | list[dict[str, Any]] | stable_whisper.result.WhisperResult | pysubs2.SSAFile
     input_video: str | None = None
     resolution: Optional[utils.Resolution] = None
+    duration: Optional[utils.PositiveIntFloat] = None
 
     def handle(self, sub_file:subtitles.SubtitleFile):
         duration, resolution = self.handle_duration_resolution()
@@ -123,6 +124,9 @@ class DurationResolution:
 
         if self.resolution:
             resolution = self.resolution
+
+        if self.duration:
+            duration = self.duration
 
         return duration, resolution
 

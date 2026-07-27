@@ -99,6 +99,7 @@ class BuildPipeline:
             self.config.input,
             self.config.input_video,
             self.config.resolution,
+            self.config.duration,
         )
         self.pipeline.add_step(DurationResolution=_DurationResolution.handle)
 
