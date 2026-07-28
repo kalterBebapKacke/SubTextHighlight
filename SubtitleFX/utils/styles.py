@@ -48,9 +48,11 @@ class Style(BaseModel):
 class StyleSetup:
 
     main_style:Style
-    highlight_style:Style
+    highlight_style:Optional[Style]
     alignment:int
     highlighter_needed: bool
+    border_needed: bool
+    border_color:Color
 
     def render(self, subs_file):
         _sub_file : pysubs2.SSAFile = subs_file.sub_file
@@ -62,5 +64,10 @@ class StyleSetup:
             self.highlight_style = self.highlight_style if self.highlight_style is not None else self.main_style
             self.highlight_style.alignment = self.alignment
             _sub_file.styles["Highlight"] = self.highlight_style.merge_onto(self.main_style.return_style())
+
+        if self.border_needed:
+            border_style = self.main_style.return_style()
+            border_style.primarycolor = self.border_color.to_pysubs2()
+            _sub_file.styles["BackgroundStyle"] = border_style
 
         return subs_file

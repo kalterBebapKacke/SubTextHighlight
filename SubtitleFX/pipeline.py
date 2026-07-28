@@ -61,6 +61,10 @@ class BuildPipeline:
     def highlighter_needed(self):
         return self.config.highlight_as_borders or self.config.highlight_char_max is not None or self.config.highlight_style is not None
 
+    @property
+    def border_needed(self):
+        return self.config.rounded_border or self.config.highlight_as_borders
+
     def build(self) -> Pipeline:
         logger.debug('Building pipeline')
         for step in self.steps:
@@ -109,7 +113,9 @@ class BuildPipeline:
                                    self.config.subtitle_style,
                                    self.config.highlight_style,
                                    self.config.alignment,
-                                   self.highlighter_needed
+                                   self.highlighter_needed,
+                                   self.border_needed,
+                                   self.config.border_config.color
                                ).render
         )
 
@@ -134,7 +140,7 @@ class BuildPipeline:
             self.pipeline.add_step(Appear=appear.Appear().render)
 
     def _border(self):
-        if self.config.rounded_border or self.config.highlight_as_borders:
+        if self.border_needed:
 
             self.pipeline.add_step(Border=border.Border(
                 border_as_highlight=self.config.highlight_as_borders,

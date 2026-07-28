@@ -2,7 +2,8 @@ import dataclasses
 import pysubs2
 import copy
 from . import appear
-from . import docker_wrapper
+from .. import utils
+from .. import docker_module
 import re
 import logging
 logger = logging.getLogger(__name__)
@@ -17,14 +18,26 @@ def is_drawing_line(line):
 
     return False
 
+def strip_bad_color_tags(ass_text: str) -> str:
+    """
+    Removes malformed CSS-style color/alpha tags from ASS override blocks:
+      - \c#RRGGBB   (invalid; should be \c&HBBGGRR&)
+      - \1aN         (invalid; should be \1a&HXX&)
+    """
+    # Matches \c#FFFFFF, \c#ffffff, \c#000000, etc.
+    text = re.sub(r'\\c#[0-9A-Fa-f]{6}', '', ass_text)
+
+    # Matches \1a0, \1a255, \1aFF, etc. (bare number/hex after \1a)
+    text = re.sub(r'\\1a[0-9A-Fa-f]+', '', text)
+
+    return text
+
 @dataclasses.dataclass
 class Border:
 
     border_as_highlight: bool
-    force_install: bool
-    args_border: docker_wrapper.base.args_border | None
-    traceback: bool
-    verbose: bool
+    docker_config:utils.DockerConfig
+    border_config:utils.BorderConfig
 
     def render(self, sub_file):
         # check whether res is set, else raise error
@@ -51,13 +64,10 @@ class Border:
 
         # start the docker wrapper and execute the script
         # only execute on the part, that becomes the background
-        dw = docker_wrapper.main.DockerWrapper(self.force_install)
+        dw = docker_module.DockerWrapper(self.docker_config)
         output : pysubs2.SSAFile = dw(
-            input_ass=ssa_file,
-            args_border=self.args_border,
-            _traceback=self.traceback,
-            cleanup=True,
-            verbose=self.verbose,
+            ssa_file,
+            self.border_config,
         )
         events = output.events
 
@@ -66,9 +76,14 @@ class Border:
         for event in events:
             logger.debug(event)
 
+        # Remove the wrong tags and add a background style
+        # TODO: Later fix with new script inside the docker
+        events = self.post_process_subs(events)
+
         segmented_subs = self.segment_subs(events)
 
         # layer the subs
+
         logger.debug('Layering subtitles')
         self.layer_subs(sub_file)
 
@@ -98,3 +113,11 @@ class Border:
         for event in events:
             event.set_layer(1)
         sub_file.set_events(events)
+
+    @staticmethod
+    def post_process_subs(events:list[pysubs2.SSAEvent]):
+        for event in events:
+            if is_drawing_line(event.is_drawing):
+                event.text = strip_bad_color_tags(event.text)
+                event.style = 'BackgroundStyle'
+        return events
