@@ -11,7 +11,7 @@ class BaseWrapper:
     config:utils.DockerConfig
 
     _docker:None = dataclasses.field(init=False)
-    _client:None = dataclasses.field(init=False)
+    _client:None = dataclasses.field(init=False, default=None)
 
     def __post_init__(self):
         # Check if docker is installed

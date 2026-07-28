@@ -12,16 +12,17 @@ logger = logging.getLogger(__name__)
 @dataclasses.dataclass
 class DockerWrapper(base.BaseWrapper):
 
-    container: Optional[Container] = None
-
     input_path = 'input.ass'
     output_path = 'output.ass'
 
     def __call__(self, sub_file:pysubs2.SSAFile, border_config:utils.BorderConfig):
-        if not self.container:
-            container = Container.__return_base_container(self.config)
+        if not self.config.container:
+            container = Container.return_base_container(self.config)
         else:
-            container = self.container
+            container = self.config.container
+            
+        if not isinstance(container, Container):
+            raise utils.NotAContainer
 
         # cleanup of maybe old files
         logger.debug('Cleaning up old files')

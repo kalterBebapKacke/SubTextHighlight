@@ -7,7 +7,7 @@ class BorderConfig(BaseModel):
     radius:PositiveInt = 6
     transformy: PositiveInt = 1
     height_scaling: PositiveIntFloat = 1.2
-    color: Color = Field(default_factory=lambda: Color(255, 255, 255))
+    color: Color = Field(default_factory=lambda: Color(0, 0, 0))
 
     def json_info(self):
         return {
@@ -26,6 +26,7 @@ class DockerConfig(BaseModel):
     packages:  Optional[list[str]] = None
     force_install: bool = False
     traceback:bool = False
+    container:Optional = None
 
 class WhisperConfig(BaseModel):
 

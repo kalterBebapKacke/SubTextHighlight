@@ -20,3 +20,8 @@ class DockerNotInstalled(Exception):
 
     def __init__(self):
         super().__init__("For subtitles backgrounds to work the docker package has to be installed")
+
+class NotAContainer(Exception):
+
+    def __init__(self):
+        super().__init__("The provided container is not a SubtitleFX Container object.")

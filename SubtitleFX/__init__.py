@@ -5,3 +5,4 @@ from .effects import docker_wrapper
 from .main import SubtitleBuild
 from .utils import debug, WhisperConfig, BorderConfig, DockerConfig
 from .utils import Style
+from . import docker_module

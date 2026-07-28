@@ -55,11 +55,9 @@ class Container:
     _container:None
 
     @classmethod
-    def return_base_container(cls, _config:config.Config):
-        return ContainerManager.return_container(_config.docker_config)
-
-    @classmethod
-    def __return_base_container(cls, _config:config.DockerConfig):
+    def return_base_container(cls, _config:config.Config | config.DockerConfig):
+        if isinstance(_config, config.Config):
+            _config = _config.docker_config
         return ContainerManager.return_container(_config)
 
     @contextmanager
@@ -82,7 +80,7 @@ class Container:
             fonts = [Path(x) for x in fonts]
             with self.archive_writer('/root/.local/share/fonts/') as tar:
                 for font in fonts:
-                    if font.suffix != '.tff':
+                    if font.suffix != '.ttf':
                         logger.error('{} is not a Font file'.format(font))
                         continue
                     tar.add(str(font), arcname=font.name)
