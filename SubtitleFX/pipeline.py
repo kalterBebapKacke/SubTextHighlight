@@ -144,10 +144,8 @@ class BuildPipeline:
 
             self.pipeline.add_step(Border=border.Border(
                 border_as_highlight=self.config.highlight_as_borders,
-                force_install=self.config.docker_config.force_install,
-                args_border=self._args_border(),
-                traceback=self.config.docker_config.traceback,
-                verbose=self.config.docker_config.verbose,
+                border_config=self.config.border_config,
+                docker_config=self.config.docker_config,
             ).render)
 
     def _fade(self):

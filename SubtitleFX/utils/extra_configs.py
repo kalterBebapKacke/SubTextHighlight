@@ -1,5 +1,11 @@
+from typing import TYPE_CHECKING
 from .custom_types import *
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, SkipValidation
+
+if TYPE_CHECKING:
+    from ..docker_module.container import Container
+else:
+    Container = Any
 
 class BorderConfig(BaseModel):
 
@@ -26,7 +32,7 @@ class DockerConfig(BaseModel):
     packages:  Optional[list[str]] = None
     force_install: bool = False
     traceback:bool = False
-    container:Optional = None
+    container: Optional[SkipValidation[Container]] = None
 
 class WhisperConfig(BaseModel):
 

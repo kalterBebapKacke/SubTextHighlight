@@ -117,7 +117,7 @@ class Border:
     @staticmethod
     def post_process_subs(events:list[pysubs2.SSAEvent]):
         for event in events:
-            if is_drawing_line(event.is_drawing):
+            if is_drawing_line(event.text):
                 event.text = strip_bad_color_tags(event.text)
                 event.style = 'BackgroundStyle'
         return events
