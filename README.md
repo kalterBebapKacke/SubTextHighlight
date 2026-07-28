@@ -100,6 +100,7 @@ with SubtitleBuild(conf) as build:
 | `output` | `str \| None` | **required** | Output path (`.ass`, or a video file to burn subtitles into). Pass `None` to get the `pysubs2.SSAFile` object back from `save()` instead of writing a file. |
 | `input_video` | `str \| None` | `None` | Separate video file path, if the subtitle input differs from the video to burn into. |
 | `resolution` | `tuple[int, int] \| None` | `None` | Explicit `(width, height)`. Inferred from `input`/`input_video` when possible; only required if neither is a video and `rounded_border` is used. |
+| `duration` | `float \| None` | `None` | Explicit duration in seconds. Inferred from `input`/`input_video` via `ffprobe` when possible; set this if neither is a media file and `fill_sub_times` needs a duration to fill gaps up to. |
 
 ##### Subtitle Layout
 
@@ -215,18 +216,33 @@ from SubtitleFX import Config, DockerConfig
 conf = Config(
     ...,
     rounded_border=True,
-    docker_config=DockerConfig(force_install=True, verbose=True),
+    docker_config=DockerConfig(force_install=True, fonts_path='./fonts'),
 )
 ```
 
 | `docker_config` field | Type | Default | Description |
 |---|---|---|---|
-| `fonts_path` | `list \| str \| None` | `None` | Path(s) to custom font directories to mount. |
+| `fonts_path` | `list \| str \| None` | `None` | Path(s) to custom font directories to mount into the container. |
 | `packages` | `list[str] \| None` | `None` | Extra system packages to install inside the container. |
-| `container_run_func` | `callable \| None` | `None` | Custom function for containerised rendering. |
-| `force_install` | `bool` | `False` | Force reinstallation of container dependencies. |
-| `verbose` | `bool` | `False` | Print verbose Docker output. |
+| `force_install` | `bool` | `False` | Install Docker automatically if it's missing, instead of prompting. |
 | `traceback` | `bool` | `False` | Show full tracebacks from inside the container. |
+
+By default, `SubtitleBuild` boots a fresh container for every `run()` and pauses it afterward. If you're rendering several variants of the same input (see `multiple_edit` below), or otherwise want to reuse one container across multiple builds instead of paying container-startup cost each time, create it explicitly and attach it via `Config.container` / `SubtitleBuild.set_container()`:
+
+```python
+from SubtitleFX import Config, SubtitleBuild
+from SubtitleFX.docker_module import Container
+
+conf = Config(..., rounded_border=True)
+container = Container.return_base_container(conf)  # boots one container, using conf.docker_config
+
+with SubtitleBuild(conf) as build:
+    build.set_container(container)
+    build.run()
+    build.save()
+```
+
+`set_container()` behaves like `change()`: it rebuilds the pipeline if it's already been entered, so the container takes effect on the next `run()` even when set after entering the `with` block. The container is left paused between builds and is only torn down once the `Container` object is garbage-collected.
 
 ---
 
@@ -260,7 +276,7 @@ For common cases, `SubtitleFX` ships ready-made functions that build the `Config
 3. `fast` — Create a subtitle file/render it with minimal processing and default styling, for quick results.
 4. `fast_subtitle_file` — Generate a subtitle file with minimal processing and default styling, without rendering a video, just returning the `pysubs2.SSAFile` object.
 5. `fast_highlight` — Create a simple subtitle file or video with simple word-level highlighting, without advanced effects or styling.
-6. `multiple_edit(input, output, options, input_video=None)` — Render the same input multiple times with different `Config` overrides. `options` is a list of kwarg dicts, one per variant; returns a list of results in the same order.
+6. `multiple_edit(input, output, options, input_video=None)` — Render the same input multiple times with different `Config` overrides. `options` is a list of kwarg dicts, one per variant; returns a list of results in the same order. A single Docker container is created once, from the first entry in `options`, and reused across every variant instead of being rebuilt per option.
 
 ---
 
