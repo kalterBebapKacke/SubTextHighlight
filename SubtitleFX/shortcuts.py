@@ -1,7 +1,8 @@
 from . import config
 from .main import SubtitleBuild
+from .docker_module import Container
 from . import utils
-from typing import Any
+from typing import Any, Optional
 import stable_whisper
 from .formatters import Formatters
 from .utils import Style
@@ -96,8 +97,15 @@ def multiple_edit(
         options: list[dict],
         input_video: str | None = None,
     ):
-
     results = list()
+
+    first_option = dict(options[0])
+    if 'input_video' not in first_option and input_video is not None:
+        first_option['input_video'] = input_video
+    first_option.setdefault('subtitle_type', Formatters.joined)
+
+    container_conf = config.Config(input=input, output=output, **first_option)
+    container = Container.return_base_container(container_conf)
 
     for option in options:
 
@@ -109,6 +117,7 @@ def multiple_edit(
             input=input, output=output, **option
         )
         with SubtitleBuild(conf) as build:
+            build.set_container(container)
             build.run()
             results.append(build.save())
 

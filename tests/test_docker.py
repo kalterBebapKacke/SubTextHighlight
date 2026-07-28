@@ -41,14 +41,15 @@ def test_docker_container():
     ass_path = base_path / "input" / "docker_sub_file.ass"
     expected_file = base_path / "expected" / "docker_sub_file.ass"
 
+
     docker_config = SubtitleFX.DockerConfig(
         force_install=True,
-        fonts_path=[arial_path, petemoss_path]
+        fonts_path=[arial_path, petemoss_path],
     )
 
     container = SubtitleFX.docker_module.Container.return_base_container(docker_config)
 
-    dw = docker_module.DockerWrapper(docker_config, container=container)
+    dw = docker_module.DockerWrapper(docker_config, container)
 
 
     input_ass = pysubs2.load(str(ass_path))

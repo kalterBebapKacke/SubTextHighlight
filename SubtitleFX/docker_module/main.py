@@ -15,12 +15,14 @@ class DockerWrapper(base.BaseWrapper):
     input_path = 'input.ass'
     output_path = 'output.ass'
 
+    container:Optional[Container] = None
+
     def __call__(self, sub_file:pysubs2.SSAFile, border_config:utils.BorderConfig):
-        if not self.config.container:
+        if not self.container:
             container = Container.return_base_container(self.config)
         else:
-            container = self.config.container
-            
+            container = self.container
+
         if not isinstance(container, Container):
             raise utils.NotAContainer
 

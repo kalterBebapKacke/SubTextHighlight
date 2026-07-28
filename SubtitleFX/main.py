@@ -1,5 +1,6 @@
 from .config import Config
 from .pipeline import BuildPipeline, Pipeline
+from .docker_module import Container
 from . import utils
 import dataclasses
 import pysubs2
@@ -35,6 +36,9 @@ class SubtitleBuild:
             self._pipeline = self._pipeline_build.build()
 
         return self
+
+    def set_container(self, container:Container):
+        return self.change(container=container)
 
     def run(self):
         self._sub_file = self._pipeline.run()

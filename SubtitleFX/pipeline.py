@@ -146,6 +146,7 @@ class BuildPipeline:
                 border_as_highlight=self.config.highlight_as_borders,
                 border_config=self.config.border_config,
                 docker_config=self.config.docker_config,
+                container=self.config.container
             ).render)
 
     def _fade(self):

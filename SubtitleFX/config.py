@@ -43,6 +43,8 @@ class Config(BaseModel):
     whisper_config:Optional[WhisperConfig] = None
     # internal
 
+    container: Optional[Any] = None
+
 
     @field_validator('subtitle_type', mode='after')
     @classmethod

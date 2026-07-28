@@ -4,6 +4,7 @@ import copy
 from . import appear
 from .. import utils
 from .. import docker_module
+from typing import Optional
 import re
 import logging
 logger = logging.getLogger(__name__)
@@ -38,6 +39,7 @@ class Border:
     border_as_highlight: bool
     docker_config:utils.DockerConfig
     border_config:utils.BorderConfig
+    container:Optional[docker_module.Container] = None
 
     def render(self, sub_file):
         # check whether res is set, else raise error
@@ -64,7 +66,11 @@ class Border:
 
         # start the docker wrapper and execute the script
         # only execute on the part, that becomes the background
-        dw = docker_module.DockerWrapper(self.docker_config)
+        dw = docker_module.DockerWrapper(
+            self.docker_config,
+            self.container
+        )
+
         output : pysubs2.SSAFile = dw(
             ssa_file,
             self.border_config,
