@@ -4,6 +4,7 @@ openai-whisper>=20240930
 stable-ts-whisperless>=2.19.0
 setuptools>=80.9.0
 fleep>=1.0.1
-pydantic
-annotated_types
-questionary
+docker>=7.1.0
+pydantic>=2.0
+annotated_types>=0.6.0
+questionary>=2.1.1

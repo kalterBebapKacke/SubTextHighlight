@@ -1,7 +1,7 @@
 from .subtitles import event_factory, time_utils
 from .handling import Input
 from .subtitles import subtitles_file, Highlight
-from .effects import fade, appear, border, docker_wrapper
+from .effects import fade, appear, border
 from . import formatters
 import traceback
 import logging
@@ -151,20 +151,6 @@ class BuildPipeline:
 
     def _fade(self):
         self.pipeline.add_step(Fade=fade.Fade(self.config.fade[0], self.config.fade[1]).render)
-
-    def _args_border(self):
-        return docker_wrapper.base.args_border(
-                offset=self.config.border_config.offset,
-                radius=self.config.border_config.radius,
-                transformy=self.config.border_config.transformy,
-                height_scaling=self.config.border_config.height_scaling,
-                color=self.config.border_config.color.to_pysubs2(),
-                use_borders_as_highlight=self.config.highlight_as_borders,
-                fonts_path=self.config.docker_config.fonts_path,
-                packages=self.config.docker_config.packages,
-                container_run_func=self.config.docker_config.container_run_func,
-                force_install=self.config.docker_config.force_install,
-            )
 
     def _render(self):
         self.pipeline.add_step(Render=subtitles_file.render)

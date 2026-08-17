@@ -40,7 +40,7 @@ https://github.com/user-attachments/assets/0a6f01fd-72bb-4dc5-a9e1-9a0d14330490
 pip install SubtitleFX
 
 # Via GitHub (latest)
-https://github.com/moonlitmarigold/SubtitleFX.git@main
+pip install git+https://github.com/moonlitmarigold/SubTextHighlight.git@main
 ```
 
 ---
@@ -107,6 +107,7 @@ with SubtitleBuild(conf) as build:
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `subtitle_type` | `str` (use the `Formatters` enum) | **required** | `Formatters.one_word`, `Formatters.joined` (group by `char_max`), or `Formatters.sentence` (split at sentence-ending punctuation). |
+| `subtitle_style` | `Style` | `Style()` | Style for the main subtitle text — see [Style](#2-style--text-appearance). |
 | `char_max` | `int` | `11` | Maximum characters per subtitle line when using `Formatters.joined`. |
 | `add_time_seconds` | `float` | `0.0` | Time offset (seconds) added to all subtitle timestamps. |
 | `fill_sub_times` | `bool` | `True` | Automatically fill gaps between subtitle lines up to the next line / end of video. Requires a known video duration — pair with `input_video`, or an `input` that's itself a video/audio file. |
@@ -183,6 +184,8 @@ Note: `alignment` is not set through `Style(...)` directly — it's driven by `C
 |---|---|---|---|
 | `fade` | `tuple[float, float]` | `(0.0, 0.0)` | `(fade_in, fade_out)` duration in milliseconds. |
 | `appear` | `bool` | `False` | Words appear cumulatively rather than replacing each other. |
+| `rounded_border` | `bool` | `False` | Enable the rounded background box behind the text — configured via `border_config` below. Renders through Docker. |
+| `container` | `Container \| None` | `None` | An existing container to render through, instead of booting a fresh one per `run()`. Usually set via `SubtitleBuild.set_container()` — see [Docker / Rendering Backend](#docker--rendering-backend). |
 
 #### Rounded Borders
 
@@ -204,7 +207,7 @@ conf = Config(
 | `radius` | `int` | `6` | Corner radius. |
 | `transformy` | `int` | `1` | Vertical shift/correction for the border. |
 | `height_scaling` | `float` | `1.2` | Border height multiplier relative to text height. |
-| `color` | `Color` | White | Border fill color. Accepts the same values as `Style` colors. |
+| `color` | `Color` | Black | Border fill color. Accepts the same values as `Style` colors. |
 
 #### Docker / Rendering Backend
 
@@ -230,8 +233,7 @@ conf = Config(
 By default, `SubtitleBuild` boots a fresh container for every `run()` and pauses it afterward. If you're rendering several variants of the same input (see `multiple_edit` below), or otherwise want to reuse one container across multiple builds instead of paying container-startup cost each time, create it explicitly and attach it via `Config.container` / `SubtitleBuild.set_container()`:
 
 ```python
-from SubtitleFX import Config, SubtitleBuild
-from SubtitleFX.docker_module import Container
+from SubtitleFX import Config, SubtitleBuild, Container
 
 conf = Config(..., rounded_border=True)
 container = Container.return_base_container(conf)  # boots one container, using conf.docker_config
